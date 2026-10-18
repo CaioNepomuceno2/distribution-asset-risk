@@ -1,0 +1,2 @@
+# usado pelo Streamlit Community Cloud
+-e .[app]

@@ -136,3 +136,9 @@ check = {"spearman_parcial_jan_jul": float(spearmanr(obs.n_falhas_obs_parcial, o
                                                  "otimizacao": resultados, "check_2026": check,
                                                  "n_uc_total": int(n_uc_total)}, indent=2, ensure_ascii=False))
 log.info("checagem 2026 (jan-jul, parcial): %s", check)
+
+# ---------------------------------------------------------------- artefatos leves para o painel
+APP = ROOT / "app" / "data"
+APP.mkdir(parents=True, exist_ok=True)
+for nome in ["risco_alimentador", "previsao_2026", "candidatos_social", "candidatos_compensacao"]:
+    pd.read_parquet(cfg.processed / f"{nome}.parquet").to_parquet(APP / f"{nome}.parquet", index=False)
