@@ -1,0 +1,13 @@
+data/raw/
+data/interim/
+data/processed/*.parquet
+mlruns/
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+docs/ref/*.pdf
+docs/ref/*.txt
+.pytest_cache/
+.ruff_cache/
+*.egg-info/

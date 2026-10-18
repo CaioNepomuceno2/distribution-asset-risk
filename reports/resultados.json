@@ -1,0 +1,396 @@
+{
+  "backtest_media": [
+    {
+      "alvo": "chi",
+      "metodo": "ano_anterior",
+      "mae_alim_modo": 4147.7951,
+      "mae_alimentador": 17082.054,
+      "spearman_alimentador": 0.8875,
+      "captura_top10": 0.4507,
+      "captura_top20": 0.6441,
+      "vies_total_pct": 5.3596,
+      "deviance_poisson": NaN
+    },
+    {
+      "alvo": "chi",
+      "metodo": "media_3a",
+      "mae_alim_modo": 4038.4905,
+      "mae_alimentador": 17897.4637,
+      "spearman_alimentador": 0.8849,
+      "captura_top10": 0.4585,
+      "captura_top20": 0.6467,
+      "vies_total_pct": 11.9127,
+      "deviance_poisson": NaN
+    },
+    {
+      "alvo": "chi",
+      "metodo": "modelo",
+      "mae_alim_modo": 3503.6999,
+      "mae_alimentador": 16014.4037,
+      "spearman_alimentador": 0.9034,
+      "captura_top10": 0.4598,
+      "captura_top20": 0.6521,
+      "vies_total_pct": -5.5185,
+      "deviance_poisson": NaN
+    },
+    {
+      "alvo": "n_falhas",
+      "metodo": "ano_anterior",
+      "mae_alim_modo": 6.8444,
+      "mae_alimentador": 28.8579,
+      "spearman_alimentador": 0.9128,
+      "captura_top10": 0.4105,
+      "captura_top20": 0.617,
+      "vies_total_pct": 0.8897,
+      "deviance_poisson": 22.6968
+    },
+    {
+      "alvo": "n_falhas",
+      "metodo": "media_3a",
+      "mae_alim_modo": 6.9318,
+      "mae_alimentador": 31.2095,
+      "spearman_alimentador": 0.8979,
+      "captura_top10": 0.4017,
+      "captura_top20": 0.6123,
+      "vies_total_pct": 1.76,
+      "deviance_poisson": 15.239
+    },
+    {
+      "alvo": "n_falhas",
+      "metodo": "modelo",
+      "mae_alim_modo": 6.4539,
+      "mae_alimentador": 29.0326,
+      "spearman_alimentador": 0.9265,
+      "captura_top10": 0.4102,
+      "captura_top20": 0.6166,
+      "vies_total_pct": -1.6065,
+      "deviance_poisson": 6.0402
+    }
+  ],
+  "otimizacao": {
+    "compensacao": {
+      "fronteira": [
+        {
+          "orcamento": 5000000.0,
+          "metodo": "otimo",
+          "investido": 4930002.2,
+          "chi_evitado_ano": 527783.09,
+          "chi_reg_evitado_ano": 527783.09,
+          "vpl": 8458082.13,
+          "n_alimentadores": 24,
+          "dec_evitado_h": 0.26
+        },
+        {
+          "orcamento": 5000000.0,
+          "metodo": "guloso",
+          "investido": 4920002.2,
+          "chi_evitado_ano": 531637.79,
+          "chi_reg_evitado_ano": 531637.79,
+          "vpl": 8154430.43,
+          "n_alimentadores": 28,
+          "dec_evitado_h": 0.26
+        },
+        {
+          "orcamento": 5000000.0,
+          "metodo": "tradicional",
+          "investido": 4970000.0,
+          "chi_evitado_ano": 507841.17,
+          "chi_reg_evitado_ano": 507841.17,
+          "vpl": 1854850.09,
+          "n_alimentadores": 9,
+          "dec_evitado_h": 0.25
+        },
+        {
+          "orcamento": 10000000.0,
+          "metodo": "otimo",
+          "investido": 9890002.2,
+          "chi_evitado_ano": 931669.73,
+          "chi_reg_evitado_ano": 931669.73,
+          "vpl": 11339442.5,
+          "n_alimentadores": 50,
+          "dec_evitado_h": 0.45
+        },
+        {
+          "orcamento": 10000000.0,
+          "metodo": "guloso",
+          "investido": 9850002.2,
+          "chi_evitado_ano": 937851.15,
+          "chi_reg_evitado_ano": 937851.15,
+          "vpl": 10527660.2,
+          "n_alimentadores": 58,
+          "dec_evitado_h": 0.46
+        },
+        {
+          "orcamento": 10000000.0,
+          "metodo": "tradicional",
+          "investido": 9970000.0,
+          "chi_evitado_ano": 886596.62,
+          "chi_reg_evitado_ano": 886596.62,
+          "vpl": 2172851.54,
+          "n_alimentadores": 17,
+          "dec_evitado_h": 0.43
+        },
+        {
+          "orcamento": 20000000.0,
+          "metodo": "otimo",
+          "investido": 19860002.2,
+          "chi_evitado_ano": 1560547.81,
+          "chi_reg_evitado_ano": 1560547.81,
+          "vpl": 13362751.94,
+          "n_alimentadores": 88,
+          "dec_evitado_h": 0.76
+        },
+        {
+          "orcamento": 20000000.0,
+          "metodo": "guloso",
+          "investido": 17540002.2,
+          "chi_evitado_ano": 1487570.42,
+          "chi_reg_evitado_ano": 1487570.42,
+          "vpl": 11814718.61,
+          "n_alimentadores": 92,
+          "dec_evitado_h": 0.72
+        },
+        {
+          "orcamento": 20000000.0,
+          "metodo": "tradicional",
+          "investido": 19960000.0,
+          "chi_evitado_ano": 1407690.67,
+          "chi_reg_evitado_ano": 1407690.67,
+          "vpl": 2376831.67,
+          "n_alimentadores": 33,
+          "dec_evitado_h": 0.68
+        },
+        {
+          "orcamento": 40000000.0,
+          "metodo": "otimo",
+          "investido": 21180002.2,
+          "chi_evitado_ano": 1653308.62,
+          "chi_reg_evitado_ano": 1653308.62,
+          "vpl": 13378001.51,
+          "n_alimentadores": 92,
+          "dec_evitado_h": 0.8
+        },
+        {
+          "orcamento": 40000000.0,
+          "metodo": "guloso",
+          "investido": 17540002.2,
+          "chi_evitado_ano": 1487570.42,
+          "chi_reg_evitado_ano": 1487570.42,
+          "vpl": 11814718.61,
+          "n_alimentadores": 92,
+          "dec_evitado_h": 0.72
+        },
+        {
+          "orcamento": 40000000.0,
+          "metodo": "tradicional",
+          "investido": 39920000.0,
+          "chi_evitado_ano": 2261179.79,
+          "chi_reg_evitado_ano": 2261179.79,
+          "vpl": -443453.54,
+          "n_alimentadores": 72,
+          "dec_evitado_h": 1.1
+        },
+        {
+          "orcamento": 80000000.0,
+          "metodo": "otimo",
+          "investido": 21180002.2,
+          "chi_evitado_ano": 1653308.62,
+          "chi_reg_evitado_ano": 1653308.62,
+          "vpl": 13378001.51,
+          "n_alimentadores": 92,
+          "dec_evitado_h": 0.8
+        },
+        {
+          "orcamento": 80000000.0,
+          "metodo": "guloso",
+          "investido": 17540002.2,
+          "chi_evitado_ano": 1487570.42,
+          "chi_reg_evitado_ano": 1487570.42,
+          "vpl": 11814718.61,
+          "n_alimentadores": 92,
+          "dec_evitado_h": 0.72
+        },
+        {
+          "orcamento": 80000000.0,
+          "metodo": "tradicional",
+          "investido": 79930000.0,
+          "chi_evitado_ano": 3558880.33,
+          "chi_reg_evitado_ano": 3558880.33,
+          "vpl": -10734401.65,
+          "n_alimentadores": 178,
+          "dec_evitado_h": 1.73
+        }
+      ],
+      "mix_20M": {
+        "religador": 51,
+        "automacao": 50,
+        "poda": 1
+      }
+    },
+    "social": {
+      "fronteira": [
+        {
+          "orcamento": 5000000.0,
+          "metodo": "otimo",
+          "investido": 4998539.77,
+          "chi_evitado_ano": 626860.93,
+          "chi_reg_evitado_ano": 460408.07,
+          "vpl": 51942950.45,
+          "n_alimentadores": 26,
+          "dec_evitado_h": 0.22
+        },
+        {
+          "orcamento": 5000000.0,
+          "metodo": "guloso",
+          "investido": 4969160.82,
+          "chi_evitado_ano": 595347.45,
+          "chi_reg_evitado_ano": 437932.03,
+          "vpl": 49093703.79,
+          "n_alimentadores": 34,
+          "dec_evitado_h": 0.21
+        },
+        {
+          "orcamento": 5000000.0,
+          "metodo": "tradicional",
+          "investido": 4970000.0,
+          "chi_evitado_ano": 690917.6,
+          "chi_reg_evitado_ano": 507841.17,
+          "vpl": 12814697.11,
+          "n_alimentadores": 9,
+          "dec_evitado_h": 0.25
+        },
+        {
+          "orcamento": 10000000.0,
+          "metodo": "otimo",
+          "investido": 9998539.77,
+          "chi_evitado_ano": 1145928.0,
+          "chi_reg_evitado_ano": 842720.41,
+          "vpl": 78476380.2,
+          "n_alimentadores": 51,
+          "dec_evitado_h": 0.41
+        },
+        {
+          "orcamento": 10000000.0,
+          "metodo": "guloso",
+          "investido": 9909160.82,
+          "chi_evitado_ano": 1189112.39,
+          "chi_reg_evitado_ano": 873817.69,
+          "vpl": 71010832.31,
+          "n_alimentadores": 61,
+          "dec_evitado_h": 0.43
+        },
+        {
+          "orcamento": 10000000.0,
+          "metodo": "tradicional",
+          "investido": 9970000.0,
+          "chi_evitado_ano": 1204352.23,
+          "chi_reg_evitado_ano": 886596.62,
+          "vpl": 26830996.72,
+          "n_alimentadores": 17,
+          "dec_evitado_h": 0.43
+        },
+        {
+          "orcamento": 20000000.0,
+          "metodo": "otimo",
+          "investido": 19997300.19,
+          "chi_evitado_ano": 2129429.09,
+          "chi_reg_evitado_ano": 1565653.83,
+          "vpl": 107378198.1,
+          "n_alimentadores": 93,
+          "dec_evitado_h": 0.76
+        },
+        {
+          "orcamento": 20000000.0,
+          "metodo": "guloso",
+          "investido": 19879160.82,
+          "chi_evitado_ano": 2116580.74,
+          "chi_reg_evitado_ano": 1556699.87,
+          "vpl": 96278692.05,
+          "n_alimentadores": 106,
+          "dec_evitado_h": 0.76
+        },
+        {
+          "orcamento": 20000000.0,
+          "metodo": "tradicional",
+          "investido": 19960000.0,
+          "chi_evitado_ano": 1916301.02,
+          "chi_reg_evitado_ano": 1407690.67,
+          "vpl": 45203192.81,
+          "n_alimentadores": 33,
+          "dec_evitado_h": 0.68
+        },
+        {
+          "orcamento": 40000000.0,
+          "metodo": "otimo",
+          "investido": 39998539.77,
+          "chi_evitado_ano": 3283386.64,
+          "chi_reg_evitado_ano": 2415176.4,
+          "vpl": 140885335.24,
+          "n_alimentadores": 150,
+          "dec_evitado_h": 1.18
+        },
+        {
+          "orcamento": 40000000.0,
+          "metodo": "guloso",
+          "investido": 39889160.82,
+          "chi_evitado_ano": 3304468.59,
+          "chi_reg_evitado_ano": 2430443.09,
+          "vpl": 121345856.9,
+          "n_alimentadores": 193,
+          "dec_evitado_h": 1.18
+        },
+        {
+          "orcamento": 40000000.0,
+          "metodo": "tradicional",
+          "investido": 39920000.0,
+          "chi_evitado_ano": 3076907.74,
+          "chi_reg_evitado_ano": 2261179.79,
+          "vpl": 83957948.94,
+          "n_alimentadores": 72,
+          "dec_evitado_h": 1.1
+        },
+        {
+          "orcamento": 80000000.0,
+          "metodo": "otimo",
+          "investido": 79897300.19,
+          "chi_evitado_ano": 4840929.88,
+          "chi_reg_evitado_ano": 3559515.62,
+          "vpl": 163267314.43,
+          "n_alimentadores": 273,
+          "dec_evitado_h": 1.73
+        },
+        {
+          "orcamento": 80000000.0,
+          "metodo": "guloso",
+          "investido": 61709160.82,
+          "chi_evitado_ano": 4050907.89,
+          "chi_reg_evitado_ano": 2979455.89,
+          "vpl": 128489031.2,
+          "n_alimentadores": 299,
+          "dec_evitado_h": 1.45
+        },
+        {
+          "orcamento": 80000000.0,
+          "metodo": "tradicional",
+          "investido": 79930000.0,
+          "chi_evitado_ano": 4840530.7,
+          "chi_reg_evitado_ano": 3558880.33,
+          "vpl": 130737244.53,
+          "n_alimentadores": 178,
+          "dec_evitado_h": 1.73
+        }
+      ],
+      "mix_20M": {
+        "automacao": 54,
+        "religador": 50,
+        "poda": 3,
+        "manutencao_preditiva": 2
+      }
+    }
+  },
+  "check_2026": {
+    "spearman_parcial_jan_jul": 0.8263606588706818,
+    "captura_top10_parcial": 0.3450965169213396
+  },
+  "n_uc_total": 2055284
+}

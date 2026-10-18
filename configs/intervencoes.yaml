@@ -1,0 +1,85 @@
+# Catálogo de intervenções para a otimização de CAPEX/OPEX.
+#
+# ATENÇÃO: custos e eficácias são PREMISSAS ILUSTRATIVAS de ordem de grandeza,
+# para demonstrar o método. Devem ser calibrados com o banco de preços e o
+# histórico de obras da distribuidora antes de qualquer uso real.
+#
+# eficacia: fração do CHI do modo de falha evitada no trecho tratado
+# alcance:  fração do CHI do alimentador exposta à intervenção
+#           (ex.: rede compacta só nos trechos críticos)
+# custo:    R$ (capex) ou R$/ano (opex); "por" define a unidade de quantidade
+# vida_anos: vida útil para anualizar o capex
+
+financeiro:
+  taxa_desconto: 0.08        # a.a., real
+  horizonte_anos: 10
+  # Custo da energia não suprida para o cenário "visão social" (R$/MWh).
+  # Parâmetro de cenário, não é valor regulatório oficial: ajuste à referência vigente.
+  custo_ens_rs_mwh: 7000
+
+intervencoes:
+  religador:
+    descricao: Novo religador automático com coordenação da proteção (seccionamento)
+    tipo: capex
+    custo: 160000
+    por: unidade
+    quantidade: "max(1, min(4, ceil(rede_mt_km / 60) - n_religadores))"
+    aplicavel: "rede_mt_km >= 30 and religadores_por_100km < 2.5"
+    vida_anos: 20
+    alcance: 0.5
+    eficacia: {todos: 0.45}
+
+  automacao:
+    descricao: Telecomando de chaves + lógica de autorrestabelecimento (FLISR)
+    tipo: capex
+    custo: 85000
+    por: unidade
+    quantidade: "2"
+    aplicavel: "n_chaves_telecomandadas < 3 and n_uc >= 500"
+    vida_anos: 15
+    alcance: 0.6
+    eficacia: {todos: 0.35}
+
+  rede_compacta:
+    descricao: Substituição de rede nua por compacta (spacer cable) nos trechos críticos
+    tipo: capex
+    custo: 190000
+    por: km
+    quantidade: "min(rede_mt_km * frac_cabo_nu, 0.10 * rede_mt_km, 25)"
+    aplicavel: "frac_cabo_nu >= 0.3 and rede_mt_km >= 5"
+    vida_anos: 30
+    alcance: 0.4
+    eficacia: {VEGETACAO: 0.7, VENTO: 0.5, ANIMAIS: 0.6, DESCARGA_ATMOSFERICA: 0.15}
+
+  para_raios:
+    descricao: Reforço de para-raios e aterramento em estruturas expostas
+    tipo: capex
+    custo: 7000
+    por: km
+    quantidade: "min(rede_mt_km, 300)"
+    aplicavel: "rede_mt_km >= 10"
+    vida_anos: 15
+    alcance: 0.8
+    eficacia: {DESCARGA_ATMOSFERICA: 0.35}
+
+  poda:
+    descricao: Ciclo de poda intensificado (OPEX anual)
+    tipo: opex
+    custo: 2500
+    por: km
+    quantidade: "rede_mt_km * frac_rural * frac_cabo_nu"
+    aplicavel: "frac_rural >= 0.3"
+    vida_anos: 1
+    alcance: 0.9
+    eficacia: {VEGETACAO: 0.35}
+
+  manutencao_preditiva:
+    descricao: Inspeção termográfica/drone + substituição preventiva de componentes
+    tipo: opex
+    custo: 1800
+    por: km
+    quantidade: "rede_mt_km"
+    aplicavel: "rede_mt_km >= 5"
+    vida_anos: 1
+    alcance: 0.7
+    eficacia: {EQUIPAMENTO: 0.3}
