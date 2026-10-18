@@ -11,3 +11,4 @@ docs/ref/*.txt
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
+linkedin_posts.md
