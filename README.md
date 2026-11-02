@@ -5,6 +5,12 @@
 Este projeto responde a essa pergunta para a **Energisa Mato Grosso** (697 alimentadores, ~2 milhões de
 unidades consumidoras e 900 mil km² de área de concessão), usando apenas dados abertos:
 
+> **Estado da validação:** os resultados abaixo são artefatos de uma execução anterior, ainda não
+> reproduzida nesta revisão a partir das fontes brutas. O backtest usa cadastros posteriores em parte
+> do vínculo de circuitos e na localização usada para interpolar clima. Isso pode introduzir informação
+> futura; as métricas são exploratórias, não uma estimativa confiável de desempenho prospectivo.
+> A carteira é uma simulação sob premissas ilustrativas, não um ganho observado em campo.
+
 | Fonte | O que entra | Período |
 |---|---|---|
 | ANEEL: Interrupções nas Redes de Distribuição | 2,4 milhões de interrupções com causa, duração e alimentador | 2018 a jul/2026 |
@@ -36,9 +42,11 @@ as regras de expurgo e de duração mínima de 3 minutos. O resultado bate com o
 | 2024 | 15,12 | 15,14 | 6,49 | 6,49 |
 | 2025 | 14,45 | 14,50 | 6,43 | 6,45 |
 
-### 2. O modelo supera as regras de planejamento usuais
+### 2. Comparação com baselines de planejamento
 Backtest temporal com origem móvel: para prever 2023, o modelo só vê dados até 2022, e assim por diante.
-Cada linha prevista usa o cadastro da BDGD de 31/12 do ano anterior, para não haver vazamento de informação.
+As características cadastrais diretas usam a BDGD de 31/12 do ano anterior. Porém, o vínculo histórico
+de circuitos e as coordenadas de clima podem usar snapshots posteriores; é necessário refazer o backtest
+com dados disponíveis em cada data de previsão antes de concluir que não há vazamento temporal.
 
 ![backtest](reports/figures/01_backtest.png)
 
@@ -47,6 +55,7 @@ Cada linha prevista usa o cadastro da BDGD de 31/12 do ano anterior, para não h
 | Deviance de Poisson (nº de falhas por alimentador e modo) | **6,0** | 15,2 | 22,7 |
 | Erro absoluto do CHI por alimentador | **16,0 mil** | 17,9 mil | 17,1 mil |
 | Correlação de Spearman do ranking de CHI | **0,90** | 0,89 | 0,89 |
+| CHI capturado pelos 10% de alimentadores priorizados | 46% | 46% | 45% |
 
 O ganho grande está na granularidade **alimentador × modo de falha**, que é o que define a intervenção
 certa. No ranking total de alimentadores, o histórico já é um baseline forte, e o modelo fica só um pouco à
@@ -65,14 +74,15 @@ A calibração por decil de risco está em [`reports/figures/06_calibracao.png`]
 
 ![mapa](reports/figures/05_mapa_risco.png)
 
-### 4. Mesmo orçamento, mais que o dobro de valor
+### 4. Comparação de carteiras sob premissas ilustrativas
 Para cada alimentador, o otimizador avalia todos os pacotes de até 3 intervenções (religador, automação
 FLISR, rede compacta, para-raios, poda e manutenção preditiva). A combinação das eficácias é multiplicativa
 por modo de falha. Em seguida, o otimizador escolhe a carteira que maximiza o VPL dentro do orçamento.
 
 ![fronteira](reports/figures/02_fronteira_social.png)
 
-Com orçamento de **R$ 20 milhões**, na visão social (compensação + energia não suprida):
+Com orçamento de **R$ 20 milhões**, na visão social (compensação + energia não suprida),
+a otimização encontra mais que o dobro do VPL da regra tradicional **nas premissas deste cenário**:
 
 | Estratégia | VPL em 10 anos | DEC evitado | Alimentadores tratados |
 |---|---|---|---|
@@ -146,6 +156,9 @@ pytest
 Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
 
 ## Limitações
+* **Validação temporal incompleta:** o crosswalk completa códigos com snapshots de outros anos, inclusive
+  futuros, e o clima usa as coordenadas do snapshot mais recente. Recriar os vínculos e as coordenadas
+  disponíveis em cada origem de previsão e recalcular métricas e carteiras antes de usar os resultados.
 * As eficácias das intervenções vêm de premissas de engenharia, não de inferência causal sobre os dados.
   Um próximo passo natural é estimar o efeito de obras passadas (religadores instalados entre snapshots da
   BDGD) com diferenças em diferenças.

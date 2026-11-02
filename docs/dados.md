@@ -2,6 +2,10 @@
 
 Registro das escolhas de tratamento que afetam os resultados, com a evidência de cada uma.
 
+**Ressalva da revisão:** os artefatos registrados não foram reproduzidos nesta revisão. A construção
+atual do crosswalk e das coordenadas climáticas pode usar snapshots futuros em relação a um backtest;
+logo, as métricas não estabelecem desempenho prospectivo sem uma nova execução com cortes temporais.
+
 ## Interrupções (ANEEL)
 
 **Fonte:** `dadosabertos.aneel.gov.br`, dataset *Interrupções de Energia Elétrica nas Redes de
@@ -53,7 +57,9 @@ distribuidora e ano. Os IDs dos itens usados estão em `configs/emt.yaml`.
   circuito `2014290` contém `092001`, `092002`, `092011` e `093013`). O mapa vem de `SSDMT.CT_COD_OP`: cada
   código vai para o CTMT com a maior extensão de rede com aquele código. Para eventos de anos sem
   `CT_COD_OP`, vale o snapshot mais próximo que tenha o campo.
-* **Sem vazamento:** a linha do ano *y* usa o snapshot de 31/12/*y-1*.
+* **Corte temporal parcial:** a linha do ano *y* usa atributos do snapshot de 31/12/*y-1*, mas o
+  crosswalk completa códigos com snapshots de outros anos, inclusive posteriores. O clima também usa
+  coordenadas do snapshot mais recente. Esses passos precisam respeitar a data de cada previsão.
 * **Idade fora do modelo:** `DAT_CON` tem 7% de `01/01/1980` (data-padrão), um pico de 35 mil trafos em 2017
   (recadastramento) e idades médias de ~90 anos nos snapshots M10, o que é implausível. Usar essa coluna
   ensinaria o modelo a reconhecer o processo de cadastro, não o envelhecimento do ativo.
