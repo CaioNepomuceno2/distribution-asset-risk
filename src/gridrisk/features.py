@@ -7,8 +7,9 @@ Enquadramento do problema (planejamento anual de investimento):
 * Ela quer prever, para cada alimentador e modo de falha, o número de falhas e
   o CHI (consumidor-hora interrompido) do ano ``y``.
 
-Nenhuma informação de ``y`` entra nas features: o clima realizado do ano alvo
-não é usado, apenas a climatologia dos anos anteriores.
+O clima realizado do ano alvo não é usado. Contudo, o crosswalk pode usar
+snapshots posteriores e as coordenadas do clima vêm do snapshot mais recente;
+o backtest ainda precisa ser refeito com cortes temporais nesses dois passos.
 """
 from __future__ import annotations
 

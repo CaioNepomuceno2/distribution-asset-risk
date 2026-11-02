@@ -11,7 +11,10 @@ nem para operação em tempo real.
 * `chi`: consumidor-hora interrompido dessas falhas. LightGBM com objetivo Tweedie (p = 1,4).
 * A previsão de produção é a média de 5 sementes.
 
-## Features (todas conhecidas em 31/12 do ano anterior)
+## Features e disponibilidade temporal
+As fontes diretas são anteriores ao ano previsto, mas a construção atual do crosswalk de circuitos e
+das coordenadas para interpolação climática pode usar snapshots posteriores. Portanto, a disponibilidade
+de todas as features na data de previsão ainda não está garantida.
 * **Rede (BDGD y-1):** extensão MT, fração rural, monofásica, compacta, subterrânea e de cabo nu; nº de
   trafos, kVA, fração MRT; religadores, seccionalizadores, chaves fusíveis e telecomandadas; consumidores,
   fração rural, GD; centróide e extensão geográfica; densidades por km.
@@ -22,7 +25,8 @@ nem para operação em tempo real.
 
 ## Avaliação
 Origem móvel: os anos de teste 2023, 2024 e 2025 são previstos, cada um, com treino apenas nos anos
-anteriores.
+anteriores. Os números abaixo foram registrados em uma execução anterior e são exploratórios: o pipeline
+de pré-processamento pode usar cadastros futuros, e esta revisão não reproduziu a execução completa.
 
 | | Modelo | Média 3 anos | Ano anterior |
 |---|---|---|---|
@@ -36,6 +40,8 @@ Por ano, o viés total do CHI oscila entre -19% e +11% por causa do clima (2025 
 esperado, porque o modelo não vê o clima do ano-alvo.
 
 ## Limitações e riscos
+* **Informação futura no pré-processamento:** o crosswalk usa outros snapshots, inclusive futuros, e as
+  coordenadas de clima vêm do snapshot mais recente. Refazer por origem temporal e comparar os resultados.
 * **Associação, não causalidade:** o SHAP mostra o que o modelo usa, não o efeito de mudar a rede. As
   eficácias das intervenções são premissas de engenharia (`configs/intervencoes.yaml`).
 * **Qualidade cadastral:** classificação de causa (40% do CHI em "falha de material ou equipamento") e

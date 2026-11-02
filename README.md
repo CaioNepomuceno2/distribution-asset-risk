@@ -5,6 +5,12 @@
 Este projeto responde a essa pergunta para a **Energisa Mato Grosso** (697 alimentadores, ~2 milhões de
 unidades consumidoras e 900 mil km² de área de concessão), usando apenas dados abertos:
 
+> **Estado da validação:** os resultados abaixo são artefatos de uma execução anterior, ainda não
+> reproduzida nesta revisão a partir das fontes brutas. O backtest usa cadastros posteriores em parte
+> do vínculo de circuitos e na localização usada para interpolar clima. Isso pode introduzir informação
+> futura; as métricas são exploratórias, não uma estimativa confiável de desempenho prospectivo.
+> A carteira é uma simulação sob premissas ilustrativas, não um ganho observado em campo.
+
 | Fonte | O que entra | Período |
 |---|---|---|
 | ANEEL: Interrupções nas Redes de Distribuição | 2,4 milhões de interrupções com causa, duração e alimentador | 2018 a jul/2026 |
@@ -38,7 +44,9 @@ as regras de expurgo e de duração mínima de 3 minutos. O resultado bate com o
 
 ### 2. Comparação com baselines de planejamento
 Backtest temporal com origem móvel: para prever 2023, o modelo só vê dados até 2022, e assim por diante.
-Cada linha prevista usa o cadastro da BDGD de 31/12 do ano anterior, para não haver vazamento de informação.
+As características cadastrais diretas usam a BDGD de 31/12 do ano anterior. Porém, o vínculo histórico
+de circuitos e as coordenadas de clima podem usar snapshots posteriores; é necessário refazer o backtest
+com dados disponíveis em cada data de previsão antes de concluir que não há vazamento temporal.
 
 ![backtest](reports/figures/01_backtest.png)
 
@@ -148,6 +156,9 @@ pytest
 Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
 
 ## Limitações
+* **Validação temporal incompleta:** o crosswalk completa códigos com snapshots de outros anos, inclusive
+  futuros, e o clima usa as coordenadas do snapshot mais recente. Recriar os vínculos e as coordenadas
+  disponíveis em cada origem de previsão e recalcular métricas e carteiras antes de usar os resultados.
 * As eficácias das intervenções vêm de premissas de engenharia, não de inferência causal sobre os dados.
   Um próximo passo natural é estimar o efeito de obras passadas (religadores instalados entre snapshots da
   BDGD) com diferenças em diferenças.
