@@ -14,12 +14,14 @@ clima, estacoes = inmet.monthly_by_station(zips, "MT")
 clima.to_parquet(cfg.interim / "inmet_estacao_mes.parquet", index=False)
 estacoes.to_parquet(cfg.interim / "inmet_estacoes.parquet", index=False)
 
-# coordenadas do alimentador: snapshot mais recente em que ele aparece
-snaps = sorted(cfg.interim.glob("bdgd_feeders_*.parquet"))
-coords = pd.concat([pd.read_parquet(p, columns=["alimentador_nome", "lat", "lon", "ano_snapshot"]) for p in snaps])
-coords = (coords.dropna(subset=["lat"]).sort_values("ano_snapshot")
-          .drop_duplicates("alimentador_nome", keep="last")
-          .rename(columns={"alimentador_nome": "alimentador_cod_id"}))
-cf = inmet.idw_to_feeders(clima, estacoes, coords).rename(columns={"alimentador_cod_id": "alimentador"})
+# coordenadas do alimentador em cada snapshot: o painel do ano y usa as de y-1 (point-in-time)
+partes = []
+for p in sorted(cfg.interim.glob("bdgd_feeders_*.parquet")):
+    coords = (pd.read_parquet(p, columns=["alimentador_nome", "lat", "lon", "ano_snapshot"])
+              .dropna(subset=["lat"]).drop_duplicates("alimentador_nome")
+              .rename(columns={"alimentador_nome": "alimentador_cod_id"}))
+    snap = int(coords.ano_snapshot.iloc[0])
+    partes.append(inmet.idw_to_feeders(clima, estacoes, coords).assign(ano_snapshot=snap))
+cf = pd.concat(partes, ignore_index=True).rename(columns={"alimentador_cod_id": "alimentador"})
 cf.to_parquet(cfg.interim / "clima_alimentador_mes.parquet", index=False)
 print(cf.describe().T.round(2).to_string())

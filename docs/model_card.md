@@ -12,36 +12,39 @@ nem para operação em tempo real.
 * A previsão de produção é a média de 5 sementes.
 
 ## Features e disponibilidade temporal
-As fontes diretas são anteriores ao ano previsto, mas a construção atual do crosswalk de circuitos e
-das coordenadas para interpolação climática pode usar snapshots posteriores. Portanto, a disponibilidade
-de todas as features na data de previsão ainda não está garantida.
+Todas as features do ano *y* usam só informação disponível em 31/12 de *y-1*: o cadastro, o crosswalk de
+circuitos e as coordenadas da interpolação climática vêm de snapshots até *y-1* (ver `tests/test_features.py`).
 * **Rede (BDGD y-1):** extensão MT, fração rural, monofásica, compacta, subterrânea e de cabo nu; nº de
   trafos, kVA, fração MRT; religadores, seccionalizadores, chaves fusíveis e telecomandadas; consumidores,
   fração rural, GD; centróide e extensão geográfica; densidades por km.
 * **Histórico até y-1:** falhas e CHI do mesmo modo (1 e 3 anos), totais em 3 anos, tendência, duração
   mediana de restabelecimento.
-* **Climatologia:** médias dos 5 anos anteriores (chuva, rajadas, temperatura, umidade).
+* **Climatologia:** médias dos 5 anos anteriores (chuva, rajadas, temperatura, umidade); fora da execução
+  de nov/2026.
 * **Excluídas de propósito:** idades da BDGD (ver `docs/dados.md`) e qualquer informação do ano-alvo.
 
 ## Avaliação
 Origem móvel: os anos de teste 2023, 2024 e 2025 são previstos, cada um, com treino apenas nos anos
-anteriores. Os números abaixo foram registrados em uma execução anterior e são exploratórios: o pipeline
-de pré-processamento pode usar cadastros futuros, e esta revisão não reproduziu a execução completa.
+anteriores. Execução de nov/2026, reproduzida das fontes brutas com cortes temporais e sem a climatologia do INMET
+(portal inacessível do ambiente de execução).
 
 | | Modelo | Média 3 anos | Ano anterior |
 |---|---|---|---|
-| Deviance de Poisson (falhas) | 6,0 | 15,2 | 22,7 |
-| MAE do CHI por alimentador | 16,0 mil | 17,9 mil | 17,1 mil |
-| Spearman do CHI por alimentador | 0,90 | 0,89 | 0,89 |
+| Deviance de Poisson (falhas) | 6,1 | 15,5 | 23,0 |
+| MAE do CHI por alimentador | 16,2 mil | 17,9 mil | 17,1 mil |
+| Spearman do CHI por alimentador | 0,91 | 0,88 | 0,89 |
 | Captura do top-10% (CHI) | 46% | 46% | 45% |
-| Viés total médio (CHI) | -5,5% | +11,9% | +5,4% |
+| Viés total médio (CHI) | -0,4% | +11,9% | +5,4% |
 
-Por ano, o viés total do CHI oscila entre -19% e +11% por causa do clima (2025 teve mais falhas que 2024). Isso é
+Sem os cortes temporais no crosswalk, o mesmo modelo tinha deviance 6,07 e MAE de 15,8 mil: o vazamento
+inflava o erro do CHI em ~2,6% e não mudava a conclusão.
+
+Por ano, o viés total do CHI oscila entre -18% e +13% por causa do clima (2025 teve mais falhas que 2024). Isso é
 esperado, porque o modelo não vê o clima do ano-alvo.
 
 ## Limitações e riscos
-* **Informação futura no pré-processamento:** o crosswalk usa outros snapshots, inclusive futuros, e as
-  coordenadas de clima vêm do snapshot mais recente. Refazer por origem temporal e comparar os resultados.
+* **Sem climatologia nesta execução:** o portal do INMET não respondeu ao ambiente de execução. Rodar
+  `build_clima.py` e o pipeline de novo para incluí-la (o código já usa as coordenadas do snapshot *y-1*).
 * **Associação, não causalidade:** o SHAP mostra o que o modelo usa, não o efeito de mudar a rede. As
   eficácias das intervenções são premissas de engenharia (`configs/intervencoes.yaml`).
 * **Qualidade cadastral:** classificação de causa (40% do CHI em "falha de material ou equipamento") e

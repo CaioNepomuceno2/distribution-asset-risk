@@ -5,11 +5,12 @@
 Este projeto responde a essa pergunta para a **Energisa Mato Grosso** (697 alimentadores, ~2 milhões de
 unidades consumidoras e 900 mil km² de área de concessão), usando apenas dados abertos:
 
-> **Estado da validação:** os resultados abaixo são artefatos de uma execução anterior, ainda não
-> reproduzida nesta revisão a partir das fontes brutas. O backtest usa cadastros posteriores em parte
-> do vínculo de circuitos e na localização usada para interpolar clima. Isso pode introduzir informação
-> futura; as métricas são exploratórias, não uma estimativa confiável de desempenho prospectivo.
-> A carteira é uma simulação sob premissas ilustrativas, não um ganho observado em campo.
+> **Estado da validação (nov/2026):** resultados reproduzidos do zero a partir das fontes brutas, com cortes
+> temporais (*point-in-time*) em todas as etapas. Para prever o ano *y*, o cadastro e o vínculo de circuitos
+> usam só snapshots da BDGD até 31/12 de *y-1* (testes em [`tests/test_features.py`](tests/test_features.py)).
+> Nesta execução o clima do INMET ficou de fora porque o portal não estava acessível do ambiente de
+> execução; ver [Robustez](#6-robustez-dos-resultados). A carteira é uma simulação sob premissas
+> ilustrativas, não um ganho observado em campo.
 
 | Fonte | O que entra | Período |
 |---|---|---|
@@ -44,29 +45,28 @@ as regras de expurgo e de duração mínima de 3 minutos. O resultado bate com o
 
 ### 2. Comparação com baselines de planejamento
 Backtest temporal com origem móvel: para prever 2023, o modelo só vê dados até 2022, e assim por diante.
-As características cadastrais diretas usam a BDGD de 31/12 do ano anterior. Porém, o vínculo histórico
-de circuitos e as coordenadas de clima podem usar snapshots posteriores; é necessário refazer o backtest
-com dados disponíveis em cada data de previsão antes de concluir que não há vazamento temporal.
+As características cadastrais e o vínculo histórico de circuitos usam apenas snapshots da BDGD até 31/12 do
+ano anterior.
 
 ![backtest](reports/figures/01_backtest.png)
 
 | Métrica (média 2023-2025) | Modelo | Média de 3 anos | Ano anterior |
 |---|---|---|---|
-| Deviance de Poisson (nº de falhas por alimentador e modo) | **6,0** | 15,2 | 22,7 |
-| Erro absoluto do CHI por alimentador | **16,0 mil** | 17,9 mil | 17,1 mil |
-| Correlação de Spearman do ranking de CHI | **0,90** | 0,89 | 0,89 |
+| Deviance de Poisson (nº de falhas por alimentador e modo) | **6,1** | 15,5 | 23,0 |
+| Erro absoluto do CHI por alimentador | **16,2 mil** | 17,9 mil | 17,1 mil |
+| Correlação de Spearman do ranking de CHI | **0,91** | 0,88 | 0,89 |
 | CHI capturado pelos 10% de alimentadores priorizados | 46% | 46% | 45% |
 
 O ganho grande está na granularidade **alimentador × modo de falha**, que é o que define a intervenção
 certa. No ranking total de alimentadores, o histórico já é um baseline forte, e o modelo fica só um pouco à
-frente. O total anual do sistema oscila entre -19% e +11% de um ano para outro por causa do clima, que não é conhecido
+frente. O total anual do sistema oscila entre -18% e +13% de um ano para outro por causa do clima, que não é conhecido
 na hora de planejar. Por isso o modelo é usado para **priorizar**, não para prever o DEC do ano.
 A calibração por decil de risco está em [`reports/figures/06_calibracao.png`](reports/figures/06_calibracao.png).
 
 ### 3. Onde está o risco
 ![chi por modo](reports/figures/03_chi_por_modo.png)
 
-* **Falha de material ou equipamento** responde por ~40% do CHI das falhas de MT.
+* **Falha de material ou equipamento** responde por ~38% do CHI das falhas de MT (2023-2025).
 * **26% do CHI é expurgado** (dias críticos e situações de emergência). No modo **vento**, a fração
   expurgada chega a **44%**. Esse CHI pesa para o cliente, mas não entra no DEC nem gera compensação.
   O modelo trata as duas contas separadamente.
@@ -86,12 +86,12 @@ a otimização encontra mais que o dobro do VPL da regra tradicional **nas premi
 
 | Estratégia | VPL em 10 anos | DEC evitado | Alimentadores tratados |
 |---|---|---|---|
-| **Carteira ótima (MILP)** | **R$ 107 mi** | 0,76 h | 93 |
-| Heurística gulosa (VPL/custo) | R$ 96 mi | 0,76 h | 106 |
-| Tradicional: piores alimentadores primeiro + pacote padrão | R$ 45 mi | 0,68 h | 33 |
+| **Carteira ótima (MILP)** | **R$ 108 mi** | 0,77 h | 94 |
+| Heurística gulosa (VPL/custo) | R$ 98 mi | 0,80 h | 102 |
+| Tradicional: piores alimentadores primeiro + pacote padrão | R$ 46 mi | 0,71 h | 33 |
 
-Na **visão de caixa** (só compensações), apenas ~R$ 21 mi de obras têm VPL positivo, e a priorização
-tradicional chega a VPL negativo a partir de R$ 40 mi. Em outras palavras, a compensação regulatória sozinha
+Na **visão de caixa** (só compensações), apenas ~R$ 21 mi de obras têm VPL positivo; a priorização
+tradicional tem VPL praticamente nulo com R$ 40 mi e negativo com R$ 80 mi. Em outras palavras, a compensação regulatória sozinha
 não paga a maior parte dos investimentos em confiabilidade, e isso muda a conversa com o regulador.
 
 > **Premissas.** Custos, eficácias e o custo da energia não suprida estão em
@@ -106,6 +106,24 @@ Mapa de risco, ranking de alimentadores e um controle de orçamento que reotimiz
 pip install -e ".[app]"
 streamlit run app/app.py
 ```
+
+### 6. Robustez dos resultados
+A primeira versão do pipeline ligava as interrupções aos alimentadores usando também cadastros publicados
+depois da data da previsão. Para medir quanto isso inflava o backtest, rodei o mesmo backtest nos dois
+painéis, com tudo o mais igual ([`scripts/ablacao_point_in_time.py`](scripts/ablacao_point_in_time.py)):
+
+| Modelo, média 2023-2025 | Sem cortes temporais | Point-in-time |
+|---|---|---|
+| Deviance de Poisson (falhas) | 6,07 | 6,14 |
+| Erro absoluto do CHI por alimentador | 15,8 mil | 16,2 mil |
+| Spearman do ranking de CHI | 0,906 | 0,905 |
+| CHI capturado pelos 10% priorizados | 45,6% | 46,3% |
+
+O vazamento existia, mas era pequeno: o erro do CHI piora 2,6%, o ranking praticamente não muda e o
+modelo continua à frente dos dois baselines. Os baselines quase não mudam, porque só dependem do vínculo
+do próprio histórico. O clima do INMET, que respondia por ~8% da importância SHAP na versão anterior, ficou
+fora desta execução. Mesmo sem ele, o VPL da carteira de R$ 20 mi passou de R$ 107 mi para R$ 108 mi, e o
+mix de intervenções se manteve (automação e religadores).
 
 ## Decisões de dados que fazem diferença
 Os detalhes estão em [`docs/dados.md`](docs/dados.md). Os principais:
@@ -146,9 +164,11 @@ docs/                     decisões de dados e model card
 pip install -e ".[dev]"
 python scripts/build_interrupcoes.py   # ~2 GB de Parquet da ANEEL
 python scripts/build_bdgd.py           # 8 snapshots BDGD (~1 GB cada, processados e apagados um a um)
-python scripts/build_clima.py          # INMET
+python scripts/build_continuidade.py   # DEC/FEC oficiais e compensações pagas (ANEEL)
+python scripts/build_clima.py          # INMET (opcional: sem ele, o modelo roda sem climatologia)
 python scripts/validate_dec.py         # confere a base contra o DEC oficial
 python scripts/run_pipeline.py         # backtest, previsão 2026, SHAP, risco e carteira
+python scripts/ablacao_point_in_time.py  # backtest com e sem cortes temporais
 python scripts/make_figures.py
 pytest
 ```
@@ -156,9 +176,9 @@ pytest
 Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
 
 ## Limitações
-* **Validação temporal incompleta:** o crosswalk completa códigos com snapshots de outros anos, inclusive
-  futuros, e o clima usa as coordenadas do snapshot mais recente. Recriar os vínculos e as coordenadas
-  disponíveis em cada origem de previsão e recalcular métricas e carteiras antes de usar os resultados.
+* **Clima fora desta execução:** o portal do INMET recusou conexões do ambiente de execução. O código de
+  clima já respeita os cortes temporais (coordenadas do snapshot *y-1*); basta rodar `build_clima.py` e o
+  pipeline de novo para incluí-lo.
 * As eficácias das intervenções vêm de premissas de engenharia, não de inferência causal sobre os dados.
   Um próximo passo natural é estimar o efeito de obras passadas (religadores instalados entre snapshots da
   BDGD) com diferenças em diferenças.
