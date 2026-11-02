@@ -12,3 +12,4 @@ docs/ref/*.txt
 .ruff_cache/
 *.egg-info/
 linkedin_posts.md
+logs/

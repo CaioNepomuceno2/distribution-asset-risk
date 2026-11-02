@@ -2,9 +2,9 @@
 
 Registro das escolhas de tratamento que afetam os resultados, com a evidência de cada uma.
 
-**Ressalva da revisão:** os artefatos registrados em `reports/` são de uma execução anterior aos cortes
-temporais no crosswalk e nas coordenadas climáticas. O código atual aplica esses cortes; as métricas
-serão recalculadas na próxima execução completa.
+**Execução registrada (nov/2026):** os artefatos de `reports/` foram reproduzidos das fontes brutas com
+cortes temporais no crosswalk. O clima do INMET não entrou nessa execução (portal inacessível do ambiente);
+a comparação com e sem cortes está em `reports/ablacao_point_in_time.csv`.
 
 ## Interrupções (ANEEL)
 
