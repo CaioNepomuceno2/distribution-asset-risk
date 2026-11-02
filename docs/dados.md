@@ -2,9 +2,9 @@
 
 Registro das escolhas de tratamento que afetam os resultados, com a evidência de cada uma.
 
-**Ressalva da revisão:** os artefatos registrados não foram reproduzidos nesta revisão. A construção
-atual do crosswalk e das coordenadas climáticas pode usar snapshots futuros em relação a um backtest;
-logo, as métricas não estabelecem desempenho prospectivo sem uma nova execução com cortes temporais.
+**Ressalva da revisão:** os artefatos registrados em `reports/` são de uma execução anterior aos cortes
+temporais no crosswalk e nas coordenadas climáticas. O código atual aplica esses cortes; as métricas
+serão recalculadas na próxima execução completa.
 
 ## Interrupções (ANEEL)
 
@@ -57,9 +57,12 @@ distribuidora e ano. Os IDs dos itens usados estão em `configs/emt.yaml`.
   circuito `2014290` contém `092001`, `092002`, `092011` e `093013`). O mapa vem de `SSDMT.CT_COD_OP`: cada
   código vai para o CTMT com a maior extensão de rede com aquele código. Para eventos de anos sem
   `CT_COD_OP`, vale o snapshot mais próximo que tenha o campo.
-* **Corte temporal parcial:** a linha do ano *y* usa atributos do snapshot de 31/12/*y-1*, mas o
-  crosswalk completa códigos com snapshots de outros anos, inclusive posteriores. O clima também usa
-  coordenadas do snapshot mais recente. Esses passos precisam respeitar a data de cada previsão.
+* **Corte temporal (point-in-time):** a linha do ano *y* usa atributos do snapshot de 31/12/*y-1*. O
+  histórico de falhas é ligado aos alimentadores só com crosswalks de snapshots até *y-1*
+  (`features.falhas_point_in_time`), e o clima é interpolado nas coordenadas do snapshot *y-1*. O alvo do
+  ano *y* é ligado com snapshots até *y*, porque é a medição do resultado e nunca entra nas features.
+  Consequência: códigos que só aparecem em cadastros posteriores ficam sem histórico, como ficariam na
+  prática.
 * **Idade fora do modelo:** `DAT_CON` tem 7% de `01/01/1980` (data-padrão), um pico de 35 mil trafos em 2017
   (recadastramento) e idades médias de ~90 anos nos snapshots M10, o que é implausível. Usar essa coluna
   ensinaria o modelo a reconhecer o processo de cadastro, não o envelhecimento do ativo.

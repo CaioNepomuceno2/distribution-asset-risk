@@ -28,10 +28,12 @@ ANOS_TESTE = [2023, 2024, 2025]
 ANO_PREV = 2026
 
 # ---------------------------------------------------------------- painel
-falhas = F.falhas_por_alimentador(cfg.interim / "interrupcoes_emt.parquet", cfg.interim)
+# vínculo de circuitos com cortes temporais: features do ano y só usam snapshots até y-1
+falhas_cortes = F.falhas_point_in_time(cfg.interim / "interrupcoes_emt.parquet", cfg.interim)
+falhas = falhas_cortes[max(falhas_cortes)]  # vínculo mais completo, para as estatísticas descritivas
 falhas.to_parquet(cfg.interim / "falhas.parquet", index=False)
 clima = pd.read_parquet(cfg.interim / "clima_alimentador_mes.parquet")
-panel = F.build_panel(falhas, cfg.interim, clima, list(range(2019, ANO_PREV + 1)))
+panel = F.build_panel(falhas_cortes, cfg.interim, clima, list(range(2019, ANO_PREV + 1)))
 panel.to_parquet(cfg.processed / "panel.parquet", index=False)
 treino_total = panel[panel.ano < ANO_PREV]
 log.info("painel: %s linhas, %d alimentadores", len(panel), panel.alimentador.nunique())

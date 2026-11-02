@@ -5,11 +5,11 @@
 Este projeto responde a essa pergunta para a **Energisa Mato Grosso** (697 alimentadores, ~2 milhões de
 unidades consumidoras e 900 mil km² de área de concessão), usando apenas dados abertos:
 
-> **Estado da validação:** os resultados abaixo são artefatos de uma execução anterior, ainda não
-> reproduzida nesta revisão a partir das fontes brutas. O backtest usa cadastros posteriores em parte
-> do vínculo de circuitos e na localização usada para interpolar clima. Isso pode introduzir informação
-> futura; as métricas são exploratórias, não uma estimativa confiável de desempenho prospectivo.
-> A carteira é uma simulação sob premissas ilustrativas, não um ganho observado em campo.
+> **Estado da validação:** o pipeline aplica cortes temporais (*point-in-time*) em todas as etapas. Para
+> prever o ano *y*, o cadastro, o vínculo de circuitos e as coordenadas do clima usam só snapshots da BDGD
+> até 31/12 de *y-1* (testes em [`tests/test_features.py`](tests/test_features.py)). As métricas abaixo
+> vêm da execução anterior a essa correção e serão atualizadas na próxima execução completa a partir das
+> fontes brutas. A carteira é uma simulação sob premissas ilustrativas, não um ganho observado em campo.
 
 | Fonte | O que entra | Período |
 |---|---|---|
@@ -44,9 +44,9 @@ as regras de expurgo e de duração mínima de 3 minutos. O resultado bate com o
 
 ### 2. Comparação com baselines de planejamento
 Backtest temporal com origem móvel: para prever 2023, o modelo só vê dados até 2022, e assim por diante.
-As características cadastrais diretas usam a BDGD de 31/12 do ano anterior. Porém, o vínculo histórico
-de circuitos e as coordenadas de clima podem usar snapshots posteriores; é necessário refazer o backtest
-com dados disponíveis em cada data de previsão antes de concluir que não há vazamento temporal.
+As características cadastrais, o vínculo histórico de circuitos e as coordenadas de clima usam apenas
+snapshots da BDGD até 31/12 do ano anterior. Os números desta tabela são da execução anterior à correção
+do vínculo e do clima (ver o aviso no topo).
 
 ![backtest](reports/figures/01_backtest.png)
 
@@ -156,9 +156,9 @@ pytest
 Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
 
 ## Limitações
-* **Validação temporal incompleta:** o crosswalk completa códigos com snapshots de outros anos, inclusive
-  futuros, e o clima usa as coordenadas do snapshot mais recente. Recriar os vínculos e as coordenadas
-  disponíveis em cada origem de previsão e recalcular métricas e carteiras antes de usar os resultados.
+* **Métricas a atualizar:** os números registrados foram gerados antes dos cortes temporais no vínculo de
+  circuitos e nas coordenadas de clima. O código já aplica esses cortes; falta a nova execução completa a
+  partir das fontes brutas para recalcular métricas e carteiras.
 * As eficácias das intervenções vêm de premissas de engenharia, não de inferência causal sobre os dados.
   Um próximo passo natural é estimar o efeito de obras passadas (religadores instalados entre snapshots da
   BDGD) com diferenças em diferenças.
