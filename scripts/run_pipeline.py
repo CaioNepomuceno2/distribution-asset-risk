@@ -15,6 +15,7 @@ import shap
 from gridrisk import features as F
 from gridrisk import model as M
 from gridrisk import otimizacao as O
+from gridrisk import reporting
 from gridrisk import risco as R
 from gridrisk.config import ROOT, Config
 
@@ -132,9 +133,12 @@ from scipy.stats import spearmanr
 
 check = {"spearman_parcial_jan_jul": float(spearmanr(obs.n_falhas_obs_parcial, obs.pred_n_falhas).statistic),
          "captura_top10_parcial": M.captura_top(obs.n_falhas_obs_parcial, obs.pred_n_falhas, 0.10)}
-(OUT / "resultados.json").write_text(json.dumps({"backtest_media": media.round(4).reset_index().to_dict("records"),
-                                                 "otimizacao": resultados, "check_2026": check,
-                                                 "n_uc_total": int(n_uc_total)}, indent=2, ensure_ascii=False))
+relatorio = {"backtest_media": media.round(4).reset_index().to_dict("records"),
+             "otimizacao": resultados, "check_2026": check, "n_uc_total": int(n_uc_total)}
+(OUT / "resultados.json").write_text(
+    json.dumps(reporting.normalizar_nan(relatorio), indent=2, ensure_ascii=False, allow_nan=False),
+    encoding="utf-8",
+)
 log.info("checagem 2026 (jan-jul, parcial): %s", check)
 
 # ---------------------------------------------------------------- artefatos leves para o painel

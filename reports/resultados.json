@@ -9,7 +9,7 @@
       "captura_top10": 0.4507,
       "captura_top20": 0.6441,
       "vies_total_pct": 5.3596,
-      "deviance_poisson": NaN
+      "deviance_poisson": null
     },
     {
       "alvo": "chi",
@@ -20,7 +20,7 @@
       "captura_top10": 0.4585,
       "captura_top20": 0.6467,
       "vies_total_pct": 11.9127,
-      "deviance_poisson": NaN
+      "deviance_poisson": null
     },
     {
       "alvo": "chi",
@@ -31,7 +31,7 @@
       "captura_top10": 0.4598,
       "captura_top20": 0.6521,
       "vies_total_pct": -5.5185,
-      "deviance_poisson": NaN
+      "deviance_poisson": null
     },
     {
       "alvo": "n_falhas",
