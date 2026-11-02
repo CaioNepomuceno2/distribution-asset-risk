@@ -201,6 +201,6 @@ def harmonize(paths: list[Path], sigla: str, out: Path) -> Path:
         where inicio is not null and fim >= inicio
     ) to '{out}' (format parquet, compression zstd)
     """)
-    n = con.sql(f"select count(*) from read_parquet('{out}')").fetchone()[0]
+    n = con.execute(f"select count(*) from read_parquet('{out}')").fetchone()[0]
     log.info("%s: %d interrupções -> %s", sigla, n, out)
     return out
