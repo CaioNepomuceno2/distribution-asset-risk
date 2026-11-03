@@ -19,6 +19,10 @@ unidades consumidoras e 900 mil km² de área de concessão), usando apenas dado
 | ANEEL: Indicadores de continuidade e compensações | DEC/FEC oficiais e R$ pagos por violação de DIC/FIC/DMIC/DICRI | 2020 a 2026 |
 | INMET: estações automáticas | Chuva, rajadas e temperatura horárias de 45 estações em MT | 2018 a 2025 |
 
+**Para quem decide:** o que muda na prática, o que se ganha e como adotar estão em
+[Na prática](#na-prática-o-que-muda-para-quem-decide). A metodologia completa está em
+[`docs/metodologia.md`](docs/metodologia.md).
+
 O pipeline vai do dado bruto à **carteira de investimento ótima**:
 
 ```
@@ -56,6 +60,11 @@ ano anterior.
 | Erro absoluto do CHI por alimentador | **16,2 mil** | 17,9 mil | 17,1 mil |
 | Correlação de Spearman do ranking de CHI | **0,91** | 0,88 | 0,89 |
 | CHI capturado pelos 10% de alimentadores priorizados | 46% | 46% | 45% |
+
+**O que isso significa:** para saber *quais* alimentadores são os piores, o histórico já resolve quase tudo
+(Spearman de 0,89). O modelo ganha onde o histórico não ajuda: em dizer **qual modo de falha** vai pesar em
+cada alimentador (deviance de Poisson 2,5 vezes menor que a da média de 3 anos), que é o que define se a obra certa é religador,
+rede compacta, poda ou para-raios.
 
 O ganho grande está na granularidade **alimentador × modo de falha**, que é o que define a intervenção
 certa. No ranking total de alimentadores, o histórico já é um baseline forte, e o modelo fica só um pouco à
@@ -125,6 +134,102 @@ do próprio histórico. O clima do INMET, que respondia por ~8% da importância 
 fora desta execução. Mesmo sem ele, o VPL da carteira de R$ 20 mi passou de R$ 107 mi para R$ 108 mi, e o
 mix de intervenções se manteve (automação e religadores).
 
+### 7. E se as eficácias forem as medidas nos dados?
+A tabela da seção 4 usa eficácias de catálogo. O projeto irmão
+[`automation-impact`](https://github.com/CaioNepomuceno2/automation-impact) mediu nos mesmos dados (diferenças
+em diferenças) o efeito real de ganhar religadores: **−16,6% no CHI do alimentador** (IC 95%: −24,8% a −7,5%),
+contra −22,5% do catálogo. Para o telecomando, o efeito medido foi **nulo** (+1,7%, IC −1,8% a +5,4%), contra
+−21% do catálogo. Refiz a carteira de R$ 20 mi com esses valores, mantendo as demais premissas
+([`scripts/sensibilidade_eficacias.py`](scripts/sensibilidade_eficacias.py)):
+
+| Visão social, R$ 20 mi | Eficácias de catálogo | Religador medido, telecomando nulo | Religador no limite inferior do IC | Religador no limite superior do IC |
+|---|---|---|---|---|
+| VPL da carteira ótima | R$ 108 mi | **R$ 53 mi** | R$ 17 mi | R$ 86 mi |
+| VPL da regra tradicional | R$ 46 mi | R$ 22 mi | R$ 2 mi | R$ 39 mi |
+| Ótima ÷ tradicional | 2,3× | **2,5×** | 7,7× | 2,2× |
+| DEC evitado (ótima) | 0,77 h | 0,44 h | 0,20 h | 0,65 h |
+| Mix da carteira ótima | automação + religador | só religadores | religadores | só religadores |
+
+**O que isso significa:** com as eficácias medidas, o valor absoluto da carteira cai pela metade e o
+telecomando sai da carteira. Mas a vantagem de otimizar sobre a regra tradicional se mantém em todos os
+cenários (2,2 a 7,7 vezes), em parte porque a regra tradicional gasta orçamento em telecomando. Na visão de
+caixa (só compensações), com as eficácias medidas, só R$ 7,5 mi em obras têm VPL positivo (R$ 3,7 mi de VPL),
+e a regra tradicional fica negativa (−R$ 4,0 mi). A lição para o planejamento: **calibrar as eficácias com o
+histórico de obras muda a carteira mais do que qualquer melhoria no modelo de previsão.**
+
+## Na prática: o que muda para quem decide
+
+### O problema hoje
+O plano de investimento em confiabilidade costuma ser montado com duas regras simples: tratar primeiro os
+alimentadores com pior histórico e aplicar um pacote padrão (religador + automação), com eficácias de
+catálogo. Nos dados da Energisa MT, essa regra entrega **menos da metade do valor** da carteira otimizada
+com o mesmo orçamento (R$ 46 mi contra R$ 108 mi de VPL com as eficácias de catálogo; R$ 22 mi contra
+R$ 53 mi com as eficácias medidas). Ela também concentra o dinheiro em poucos alimentadores (33, contra 74 a
+94 na carteira ótima) e não diferencia o modo de falha: um alimentador que cai por vegetação recebe a mesma
+obra de um que cai por descarga atmosférica.
+
+### O que se ganha
+
+| Ganho | Quanto | De onde vem o número |
+|---|---|---|
+| Saber onde está o risco | 10% dos 697 alimentadores concentram 46% do risco em R$; 20% concentram 66% | **Medido** (previsão 2026 do modelo validado em backtest), `reports/resumo_decisao.json` |
+| Tamanho do problema | R$ 35 mi/ano de risco em compensações e R$ 153 mi/ano na visão social; 8,5 h de DEC previsto por falhas de MT | **Medido** + R$/CHI empírico das compensações; a visão social depende do custo da energia não suprida (premissa) |
+| Mais valor pelo mesmo orçamento | 2,2 a 7,7 vezes o VPL da regra tradicional | **Simulação**: o fator se repete em todos os cenários de eficácia testados; o valor absoluto depende das premissas (seções 4 e 7) |
+| Obra certa para o modo de falha | deviance de Poisson 2,5 vezes menor que a da média de 3 anos na previsão de falhas por modo | **Medido** no backtest 2023-2025 |
+| Plano defensável | cada alimentador da carteira tem previsão, R$/CHI, pacote e VPL rastreáveis | Saídas em `reports/carteira_20M_*.csv` e no painel |
+
+### Por que aplicar
+* **Compensação pesa no caixa.** As compensações por violação de DIC/FIC/DMIC/DICRI são pagas todo ano e
+  aparecem nos dados abertos da ANEEL. Priorizar pelo R$/CHI de cada conjunto direciona a obra para onde ela
+  reduz pagamento, e não só DEC.
+* **A compensação sozinha não paga a obra.** Na visão de caixa, só uma fração pequena dos investimentos se paga
+  (R$ 21 mi com as eficácias de catálogo; R$ 7,5 mi com as medidas). Isso é um argumento quantitativo para
+  discutir com a diretoria e com o regulador o valor social da confiabilidade, em vez de defender obra por obra.
+* **Metas de continuidade.** Os limites de DEC/FEC por conjunto são definidos pela ANEEL. Saber quais modos de
+  falha vão pesar em quais alimentadores ajuda a escolher a obra que move o indicador do conjunto.
+* **Risco de não fazer.** Sem calibrar as eficácias, o plano pode superestimar o retorno: com as eficácias de
+  catálogo, a carteira vale o dobro do que vale com as eficácias medidas, e o telecomando entra sem evidência
+  de efeito nos dados.
+
+### Como aplicar (roteiro de adoção)
+1. **Trocar os dados abertos pelos internos.** As interrupções e a BDGD públicas podem ser substituídas pela
+   base de ocorrências do OMS/ADMS e pelo GIS da própria distribuidora, sem mudar o modelo: basta gerar os
+   mesmos Parquets intermediários (`data/interim/interrupcoes_*.parquet` e `bdgd_feeders_*.parquet`, ver
+   `src/gridrisk/ingest/`). A telemetria de religadores e subestações (SCADA) entra como features novas no
+   painel (`features.py`), por exemplo nº de atuações e disponibilidade de comunicação por alimentador.
+2. **Calibrar as premissas.** Os custos vêm do banco de preços de obras e as eficácias, do histórico de obras
+   executadas: o mesmo método de diferenças em diferenças do `automation-impact` vale para rede compacta,
+   para-raios e poda. Tudo entra em [`configs/intervencoes.yaml`](configs/intervencoes.yaml).
+3. **Piloto com grupo de controle.** Aplicar a carteira em parte dos alimentadores elegíveis e manter
+   alimentadores parecidos sem obra no mesmo período. KPI: CHI e compensação por alimentador, 12 a 24 meses
+   depois, comparados por diferenças em diferenças.
+4. **Rotina.** Rodar o pipeline uma vez por ano, no ciclo do plano de investimentos, e reavaliar a previsão a
+   cada trimestre. Quem usa: planejamento (carteira), manutenção (poda e preditiva por modo de falha),
+   regulação (R$ de compensação em risco). Os Parquets de `data/processed/` alimentam direto um painel em
+   Power BI; o Streamlit de `app/` já mostra o mapa e reotimiza por orçamento.
+5. **Critério de sucesso do piloto.** Redução de CHI nos alimentadores tratados maior que nos controles, dentro
+   do intervalo previsto pela carteira, e custo realizado próximo do orçado.
+
+### Limites de uso
+* **O VPL não é orçamento.** Os custos e eficácias são ilustrativos; o VPL serve para comparar estratégias, não
+  para aprovar verba.
+* **O modelo prioriza, não prevê o DEC do ano.** O total do sistema varia de −18% a +13% por causa do clima.
+* **Efeito médio não é efeito em cada alimentador.** As eficácias medidas são médias; em alimentadores muito
+  diferentes dos usados na estimativa, o efeito pode ser outro.
+* **Uma carteira por ano.** O otimizador não modela sequência de obras nem restrições de equipe e material.
+
+## Metodologia em resumo
+1. **Painel** alimentador × ano × modo de falha (7 modos), montado só com informação disponível em 31/12 do
+   ano anterior.
+2. **Previsão** do nº de falhas (LightGBM Poisson) e do CHI (LightGBM Tweedie), validada em backtest de origem
+   móvel contra dois baselines de planejamento.
+3. **Monetização**: R$/CHI de cada alimentador a partir das compensações pagas nos conjuntos (visão de caixa) e
+   da energia não suprida (visão social).
+4. **Otimização**: todos os pacotes de até 3 intervenções por alimentador, escolhidos por programação inteira
+   para maximizar o VPL dentro do orçamento.
+
+Detalhes, fórmulas, premissas e como interpretar cada resultado: [`docs/metodologia.md`](docs/metodologia.md).
+
 ## Decisões de dados que fazem diferença
 Os detalhes estão em [`docs/dados.md`](docs/dados.md). Os principais:
 
@@ -155,7 +260,7 @@ src/gridrisk/
 scripts/                  build_interrupcoes, build_bdgd, build_clima, run_pipeline, make_figures, validate_dec
 app/app.py                painel Streamlit
 configs/                  recorte (distribuidora, anos) e catálogo de intervenções
-docs/                     decisões de dados e model card
+docs/                     metodologia, decisões de dados e model card
 ```
 
 ## Reproduzir
@@ -169,6 +274,8 @@ python scripts/build_clima.py          # INMET (opcional: sem ele, o modelo roda
 python scripts/validate_dec.py         # confere a base contra o DEC oficial
 python scripts/run_pipeline.py         # backtest, previsão 2026, SHAP, risco e carteira
 python scripts/ablacao_point_in_time.py  # backtest com e sem cortes temporais
+python scripts/sensibilidade_eficacias.py  # carteira com as eficácias medidas no automation-impact
+python scripts/resumo_decisao.py       # números da seção "Na prática"
 python scripts/make_figures.py
 pytest
 ```
@@ -179,9 +286,9 @@ Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em
 * **Clima fora desta execução:** o portal do INMET recusou conexões do ambiente de execução. O código de
   clima já respeita os cortes temporais (coordenadas do snapshot *y-1*); basta rodar `build_clima.py` e o
   pipeline de novo para incluí-lo.
-* As eficácias das intervenções vêm de premissas de engenharia, não de inferência causal sobre os dados.
-  Um próximo passo natural é estimar o efeito de obras passadas (religadores instalados entre snapshots da
-  BDGD) com diferenças em diferenças.
+* As eficácias das intervenções são premissas de engenharia. Para religador e telecomando, o
+  [`automation-impact`](https://github.com/CaioNepomuceno2/automation-impact) já mediu o efeito nos dados, e a
+  seção 7 mostra a carteira com esses valores; para as demais intervenções, falta a mesma medição.
 * As interrupções de 2026 usam IDs de circuito que ainda não aparecem em nenhuma BDGD publicada (77% de
   cobertura). Por isso 2026 serve só como checagem parcial: Spearman de 0,83 no ranking de jan a jul.
 * A compensação média por CHI é uma aproximação linear de uma regra não linear (só paga acima dos limites
