@@ -1,2 +1,11 @@
-# usado pelo Streamlit Community Cloud
--e .[app]
+# Dependências do painel (app/app.py) para o Streamlit Community Cloud, Python 3.12.
+# Só o que o painel importa; o pipeline completo usa `pip install -e ".[dev]"` (ver pyproject.toml).
+# Versões testadas num ambiente virtual limpo com Python 3.12 (AppTest + streamlit run).
+streamlit==1.67.0
+plotly==7.1.0
+pandas==3.1.1
+numpy==2.5.4
+pyarrow==26.0.1
+pulp==2.9.0
+pyyaml==6.0.3
+duckdb==2.0.0

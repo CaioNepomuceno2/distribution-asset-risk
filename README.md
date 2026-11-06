@@ -117,6 +117,8 @@ pip install -e ".[app]"
 streamlit run app/app.py
 ```
 
+Para colocar o painel online, ver [Publicar o painel](#publicar-o-painel-streamlit-community-cloud).
+
 ### 6. Robustez dos resultados
 A primeira versão do pipeline ligava as interrupções aos alimentadores usando também cadastros publicados
 depois da data da previsão. Para medir quanto isso inflava o backtest, rodei o mesmo backtest nos dois
@@ -279,7 +281,9 @@ src/gridrisk/
   risco.py                R$/CHI (compensações + custo social)
   otimizacao.py           pacotes de intervenção, MILP, baselines guloso e tradicional
 scripts/                  build_interrupcoes, build_bdgd, build_clima, run_pipeline, make_figures, validate_dec, experimento_clima
-app/app.py                painel Streamlit
+app/app.py                painel Streamlit (lê só os Parquet de app/data/)
+requirements.txt          dependências mínimas do painel publicado (Python 3.12)
+.streamlit/config.toml    tema neutro e telemetria desligada
 configs/                  recorte (distribuidora, anos) e catálogo de intervenções
 docs/                     metodologia, decisões de dados e model card
 ```
@@ -303,6 +307,42 @@ pytest
 ```
 
 Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
+
+## Publicar o painel (Streamlit Community Cloud)
+O repositório já está pronto para publicar o painel. **Ainda não foi publicado:** falta só o login do dono.
+
+O que já está no repositório:
+* [`requirements.txt`](requirements.txt) com só o que o painel importa (Streamlit, Plotly, pandas, NumPy,
+  PyArrow, PuLP, PyYAML e DuckDB), em versões testadas com Python 3.12 num ambiente virtual limpo. O painel
+  não precisa instalar o pacote `gridrisk`: `app/app.py` usa a pasta `src/` quando o pacote não está instalado.
+* `app/data/`, com os 4 Parquet que o painel lê (1,9 MB), já versionados no git. O repositório inteiro tem
+  cerca de 8 MB (arquivos e histórico), muito abaixo de 1 GB.
+* [`.streamlit/config.toml`](.streamlit/config.toml): tema claro neutro, sem telemetria e sem abrir navegador.
+
+Passos, logado no GitHub como dono do repositório:
+1. Abra <https://share.streamlit.io> e entre com a conta do GitHub `CaioNepomuceno2`. Autorize o acesso ao
+   repositório quando o GitHub pedir (ele é público).
+2. Clique em **Create app** e escolha **Deploy a public app from GitHub**.
+3. Preencha:
+   * **Repository:** `CaioNepomuceno2/distribution-asset-risk`
+   * **Branch:** `main`
+   * **Main file path:** `app/app.py`
+   * **App URL:** um nome livre, por exemplo `distribution-asset-risk`.
+4. Abra **Advanced settings** e escolha **Python version: 3.12**. Não há *secrets* para preencher.
+5. Clique em **Deploy**. A primeira instalação leva alguns minutos.
+6. Cole a URL final do painel no topo deste README (ela só existe depois do deploy).
+
+Para atualizar o painel: rode `python scripts/run_pipeline.py`, que regrava `app/data/`, e envie o commit
+para a `main`. O Community Cloud reinstala sozinho. Se o painel ficar sem acessos por um tempo, a plataforma
+pode pô-lo em repouso; é só abrir a URL de novo.
+
+Teste local do mesmo ambiente do Cloud (sem instalar o pacote):
+
+```bash
+python -m venv .venv-painel
+.venv-painel/bin/pip install -r requirements.txt    # no Windows: .venv-painel\Scripts\pip
+.venv-painel/bin/streamlit run app/app.py
+```
 
 ## Limitações
 * **Clima do INMET testado e fora do modelo:** com a regra pré-registrada em

@@ -1,0 +1,10 @@
+# Configuração mínima do painel (vale para `streamlit run app/app.py` e para o Streamlit Community Cloud).
+[browser]
+gatherUsageStats = false   # sem telemetria
+
+[server]
+headless = true            # não abre o navegador sozinho
+
+[theme]
+base = "light"
+primaryColor = "#2a78d6"   # mesmo azul dos gráficos do painel
