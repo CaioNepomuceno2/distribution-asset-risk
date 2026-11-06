@@ -2,13 +2,18 @@
 
     streamlit run app/app.py
 """
+import sys
 from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from gridrisk.otimizacao import guloso, otimizar, priorizacao_tradicional
+try:
+    from gridrisk.otimizacao import guloso, otimizar, priorizacao_tradicional
+except ModuleNotFoundError:  # painel publicado sem instalar o pacote (Streamlit Community Cloud)
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+    from gridrisk.otimizacao import guloso, otimizar, priorizacao_tradicional
 
 DATA = Path(__file__).parent / "data"
 MODOS = {"EQUIPAMENTO": "Equipamento", "DESCARGA_ATMOSFERICA": "Descarga atmosférica", "VEGETACAO": "Vegetação",
