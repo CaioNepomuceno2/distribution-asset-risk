@@ -33,6 +33,19 @@ _MODO_SQL = f"""case when grupo_causa in ({", ".join(repr(m) for m in MODOS[:-1]
                      else 'OUTRAS' end"""
 
 
+def carregar_clima(interim: Path, usar: bool) -> pd.DataFrame | None:
+    """Clima mensal por alimentador, ou ``None`` com a chave ``modelo.usar_clima`` desligada.
+
+    Ter o arquivo em ``interim`` não basta: o clima só entra no modelo se a chave estiver ligada.
+    """
+    if not usar:
+        return None
+    arq = interim / "clima_alimentador_mes.parquet"
+    if not arq.exists():
+        raise FileNotFoundError(f"modelo.usar_clima está ligado, mas falta {arq}: rode scripts/build_clima.py")
+    return pd.read_parquet(arq)
+
+
 def _nearest(anos_disp: list[int], ano: int) -> int:
     return min(anos_disp, key=lambda a: (abs(a - ano), -a))
 

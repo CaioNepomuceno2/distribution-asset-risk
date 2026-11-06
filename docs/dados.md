@@ -3,8 +3,8 @@
 Registro das escolhas de tratamento que afetam os resultados, com a evidência de cada uma.
 
 **Execução registrada (nov/2026):** os artefatos de `reports/` foram reproduzidos das fontes brutas com
-cortes temporais no crosswalk. O clima do INMET não entrou nessa execução (portal inacessível do ambiente);
-a comparação com e sem cortes está em `reports/ablacao_point_in_time.csv`.
+cortes temporais no crosswalk. O clima do INMET foi testado depois, com regra pré-registrada, e não entrou no
+modelo (ver "Clima (INMET)" abaixo); a comparação com e sem cortes está em `reports/ablacao_point_in_time.csv`.
 
 ## Interrupções (ANEEL)
 

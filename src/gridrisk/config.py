@@ -17,6 +17,7 @@ class Config:
     processed: Path
     anos_interrupcoes: list[int]
     bdgd_snapshots: dict[int, str]
+    usar_clima: bool = False
 
     @classmethod
     def load(cls, path: str | Path = ROOT / "configs" / "emt.yaml") -> Config:
@@ -30,4 +31,5 @@ class Config:
             processed=ROOT / p["processed"],
             anos_interrupcoes=cfg["interrupcoes"]["anos"],
             bdgd_snapshots={int(k): v for k, v in cfg["bdgd"]["snapshots"].items()},
+            usar_clima=bool(cfg.get("modelo", {}).get("usar_clima", False)),
         )

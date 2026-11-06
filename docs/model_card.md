@@ -19,14 +19,14 @@ circuitos e as coordenadas da interpolação climática vêm de snapshots até *
   fração rural, GD; centróide e extensão geográfica; densidades por km.
 * **Histórico até y-1:** falhas e CHI do mesmo modo (1 e 3 anos), totais em 3 anos, tendência, duração
   mediana de restabelecimento.
-* **Climatologia:** médias dos 5 anos anteriores (chuva, rajadas, temperatura, umidade); fora da execução
-  de nov/2026.
+* **Climatologia:** médias dos 5 anos anteriores (chuva, rajadas, temperatura, umidade). **Desligada** por
+  padrão (`modelo.usar_clima: false`): no experimento pré-registrado ela piorou o backtest (README, seção 6).
 * **Excluídas de propósito:** idades da BDGD (ver `docs/dados.md`) e qualquer informação do ano-alvo.
 
 ## Avaliação
 Origem móvel: os anos de teste 2023, 2024 e 2025 são previstos, cada um, com treino apenas nos anos
 anteriores. Execução de nov/2026, reproduzida das fontes brutas com cortes temporais e sem a climatologia do INMET
-(portal inacessível do ambiente de execução).
+(testada e descartada pela regra pré-registrada em `docs/preregistro_clima.md`).
 
 | | Modelo | Média 3 anos | Ano anterior |
 |---|---|---|---|
@@ -43,8 +43,8 @@ Por ano, o viés total do CHI oscila entre -18% e +13% por causa do clima (2025 
 esperado, porque o modelo não vê o clima do ano-alvo.
 
 ## Limitações e riscos
-* **Sem climatologia nesta execução:** o portal do INMET não respondeu ao ambiente de execução. Rodar
-  `build_clima.py` e o pipeline de novo para incluí-la (o código já usa as coordenadas do snapshot *y-1*).
+* **Sem climatologia:** testada e descartada (piorou deviance, erro do CHI e Spearman; `reports/experimento_clima.json`).
+  Para ligá-la, rodar `build_clima.py` e trocar `modelo.usar_clima` em `configs/emt.yaml`.
 * **Associação, não causalidade:** o SHAP mostra o que o modelo usa, não o efeito de mudar a rede. As
   eficácias das intervenções são premissas de engenharia (`configs/intervencoes.yaml`).
 * **Qualidade cadastral:** classificação de causa (40% do CHI em "falha de material ou equipamento") e

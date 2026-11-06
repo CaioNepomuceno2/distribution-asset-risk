@@ -23,3 +23,9 @@ bdgd:
     2023: f6095aa7e5c64119ab46e3efe46b77d5
     2024: 8fed7443387d4d04a361e7f4d1edea64
     2025: 02a120db1b5149709f8d371c21635adc
+
+modelo:
+  # Clima do INMET como feature. Desligado: o experimento pré-registrado (docs/preregistro_clima.md,
+  # reports/experimento_clima.json) mostrou que as colunas de clima pioram o backtest. Para ligar, rode
+  # scripts/build_clima.py e troque para true; ter o arquivo em data/interim não liga mais o clima sozinho.
+  usar_clima: false

@@ -8,8 +8,9 @@ unidades consumidoras e 900 mil km² de área de concessão), usando apenas dado
 > **Estado da validação (nov/2026):** resultados reproduzidos do zero a partir das fontes brutas, com cortes
 > temporais (*point-in-time*) em todas as etapas. Para prever o ano *y*, o cadastro e o vínculo de circuitos
 > usam só snapshots da BDGD até 31/12 de *y-1* (testes em [`tests/test_features.py`](tests/test_features.py)).
-> Nesta execução o clima do INMET ficou de fora porque o portal não estava acessível do ambiente de
-> execução; ver [Robustez](#6-robustez-dos-resultados). A carteira é uma simulação sob premissas
+> O clima do INMET foi testado com uma regra definida antes do resultado
+> ([`docs/preregistro_clima.md`](docs/preregistro_clima.md)) e **piorou** o backtest, então o modelo publicado
+> não o usa; ver [Robustez](#6-robustez-dos-resultados). A carteira é uma simulação sob premissas
 > ilustrativas, não um ganho observado em campo.
 
 | Fonte | O que entra | Período |
@@ -17,7 +18,7 @@ unidades consumidoras e 900 mil km² de área de concessão), usando apenas dado
 | ANEEL: Interrupções nas Redes de Distribuição | 2,4 milhões de interrupções com causa, duração e alimentador | 2018 a jul/2026 |
 | ANEEL: BDGD (PRODIST Módulo 10) | Cadastro georreferenciado da rede: 2,1 mi segmentos MT, 273 mil trafos, 372 mil chaves | 8 snapshots anuais (2018 a 2025) |
 | ANEEL: Indicadores de continuidade e compensações | DEC/FEC oficiais e R$ pagos por violação de DIC/FIC/DMIC/DICRI | 2020 a 2026 |
-| INMET: estações automáticas | Chuva, rajadas e temperatura horárias de 45 estações em MT | 2018 a 2025 |
+| INMET: estações automáticas | Chuva, rajadas e temperatura horárias de 45 estações em MT (testadas; fora do modelo) | 2018 a 2025 |
 
 **Para quem decide:** o que muda na prática, o que se ganha e como adotar estão em
 [Na prática](#na-prática-o-que-muda-para-quem-decide). A metodologia completa está em
@@ -28,7 +29,7 @@ O pipeline vai do dado bruto à **carteira de investimento ótima**:
 ```
 interrupções ─┐
 BDGD (8 anos) ─┼─► painel alimentador × ano × modo de falha ─► LightGBM (Poisson / Tweedie) ─► E[falhas], E[CHI] em 2026
-INMET ────────┘                                                                                │
+INMET (opc.) ─┘                                                                                │
 compensações ANEEL ─► R$/CHI por alimentador ─────────────────────────────────────────────────► risco em R$/ano
 catálogo de intervenções (custo, eficácia, vida útil) ────► programação inteira (mochila de escolha múltipla) ─► carteira ótima
 ```
@@ -130,9 +131,26 @@ painéis, com tudo o mais igual ([`scripts/ablacao_point_in_time.py`](scripts/ab
 
 O vazamento existia, mas era pequeno: o erro do CHI piora 2,6%, o ranking praticamente não muda e o
 modelo continua à frente dos dois baselines. Os baselines quase não mudam, porque só dependem do vínculo
-do próprio histórico. O clima do INMET, que respondia por ~8% da importância SHAP na versão anterior, ficou
-fora desta execução. Mesmo sem ele, o VPL da carteira de R$ 20 mi passou de R$ 107 mi para R$ 108 mi, e o
-mix de intervenções se manteve (automação e religadores).
+do próprio histórico. O clima do INMET respondia por ~8% da importância SHAP na versão anterior; com os
+cortes temporais ele foi testado de novo (abaixo) e não ajudou. Sem ele, o VPL da carteira de R$ 20 mi passou
+de R$ 107 mi para R$ 108 mi, e o mix de intervenções se manteve (automação e religadores).
+
+**O clima do INMET ajuda?** Não. Antes de treinar qualquer modelo com ele, fixei a regra em
+[`docs/preregistro_clima.md`](docs/preregistro_clima.md): o clima só entraria se melhorasse a deviance e o erro
+do CHI em pelo menos 1% (e em mais que 2 desvios-padrão entre sementes) sem piorar o ranking. Resultado de
+[`scripts/experimento_clima.py`](scripts/experimento_clima.py), com 10 sementes do LightGBM
+([`reports/experimento_clima.json`](reports/experimento_clima.json)):
+
+| Média 2023-2025, 10 sementes | Sem clima | Com clima | Critério |
+|---|---|---|---|
+| Deviance de Poisson (falhas) | 6,13 | 6,16 | não passou: piora 0,5% |
+| Erro absoluto do CHI por alimentador | 16,2 mil | 16,5 mil | não passou: piora 2,0% |
+| Spearman do ranking de CHI | 0,906 | 0,902 | não passou: piora além do ruído |
+| CHI capturado pelos 10% priorizados | 45,7% | 45,8% | passou: dentro do ruído |
+
+Com clima, a deviance e o erro do CHI só melhoram em 1 dos 3 anos de teste. O modelo publicado continua sem
+clima. Uma hipótese, que não testei, é que o histórico de falhas por modo já carrega o que uma climatologia de
+5 anos traz; o clima realizado do ano alvo não é conhecido na hora de planejar e por isso não foi usado.
 
 ### 7. E se as eficácias forem as medidas nos dados?
 A tabela da seção 4 usa eficácias de catálogo. O projeto irmão
@@ -253,11 +271,13 @@ src/gridrisk/
   ingest/interrupcoes.py  download + harmonização dos dois layouts ANEEL, taxonomia de modos de falha
   ingest/bdgd.py          atributos de ativos por alimentador (M10 e V10/V11), mapa de códigos
   ingest/inmet.py         clima horário -> mensal -> IDW no centróide do alimentador
+  ingest/continuidade.py  DEC/FEC oficiais e compensações, sem as linhas repetidas da ANEEL
+  regra_clima.py          regra de decisão pré-registrada do clima
   features.py             painel alimentador × ano × modo, sem vazamento temporal
   model.py                LightGBM Poisson/Tweedie, backtest, baselines, calibração
   risco.py                R$/CHI (compensações + custo social)
   otimizacao.py           pacotes de intervenção, MILP, baselines guloso e tradicional
-scripts/                  build_interrupcoes, build_bdgd, build_clima, run_pipeline, make_figures, validate_dec
+scripts/                  build_interrupcoes, build_bdgd, build_clima, run_pipeline, make_figures, validate_dec, experimento_clima
 app/app.py                painel Streamlit
 configs/                  recorte (distribuidora, anos) e catálogo de intervenções
 docs/                     metodologia, decisões de dados e model card
@@ -270,8 +290,9 @@ pip install -e ".[dev]"
 python scripts/build_interrupcoes.py   # ~2 GB de Parquet da ANEEL
 python scripts/build_bdgd.py           # 8 snapshots BDGD (~1 GB cada, processados e apagados um a um)
 python scripts/build_continuidade.py   # DEC/FEC oficiais e compensações pagas (ANEEL)
-python scripts/build_clima.py          # INMET (opcional: sem ele, o modelo roda sem climatologia)
+python scripts/build_clima.py          # INMET (só para o experimento; o modelo só usa clima com modelo.usar_clima: true)
 python scripts/validate_dec.py         # confere a base contra o DEC oficial
+python scripts/experimento_clima.py    # o clima do INMET ajuda? 10 sementes, regra pré-registrada
 python scripts/run_pipeline.py         # backtest, previsão 2026, SHAP, risco e carteira
 python scripts/ablacao_point_in_time.py  # backtest com e sem cortes temporais
 python scripts/sensibilidade_eficacias.py  # carteira com as eficácias medidas no automation-impact
@@ -283,9 +304,13 @@ pytest
 Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
 
 ## Limitações
-* **Clima fora desta execução:** o portal do INMET recusou conexões do ambiente de execução. O código de
-  clima já respeita os cortes temporais (coordenadas do snapshot *y-1*); basta rodar `build_clima.py` e o
-  pipeline de novo para incluí-lo.
+* **Clima do INMET testado e fora do modelo:** com a regra pré-registrada em
+  [`docs/preregistro_clima.md`](docs/preregistro_clima.md), as colunas de clima pioraram o backtest (seção 6).
+  O código de clima respeita os cortes temporais (coordenadas do snapshot *y-1*). Para ligá-lo, rode
+  `build_clima.py` e troque `modelo.usar_clima` em `configs/emt.yaml`; só ter o arquivo não liga o clima.
+* **O modelo varia de uma semente para outra.** Mudar a semente do LightGBM, ou a ordem das linhas do painel,
+  move o erro do CHI em ~0,4% (desvio-padrão de 10 sementes: 62 CHI em 16,2 mil). Reproduzir em outra máquina
+  pode mudar o último dígito das métricas do modelo; as conclusões dependem de diferenças bem maiores que isso.
 * As eficácias das intervenções são premissas de engenharia. Para religador e telecomando, o
   [`automation-impact`](https://github.com/CaioNepomuceno2/automation-impact) já mediu o efeito nos dados, e a
   seção 7 mostra a carteira com esses valores; para as demais intervenções, falta a mesma medição.
