@@ -20,7 +20,7 @@ em [`dados.md`](dados.md), e as características do modelo de previsão, em [`mo
 | ANEEL, interrupções nas redes de distribuição | alvo (falhas e CHI) e histórico; validação do DEC | 2018 a jul/2026 |
 | ANEEL, BDGD (8 snapshots de 31/12) | atributos da rede por alimentador; vínculo de circuitos | 2018 a 2025 |
 | ANEEL, indicadores coletivos e compensações | validação do DEC/FEC; R$ por CHI | 2020 a 2026 |
-| INMET (opcional) | climatologia por alimentador | 2018 a 2025 |
+| INMET (testado, desligado) | climatologia por alimentador | 2018 a 2025 |
 | `configs/intervencoes.yaml` | custos, eficácias e vida útil das intervenções | premissas |
 
 ## 3. Pipeline
@@ -30,7 +30,7 @@ em [`dados.md`](dados.md), e as características do modelo de previsão, em [`mo
 | Interrupções | `scripts/build_interrupcoes.py` | `ingest.interrupcoes.download`, `harmonize` | `data/interim/interrupcoes_emt.parquet` |
 | Cadastro da rede | `scripts/build_bdgd.py` | `ingest.bdgd.feeder_features`, `feeder_map` | `bdgd_feeders_{ano}`, `bdgd_map_{ano}` |
 | Indicadores oficiais | `scripts/build_continuidade.py` | download CKAN | `data/raw/continuidade/` |
-| Clima (opcional) | `scripts/build_clima.py` | `ingest.inmet.idw_to_feeders` | `clima_alimentador_mes.parquet` |
+| Clima (desligado por padrão) | `scripts/build_clima.py` | `ingest.inmet.idw_to_feeders` | `clima_alimentador_mes.parquet` |
 | Validação da base | `scripts/validate_dec.py` | DEC/FEC recalculados × oficiais | `reports/validacao_dec_fec.csv` |
 | Painel e modelo | `scripts/run_pipeline.py` | `features.falhas_point_in_time`, `build_panel`, `model.backtest` | `reports/backtest_*.csv` |
 | Risco e carteira | `scripts/run_pipeline.py` | `risco.valor_chi_alimentador`, `otimizacao.pacotes`, `fronteira` | `reports/fronteira_*.csv`, `carteira_20M_*.csv` |

@@ -5,7 +5,7 @@ Roda o mesmo backtest (anos 2023-2025) em dois painéis que só diferem no vínc
 * ``sem_cortes``: crosswalk com todos os snapshots, inclusive posteriores à previsão (versão antiga);
 * ``point_in_time``: features do ano y só com snapshots até y-1.
 
-O clima entra igual nos dois (ou fica de fora nos dois, se não houver o arquivo do INMET).
+O clima entra igual nos dois (ou fica de fora nos dois, conforme `modelo.usar_clima`).
 Saída: ``reports/ablacao_point_in_time.csv``.
 """
 import logging
@@ -22,8 +22,7 @@ cfg = Config.load()
 ANOS_TESTE = [2023, 2024, 2025]
 ANOS = list(range(2019, max(ANOS_TESTE) + 1))
 
-clima_path = cfg.interim / "clima_alimentador_mes.parquet"
-clima = pd.read_parquet(clima_path) if clima_path.exists() else None
+clima = F.carregar_clima(cfg.interim, cfg.usar_clima)
 inter = cfg.interim / "interrupcoes_emt.parquet"
 cortes = F.falhas_point_in_time(inter, cfg.interim)
 paineis = {

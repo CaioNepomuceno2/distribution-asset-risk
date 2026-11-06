@@ -16,15 +16,19 @@ import duckdb
 import numpy as np
 import pandas as pd
 
+from gridrisk.ingest.continuidade import leitura_sem_duplicatas
+
 
 def compensacao_por_chi(compensacao: Path, interrupcoes: Path, sigla: str, anos: list[int]) -> pd.DataFrame:
     """R$/CHI regulatório por conjunto, média dos anos informados."""
     anos_sql = ", ".join(map(str, anos))
+    # o arquivo da ANEEL tem linhas repetidas (ver ingest/continuidade.py): cada registro idêntico conta uma vez
+    fonte = leitura_sem_duplicatas(
+        compensacao, f"trim(SigAgente) = '{sigla}' and SigIndicador like 'PG%' and AnoIndice in ({anos_sql})")
     return duckdb.sql(f"""
         with comp as (
             select IdeConjUndConsumidoras as conjunto_id, AnoIndice as ano, sum(VlrIndiceEnviado) as compensacao
-            from read_parquet('{compensacao}')
-            where trim(SigAgente) = '{sigla}' and SigIndicador like 'PG%' and AnoIndice in ({anos_sql})
+            from {fonte}
             group by all
         ), chi as (
             select conjunto_id, ano, sum(chi) as chi_regulatorio

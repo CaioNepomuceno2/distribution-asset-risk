@@ -3,7 +3,8 @@
 Pré-requisitos (dados brutos processados):
     python scripts/build_interrupcoes.py
     python scripts/build_bdgd.py
-    python scripts/build_clima.py
+    python scripts/build_continuidade.py
+O clima do INMET (scripts/build_clima.py) só entra com `modelo.usar_clima: true` em configs/emt.yaml.
 """
 import json
 import logging
@@ -32,10 +33,9 @@ ANO_PREV = 2026
 falhas_cortes = F.falhas_point_in_time(cfg.interim / "interrupcoes_emt.parquet", cfg.interim)
 falhas = falhas_cortes[max(falhas_cortes)]  # vínculo mais completo, para as estatísticas descritivas
 falhas.to_parquet(cfg.interim / "falhas.parquet", index=False)
-clima_path = cfg.interim / "clima_alimentador_mes.parquet"
-clima = pd.read_parquet(clima_path) if clima_path.exists() else None
+clima = F.carregar_clima(cfg.interim, cfg.usar_clima)  # chave modelo.usar_clima em configs/emt.yaml
 if clima is None:
-    log.warning("sem %s (rode scripts/build_clima.py): modelo treinado sem climatologia", clima_path.name)
+    log.info("modelo.usar_clima desligado: modelo treinado sem climatologia")
 panel = F.build_panel(falhas_cortes, cfg.interim, clima, list(range(2019, ANO_PREV + 1)))
 panel.to_parquet(cfg.processed / "panel.parquet", index=False)
 treino_total = panel[panel.ano < ANO_PREV]

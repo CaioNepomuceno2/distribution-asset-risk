@@ -3,8 +3,8 @@
 Registro das escolhas de tratamento que afetam os resultados, com a evidência de cada uma.
 
 **Execução registrada (nov/2026):** os artefatos de `reports/` foram reproduzidos das fontes brutas com
-cortes temporais no crosswalk. O clima do INMET não entrou nessa execução (portal inacessível do ambiente);
-a comparação com e sem cortes está em `reports/ablacao_point_in_time.csv`.
+cortes temporais no crosswalk. O clima do INMET foi testado depois, com regra pré-registrada, e não entrou no
+modelo (ver "Clima (INMET)" abaixo); a comparação com e sem cortes está em `reports/ablacao_point_in_time.csv`.
 
 ## Interrupções (ANEEL)
 
@@ -77,8 +77,15 @@ máxima, dias com rajada ≥ 15 m/s, temperatura e umidade. Meses com menos de 6
 descartados. A interpolação para o centróide do alimentador (mediana dos trafos) usa IDW das 3 estações mais
 próximas com dado, num raio de até 250 km.
 
-No modelo anual de planejamento entra só a **climatologia** (média dos 5 anos anteriores), porque o clima
-realizado do ano-alvo não é conhecido na hora de decidir.
+Quando ligado (`modelo.usar_clima: true` em `configs/emt.yaml`), o modelo anual de planejamento usa só a
+**climatologia** (média dos 5 anos anteriores), porque o clima realizado do ano-alvo não é conhecido na hora de
+decidir. **Por padrão ele está desligado.**
+
+**Resultado do teste (06/11/2026).** Os 8 anos do INMET (2018 a 2025) foram baixados e processados sem alterar o
+código: 45 estações, 3.614 estação-mês e 461.856 linhas alimentador x mês. A chuva válida cobre de 75% (2021) a
+99,6% (2019) dos alimentadores-mês. Com a regra definida em `docs/preregistro_clima.md`, as 8 colunas `clim_*`
+pioraram o backtest 2023-2025 (10 sementes): deviance de Poisson +0,5%, erro absoluto do CHI +2,0% e Spearman
+-0,0036. O número por critério está em `reports/experimento_clima.json`.
 
 ## Compensações
 
@@ -86,6 +93,35 @@ realizado do ano-alvo não é conhecido na hora de decidir.
 mensal, trimestral e anual de DIC/FIC/DMIC, DICRI e DISE) por conjunto, dividida pelo CHI regulatório do
 conjunto (2022-2025). O valor do alimentador é a média ponderada pela participação de cada conjunto no CHI
 dele. Média da empresa: **R$ 2,10 por CHI**.
+
+### Linhas repetidas nos arquivos de continuidade (ANEEL, 05/11/2026)
+Em 05/11/2026 a ANEEL regenerou os dois Parquet de continuidade
+(`indicadores-continuidade-coletivos-2020-2029` e `indicadores-continuidade-coletivos-compensacao-2020-2029`)
+com quase todas as linhas repetidas. Nos arquivos baixados em 06/11/2026, as compensações têm 20.702.542
+linhas e 10.344.506 distintas, e os indicadores têm 10.456.656 linhas e 5.228.328 distintas. Somar
+`VlrIndiceEnviado` sem tratar isso dobra o R$ pago: a média da EMT iria de R$ 2,10 para R$ 4,21 por CHI.
+
+**Tratamento.** Toda leitura desses arquivos passa por `gridrisk.ingest.continuidade` (`select distinct *`):
+registros idênticos em todas as colunas contam uma vez, e os filtros de distribuidora, indicador e ano valem
+antes do `distinct`. O teste `tests/test_continuidade.py` falha se alguém voltar a somar o arquivo cru.
+
+**Por que o tratamento é exato para a EMT.** Os 87.830 registros `PG*` de 2022 a 2025 aparecem todos
+exatamente duas vezes, e nenhuma chave (conjunto, indicador, ano, mês) tem dois valores diferentes. A
+compensação soma R$ 209,6 milhões, e não R$ 419,2 milhões. Com isso, o R$/CHI de cada um dos 697 alimentadores
+volta ao valor publicado (diferença relativa abaixo de 1e-15, erro de arredondamento).
+
+**O que o `distinct` não resolve** (e que não atinge a EMT):
+* 6.765 registros de outras distribuidoras (por exemplo, ENEL RJ em 2026) aparecem 4 vezes, ou seja, já eram
+  repetidos no original; o `distinct` os conta uma vez.
+* 170 chaves (CPFL e ENEL, de 2023 a 2026) têm dois valores diferentes; os dois são somados.
+
+Se a ANEEL corrigir o arquivo, o tratamento continua certo, porque não haverá o que deduplicar.
+
+**Revisão real de dados vista no mesmo download.** O arquivo de indicadores agora traz 2026 de janeiro a
+setembro (9 meses), mas as interrupções só vão até julho. O DEC oficial de 2026 passou de 7,22 para 9,21 e a
+correlação mensal em `reports/validacao_dec_fec.csv` cairia de 1,0 para 0,994, porque `validate_dec.py`
+compara meses diferentes em 2026. Os anos de 2020 a 2025 não mudaram. Por isso `reports/validacao_dec_fec.csv`
+não foi regenerado nesta mudança.
 
 ## 2026
 As interrupções de 2026 trazem IDs de circuito de um cadastro ainda não publicado. 23% dos eventos de MT

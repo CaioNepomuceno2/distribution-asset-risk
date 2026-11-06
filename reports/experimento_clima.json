@@ -1,0 +1,49 @@
+{
+  "clima_entra_no_modelo": false,
+  "criterios": {
+    "deviance": {
+      "sem_clima": 6.127817942631639,
+      "dp_sementes_sem_clima": 0.013842262692504097,
+      "com_clima": 6.16042048982394,
+      "melhora": -0.032602547192301046,
+      "limiar": 0.06127817942631639,
+      "passa_limiar": false,
+      "anos_com_melhora": 1,
+      "semente0_melhora": false,
+      "criterio_ok": false
+    },
+    "mae": {
+      "sem_clima": 16193.038159793772,
+      "dp_sementes_sem_clima": 61.53975735348187,
+      "com_clima": 16513.042775692607,
+      "melhora": -320.00461589883525,
+      "limiar": 161.93038159793772,
+      "passa_limiar": false,
+      "anos_com_melhora": 1,
+      "semente0_melhora": false,
+      "criterio_ok": false
+    },
+    "spearman": {
+      "sem_clima": 0.9059140576897942,
+      "dp_sementes_sem_clima": 0.0004543565876396596,
+      "com_clima": 0.9023352421597355,
+      "melhora": -0.0035788155300586766,
+      "limiar": -0.0009087131752793192,
+      "passa_limiar": false,
+      "anos_com_melhora": 0,
+      "semente0_melhora": false,
+      "criterio_ok": false
+    },
+    "top10": {
+      "sem_clima": 0.4570106657670071,
+      "dp_sementes_sem_clima": 0.0018754735714047984,
+      "com_clima": 0.4577146000361215,
+      "melhora": 0.0007039342691144146,
+      "limiar": -0.0037509471428095967,
+      "passa_limiar": true,
+      "anos_com_melhora": 2,
+      "semente0_melhora": true,
+      "criterio_ok": true
+    }
+  }
+}
