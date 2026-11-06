@@ -3,16 +3,13 @@ import duckdb
 import pandas as pd
 
 from gridrisk.config import ROOT, Config
+from gridrisk.ingest.continuidade import dec_fec_oficial
 
 cfg = Config.load()
 ind = cfg.raw / "continuidade" / "indicadores-continuidade-coletivos-2020-2029.parquet"
 it = cfg.interim / "interrupcoes_emt.parquet"
 con = duckdb.connect()
-oficial = con.sql(f"""
-    pivot (select IdeConjUndConsumidoras c, AnoIndice ano, NumPeriodoIndice mes, SigIndicador s, VlrIndiceEnviado v
-           from read_parquet('{ind}') where trim(SigAgente) = '{cfg.sigla}' and SigIndicador in ('DEC', 'FEC', 'NumCon'))
-    on s using first(v)
-""").df()
+oficial = dec_fec_oficial(ind, cfg.sigla)  # lê sem as linhas repetidas do arquivo da ANEEL
 calc = con.sql(f"""
     select conjunto_id c, ano, mes, sum(chi) chi, sum(uc_afetadas) ci from read_parquet('{it}')
     where expurgo = 'NAO HOUVE EXPURGO' and duracao_h >= 3.0/60 group by all

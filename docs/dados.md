@@ -87,6 +87,35 @@ mensal, trimestral e anual de DIC/FIC/DMIC, DICRI e DISE) por conjunto, dividida
 conjunto (2022-2025). O valor do alimentador é a média ponderada pela participação de cada conjunto no CHI
 dele. Média da empresa: **R$ 2,10 por CHI**.
 
+### Linhas repetidas nos arquivos de continuidade (ANEEL, 05/11/2026)
+Em 05/11/2026 a ANEEL regenerou os dois Parquet de continuidade
+(`indicadores-continuidade-coletivos-2020-2029` e `indicadores-continuidade-coletivos-compensacao-2020-2029`)
+com quase todas as linhas repetidas. Nos arquivos baixados em 06/11/2026, as compensações têm 20.702.542
+linhas e 10.344.506 distintas, e os indicadores têm 10.456.656 linhas e 5.228.328 distintas. Somar
+`VlrIndiceEnviado` sem tratar isso dobra o R$ pago: a média da EMT iria de R$ 2,10 para R$ 4,21 por CHI.
+
+**Tratamento.** Toda leitura desses arquivos passa por `gridrisk.ingest.continuidade` (`select distinct *`):
+registros idênticos em todas as colunas contam uma vez, e os filtros de distribuidora, indicador e ano valem
+antes do `distinct`. O teste `tests/test_continuidade.py` falha se alguém voltar a somar o arquivo cru.
+
+**Por que o tratamento é exato para a EMT.** Os 87.830 registros `PG*` de 2022 a 2025 aparecem todos
+exatamente duas vezes, e nenhuma chave (conjunto, indicador, ano, mês) tem dois valores diferentes. A
+compensação soma R$ 209,6 milhões, e não R$ 419,2 milhões. Com isso, o R$/CHI de cada um dos 697 alimentadores
+volta ao valor publicado (diferença relativa abaixo de 1e-15, erro de arredondamento).
+
+**O que o `distinct` não resolve** (e que não atinge a EMT):
+* 6.765 registros de outras distribuidoras (por exemplo, ENEL RJ em 2026) aparecem 4 vezes, ou seja, já eram
+  repetidos no original; o `distinct` os conta uma vez.
+* 170 chaves (CPFL e ENEL, de 2023 a 2026) têm dois valores diferentes; os dois são somados.
+
+Se a ANEEL corrigir o arquivo, o tratamento continua certo, porque não haverá o que deduplicar.
+
+**Revisão real de dados vista no mesmo download.** O arquivo de indicadores agora traz 2026 de janeiro a
+setembro (9 meses), mas as interrupções só vão até julho. O DEC oficial de 2026 passou de 7,22 para 9,21 e a
+correlação mensal em `reports/validacao_dec_fec.csv` cairia de 1,0 para 0,994, porque `validate_dec.py`
+compara meses diferentes em 2026. Os anos de 2020 a 2025 não mudaram. Por isso `reports/validacao_dec_fec.csv`
+não foi regenerado nesta mudança.
+
 ## 2026
 As interrupções de 2026 trazem IDs de circuito de um cadastro ainda não publicado. 23% dos eventos de MT
 não encontram correspondência em nenhuma BDGD disponível, então 2026 serve só como checagem parcial de
