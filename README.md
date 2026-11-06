@@ -148,8 +148,9 @@ do CHI em pelo menos 1% (e em mais que 2 desvios-padrão entre sementes) sem pio
 | Spearman do ranking de CHI | 0,906 | 0,902 | não passou: piora além do ruído |
 | CHI capturado pelos 10% priorizados | 45,7% | 45,8% | passou: dentro do ruído |
 
-Com clima, a deviance e o erro do CHI só melhoram em 1 dos 3 anos de teste. O modelo publicado continua sem
-clima. Uma hipótese, que não testei, é que o histórico de falhas por modo já carrega o que uma climatologia de
+A tabela do clima é a média de 10 sementes sobre os arquivos de 06/11/2026; por isso difere um pouco da
+ablação acima (uma semente, execução de 02/11). Com clima, a deviance e o erro do CHI só melhoram em 1 dos 3
+anos de teste. O modelo publicado continua sem clima. Uma hipótese, que não testei, é que o histórico de falhas por modo já carrega o que uma climatologia de
 5 anos traz; o clima realizado do ano alvo não é conhecido na hora de planejar e por isso não foi usado.
 
 ### 7. E se as eficácias forem as medidas nos dados?
@@ -310,7 +311,8 @@ Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em
   `build_clima.py` e troque `modelo.usar_clima` em `configs/emt.yaml`; só ter o arquivo não liga o clima.
 * **O modelo varia de uma semente para outra.** Mudar a semente do LightGBM, ou a ordem das linhas do painel,
   move o erro do CHI em ~0,4% (desvio-padrão de 10 sementes: 62 CHI em 16,2 mil). Reproduzir em outra máquina
-  pode mudar o último dígito das métricas do modelo; as conclusões dependem de diferenças bem maiores que isso.
+  pode mudar o último dígito das métricas do modelo. Razões entre carteiras com denominador pequeno, como o
+  7,7× do cenário pessimista da seção 7 (a regra tradicional vale só R$ 2 mi), mexem mais do que o último dígito.
 * As eficácias das intervenções são premissas de engenharia. Para religador e telecomando, o
   [`automation-impact`](https://github.com/CaioNepomuceno2/automation-impact) já mediu o efeito nos dados, e a
   seção 7 mostra a carteira com esses valores; para as demais intervenções, falta a mesma medição.

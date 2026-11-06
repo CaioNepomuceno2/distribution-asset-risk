@@ -3,7 +3,8 @@
 Pré-requisitos (dados brutos processados):
     python scripts/build_interrupcoes.py
     python scripts/build_bdgd.py
-    python scripts/build_clima.py
+    python scripts/build_continuidade.py
+O clima do INMET (scripts/build_clima.py) só entra com `modelo.usar_clima: true` em configs/emt.yaml.
 """
 import json
 import logging

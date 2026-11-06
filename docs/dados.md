@@ -77,8 +77,15 @@ máxima, dias com rajada ≥ 15 m/s, temperatura e umidade. Meses com menos de 6
 descartados. A interpolação para o centróide do alimentador (mediana dos trafos) usa IDW das 3 estações mais
 próximas com dado, num raio de até 250 km.
 
-No modelo anual de planejamento entra só a **climatologia** (média dos 5 anos anteriores), porque o clima
-realizado do ano-alvo não é conhecido na hora de decidir.
+Quando ligado (`modelo.usar_clima: true` em `configs/emt.yaml`), o modelo anual de planejamento usa só a
+**climatologia** (média dos 5 anos anteriores), porque o clima realizado do ano-alvo não é conhecido na hora de
+decidir. **Por padrão ele está desligado.**
+
+**Resultado do teste (06/11/2026).** Os 8 anos do INMET (2018 a 2025) foram baixados e processados sem alterar o
+código: 45 estações, 3.614 estação-mês e 461.856 linhas alimentador x mês. A chuva válida cobre de 75% (2021) a
+99,6% (2019) dos alimentadores-mês. Com a regra definida em `docs/preregistro_clima.md`, as 8 colunas `clim_*`
+pioraram o backtest 2023-2025 (10 sementes): deviance de Poisson +0,5%, erro absoluto do CHI +2,0% e Spearman
+-0,0036. O número por critério está em `reports/experimento_clima.json`.
 
 ## Compensações
 
