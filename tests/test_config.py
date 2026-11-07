@@ -13,6 +13,9 @@ import pytest
 from gridrisk.config import CONFIG_PADRAO, ENV_CONFIG, ROOT, Config
 
 SCRIPTS = ROOT / "scripts"
+# scripts que comparam as duas empresas lendo só saídas já publicadas: não fazem parte do pipeline e, por isso, não têm
+# --config nem a guarda contra nomes de MT (citar a Energisa MT e a Energisa MS é o objetivo deles)
+COMPARATIVOS = {"comparativo_mt_ms"}
 # os 8 snapshots de MT publicados (31/12 de cada ano)
 SNAPSHOTS_EMT = {2018: "b6900e72a13946b6a2dc015aaf6d6ccd", 2019: "f15e84cabd564d31869c3af5d7855376",
                  2020: "bc9ef518725a416a99e08c99e2d979d1", 2021: "13d6ff510a4c4a7fac64f0e119beb245",
@@ -146,7 +149,7 @@ def test_todos_os_scripts_de_pipeline_aceitam_config():
                  "make_figures", "resumo_decisao",
                  "run_pipeline", "sensibilidade_eficacias", "validate_dec", "variacao_sementes"}
     assert {p.stem for p in _scripts_com_config()} == esperados
-    assert {p.stem for p in SCRIPTS.glob("*.py")} == esperados
+    assert {p.stem for p in SCRIPTS.glob("*.py")} - COMPARATIVOS == esperados
 
 
 def test_nenhum_script_fixa_caminho_ou_nome_de_mt():
@@ -154,6 +157,8 @@ def test_nenhum_script_fixa_caminho_ou_nome_de_mt():
                  r'ROOT\s*/\s*"configs"\s*/\s*"intervencoes', r'"MT"', r"Energisa MT", r"Mato Grosso"]
     achados = []
     for p in SCRIPTS.glob("*.py"):
+        if p.stem in COMPARATIVOS:
+            continue
         for n, linha in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
             achados += [f"{p.name}:{n}: {linha.strip()}" for pad in proibidos if re.search(pad, linha)]
     assert not achados, "\n".join(achados)
