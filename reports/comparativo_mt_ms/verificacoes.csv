@@ -1,0 +1,28 @@
+verificacao,descricao,derivado,publicado,diferenca_relativa,passou,fonte_publicada
+consumidores_mt,Energisa MT: consumidores,2055284,2055284,0,True,reports/ems/diagnostico/comparacao_descritiva.csv
+rede_km_mt,Energisa MT: km de rede de média tensão,208967.3659,208967.3659,6.221072664e-11,True,reports/ems/diagnostico/comparacao_descritiva.csv
+uc_por_km_mt,Energisa MT: consumidores por km,9.835430481,9.835430481,1.008171583e-11,True,reports/ems/diagnostico/comparacao_descritiva.csv
+risco_social_uc_mt,Energisa MT: risco social por consumidor,74.21103657,74.21103657,3.318985793e-11,True,reports/ems/diagnostico/comparacao_descritiva.csv
+risco_comp_uc_mt,Energisa MT: risco em compensações por consumidor,17.24419716,17.24419716,7.157202289e-11,True,reports/ems/diagnostico/comparacao_descritiva.csv
+dec_previsto_mt,Energisa MT: DEC previsto por falhas,8.484650225,8.484650225,4.26297157e-11,True,reports/ems/diagnostico/comparacao_descritiva.csv
+top10_mt,Energisa MT: parcela do risco social nos 10% de maior risco,46.3676848,46.3676848,3.064818693e-16,True,reports/[ems/]resumo_decisao.json
+top20_mt,Energisa MT: parcela do risco social nos 20% de maior risco,65.96208087,65.96208087,0,True,reports/[ems/]resumo_decisao.json
+uc_total_mt,Energisa MT: consumidores contra n_uc_total,2055284,2055284,0,True,reports/[ems/]resultados.json
+n_alim_mt,Energisa MT: alimentadores,697,697,0,True,reports/[ems/]resumo_decisao.json
+falhas_100km_mt,Energisa MT: falhas por 100 km contra a taxa publicada pelo recloser-performance (km da topologia),32.68102001,32.88930409,0.006332881981,True,recloser-performance/reports/[ems/]diagnostico.json
+km_topologia_mt,Energisa MT: km de rede contra o km da topologia reconstruída,208967.3659,207644.0002,0.006373242976,True,recloser-performance/reports/[ems/]diagnostico.json
+consumidores_ms,Energisa MS: consumidores,1404395,1404395,0,True,reports/ems/diagnostico/comparacao_descritiva.csv
+rede_km_ms,Energisa MS: km de rede de média tensão,91452.97261,91452.97261,3.280367662e-11,True,reports/ems/diagnostico/comparacao_descritiva.csv
+uc_por_km_ms,Energisa MS: consumidores por km,15.35647186,15.35647186,3.167805345e-10,True,reports/ems/diagnostico/comparacao_descritiva.csv
+risco_social_uc_ms,Energisa MS: risco social por consumidor,75.46861933,75.46861933,2.307729113e-11,True,reports/ems/diagnostico/comparacao_descritiva.csv
+risco_comp_uc_ms,Energisa MS: risco em compensações por consumidor,11.80949321,11.80949321,2.062538069e-10,True,reports/ems/diagnostico/comparacao_descritiva.csv
+dec_previsto_ms,Energisa MS: DEC previsto por falhas,5.932993698,5.932993698,4.17667356e-14,True,reports/ems/diagnostico/comparacao_descritiva.csv
+top10_ms,Energisa MS: parcela do risco social nos 10% de maior risco,32.89736696,32.89736696,2.159877222e-16,True,reports/[ems/]resumo_decisao.json
+top20_ms,Energisa MS: parcela do risco social nos 20% de maior risco,50.27297342,50.27297342,0,True,reports/[ems/]resumo_decisao.json
+uc_total_ms,Energisa MS: consumidores contra n_uc_total,1404395,1404395,0,True,reports/[ems/]resultados.json
+n_alim_ms,Energisa MS: alimentadores,362,362,0,True,reports/[ems/]resumo_decisao.json
+falhas_100km_ms,Energisa MS: falhas por 100 km contra a taxa publicada pelo recloser-performance (km da topologia),118.8421366,118.8421366,0,True,recloser-performance/reports/[ems/]diagnostico.json
+km_topologia_ms,Energisa MS: km de rede contra o km da topologia reconstruída,91452.97261,91452.97261,0,True,recloser-performance/reports/[ems/]diagnostico.json
+chi_total_ms,Energisa MS: CHI total das falhas contra chi_por_modo.csv,19525702.87,19525702.87,1.612310563e-10,True,reports/ems/diagnostico/chi_por_modo.csv
+chi_reg_ms,Energisa MS: CHI regulatório (Σ CHI × fração) contra chi_por_modo.csv,8052823.267,8052823.267,5.289156306e-11,True,reports/ems/diagnostico/chi_por_modo.csv
+frac_exp_ms,Energisa MS: fração expurgada contra chi_por_modo.csv,58.75783155,58.75783155,7.142475675e-11,True,reports/ems/diagnostico/chi_por_modo.csv
