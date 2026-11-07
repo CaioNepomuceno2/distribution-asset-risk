@@ -144,7 +144,7 @@ class Fontes:
         return sorted(f"{repo}/{rel}" for (repo, rel), p in self.registro.items() if p is None)
 
 
-def carregar(F: Fontes):
+def ler_arquivos(F: Fontes):
     """Devolve ``C[d][chave]`` (um arquivo por distribuidora) e ``S[chave]`` (arquivo único); ``None`` se faltar."""
     C: dict[str, dict] = {d: {} for d in DIST}
     S: dict = {}
@@ -1266,6 +1266,10 @@ def renderizar_doc(res: Resultado) -> str:
     P, T = res.P, res.T
     a = []
     w = a.append
+
+    def defin(txt):
+        w(f"**A diferença pode vir de definição?** {txt}\n")
+
     w("# Comparativo descritivo: Energisa MT × Energisa MS\n")
     w("> Projeto independente, sem vínculo com a Energisa ou com a ANEEL. Só dados abertos (ANEEL e IBGE).\n")
     w("Este documento compara, **só de forma descritiva**, a Energisa Mato Grosso (EMT, \"Energisa MT\") e a Energisa Mato "
@@ -1289,7 +1293,7 @@ def renderizar_doc(res: Resultado) -> str:
       "diferença documentada que pode mexer no número. *Sim*: a definição é diferente, e a diferença não deve ser lida como "
       "diferença de rede.\n"
       f"* **Conferências.** `reports/comparativo_mt_ms/verificacoes.csv` compara {len(res.verificacoes)} números derivados aqui "
-      f"com os publicados em outros arquivos ({res.n_verificacoes_ok} dentro de 1%); `fontes.csv` lista cada arquivo lido, "
+      f"com os publicados em outros arquivos ({res.n_verificacoes_ok} dentro de {fmt(100 * TOLERANCIA_VERIFICACAO, 0)}%); `fontes.csv` lista cada arquivo lido, "
       "com SHA-256.\n")
     # resumo
     w("## Resumo\n")
@@ -1330,6 +1334,8 @@ def renderizar_doc(res: Resultado) -> str:
                   fmt(r["razao_ms_mt_100km"], 1), fmt(r["pct_das_falhas_mt"], 1, True), fmt(r["pct_das_falhas_ms"], 1, True),
                   fmt(r["falhas_100km_publicado_mt"], 1), fmt(r["falhas_100km_publicado_ms"], 1)] for _, r in t.iterrows()]) + "\n")
     w(figura_md(res, "01_falhas_por_100km.png", "Falhas por 100 km por modo") + "\n")
+    defin("Possível. A contagem é de registros da ANEEL, não de eventos (seção 9); a rede e os consumidores são os do mesmo "
+          "cadastro nas duas empresas.")
     w("**Por ano** (`falhas_por_ano.csv`): todas as falhas de média tensão de cada ano, ligadas ou não a um circuito, com "
       f"**denominador fixo de {ANO_REF}**. {ANO_PARCIAL} é parcial.\n")
     t = T["falhas_por_ano"]
@@ -1341,8 +1347,10 @@ def renderizar_doc(res: Resultado) -> str:
                       fmt(r["chi_por_registro_mt"], 0), fmt(r["chi_por_registro_ms"], 0)] for _, r in t.iterrows()]) + "\n")
     else:
         w(f"Série por ano: {ND}.\n")
-    w("O número de falhas conta **registros** do arquivo da ANEEL, não eventos físicos. Se as duas distribuidoras registram e "
-      "dividem as ocorrências do mesmo jeito, é uma pergunta em aberto (seção 9).\n")
+    defin("Possível, pelo mesmo motivo (registros). O número de falhas conta **registros** do arquivo da ANEEL, não eventos "
+          "físicos; se as duas distribuidoras registram e dividem as ocorrências do mesmo jeito, é uma pergunta em aberto (seção 9).")
+    w("A série **por ano e por modo** ao mesmo tempo não está publicada para a Energisa MT: por modo há só a média de "
+      f"{JANELA}, e por ano só o total. Por isso as duas tabelas acima não se cruzam.\n")
     w(detalhes_bloco("b") + "\n")
     # (c)
     w("## 3. CHI por consumidor, total e regulatório\n")
@@ -1361,8 +1369,10 @@ def renderizar_doc(res: Resultado) -> str:
                   fmt(r["chi_reg_uc_ms"], 2), fmt(r["pct_expurgado_mt"], 0, True), fmt(r["pct_expurgado_ms"], 0, True)]
                  for _, r in t.iterrows()]) + "\n")
     w(figura_md(res, "02_chi_por_consumidor.png", "CHI por consumidor por modo") + "\n")
+    defin("Não para o CHI total. Sim para o CHI regulatório e para a parcela expurgada: a regra de expurgo pesa muito diferente "
+          "nas duas empresas, principalmente nos modos ligados ao tempo (descarga atmosférica, vento e vegetação).")
     w("Por ano, só a Energisa MS tem publicada a parcela sem expurgo (`falhas_por_ano.csv`, colunas `chi_sem_expurgo_uc_ms` e "
-      f"`pct_chi_expurgado_ms`); para a Energisa MT a série por ano é {ND}. A fração expurgada de MS por ano, de 2018 a 2025: "
+      f"`pct_chi_expurgado_ms`); para a Energisa MT a série por ano é {ND}. A fração expurgada da Energisa MS por ano, até {ANO_REF}: "
       f"{serie_expurgo_ms(T)}.\n")
     w(detalhes_bloco("c") + "\n")
     # (d)
@@ -1390,6 +1400,8 @@ def renderizar_doc(res: Resultado) -> str:
       "anterior do arquivo de indicadores (`docs/dados.md`); o da Energisa MS compara só os meses que existem nas interrupções "
       f"({P['ms'].get('meses_parcial', ND)}). O recorte de meses não é o mesmo, e o nível de {ANO_PARCIAL} não se compara.\n")
     w(figura_md(res, "03_dec_oficial_e_recalculado.png", "DEC oficial e recalculado") + "\n")
+    defin("Não para o DEC e o FEC oficiais. Sim para o recalculado nos anos que não batem: a base de interrupções da Energisa MS "
+          "tem meses com problema (seção 9).")
     w(tabela_bloco(P, "d") + "\n")
     w(detalhes_bloco("d") + "\n")
     # (e)
@@ -1406,6 +1418,8 @@ def renderizar_doc(res: Resultado) -> str:
     w("**O que existe para as duas empresas** é a previsão do modelo para 2026, que **não é compensação paga**: CHI regulatório previsto "
       f"vezes o R$ por CHI das compensações de {JANELA_COMP[0]} a {JANELA_COMP[1]}. Depende da fração regulatória de cada empresa.\n")
     w(tabela_bloco(P, "e") + "\n")
+    defin("Não para o que foi pago (onde existe). Possível para a previsão do modelo: ela usa a fração regulatória e o R$ por CHI "
+          "de cada empresa.")
     w(detalhes_bloco("e") + "\n")
     # (f)
     w("## 6. Concentração do risco\n")
@@ -1416,6 +1430,7 @@ def renderizar_doc(res: Resultado) -> str:
       f"{fmt(P['mt'].get('k10_social'), 0)} e {fmt(P['mt'].get('k20_social'), 0)} na Energisa MT.\n")
     w(tabela_bloco(P, "f") + "\n")
     t = T["concentracao_risco"]
+    defin("Possível: o número de alimentadores de cada grupo depende da contagem de alimentadores de cada empresa (circuitos vazios).")
     w("Conferência com `resumo_decisao.json` (risco social):\n")
     w(md_tabela(["Grupo", "Parcela MT (aqui)", "Publicada MT", "Parcela MS (aqui)", "Publicada MS"],
                 [[f"{int(r['pct_alimentadores'])}% de maior {r['visao']}", fmt(r["parcela_do_risco_mt"], 1, True),
@@ -1440,6 +1455,8 @@ def renderizar_doc(res: Resultado) -> str:
                       razao_ou_na(r["razao_otimo_tradicional_ms"], r["vpl_tradicional_ms"])] for _, r in t.iterrows()]) + "\n")
     else:
         w(f"Tabela por orçamento: {ND}.\n")
+    defin("Possível. As premissas são ilustrativas e iguais, sem calibrar para a Energisa MS; a elegibilidade das intervenções "
+          "(tabela abaixo) e o que a carteira ótima consegue investir mudam com o cadastro.")
     w(tabela_bloco(P, "g") + "\n")
     w("Elegibilidade das intervenções no cadastro de 2025 (muda com o cadastro de cada empresa):\n")
     el = T["elegibilidade_catalogo"]
@@ -1493,7 +1510,7 @@ def serie_expurgo_ms(T: dict) -> str:
     t = T["falhas_por_ano"]
     if "pct_chi_expurgado_ms" not in t.columns:
         return ND
-    x = t[(t["ano"] <= ANO_REF)]
+    x = t[t["ano"].astype(int) <= ANO_REF]
     pares = [f"{int(a)}: {fmt(v, 0, True)}" for a, v in zip(x["ano"], x["pct_chi_expurgado_ms"], strict=True) if numerico(v)]
     return "; ".join(pares) if pares else ND
 
@@ -1548,7 +1565,7 @@ class Resultado:
 
 def gerar(raiz: Path, irmaos: Path, saida: Path, com_figuras: bool = True) -> Resultado:
     F = Fontes(raiz, irmaos)
-    C, S = carregar(F)
+    C, S = ler_arquivos(F)
     avisos = F.avisos
     P = derivar(C, S, avisos)
     T = tabelas(C, S, P, avisos)
@@ -1577,7 +1594,7 @@ def main(argv: list[str] | None = None) -> int:
     irmaos = (a.irmaos or raiz.parent).resolve()
     saida = a.saida or raiz / "reports" / "comparativo_mt_ms"
     res = gerar(raiz, irmaos, saida, com_figuras=not a.sem_figuras)
-    print(f"{len(res.metricas)} métricas, {len(res.verificacoes)} verificações ({res.n_verificacoes_ok} dentro de 1%), "
+    print(f"{len(res.metricas)} métricas, {len(res.verificacoes)} verificações ({res.n_verificacoes_ok} dentro de {fmt(100 * TOLERANCIA_VERIFICACAO, 0)}%), "
           f"{len(res.figuras)} figuras, saída em {saida}")
     for aviso in res.avisos:
         print("aviso:", aviso, file=sys.stderr)

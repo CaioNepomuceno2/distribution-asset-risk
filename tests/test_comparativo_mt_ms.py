@@ -272,6 +272,13 @@ def test_nao_escreve_fora_da_pasta_de_saida(mod, tmp_path):
     assert novos and all(saida in p.parents for p in novos)
 
 
+def test_script_nao_e_do_pipeline(mod):
+    """Comparativo só lê arquivos publicados: não importa o pacote do pipeline nem aceita ``--config``."""
+    texto = SCRIPT.read_text(encoding="utf-8")
+    assert "gridrisk" not in texto and "--config" not in texto and "duckdb" not in texto
+    assert "COMPARATIVOS" in (ROOT / "tests" / "test_config.py").read_text(encoding="utf-8")
+
+
 def test_so_le_pastas_publicadas(mod):
     permitidas = ("reports/", "app/data/")
     for a in mod.ARQUIVOS:
