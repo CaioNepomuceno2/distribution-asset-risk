@@ -1,0 +1,927 @@
+{
+ "ano": 2018,
+ "gdb": "Energisa_MS_404_2018-12-31_M10_20191023-2327.gdb",
+ "camadas": {
+  "BAR": {
+   "geometria": "None",
+   "linhas": 375,
+   "campos": 19
+  },
+  "BASE": {
+   "geometria": "None",
+   "linhas": 1,
+   "campos": 5
+  },
+  "BAY": {
+   "geometria": "None",
+   "linhas": 592,
+   "campos": 6
+  },
+  "BE": {
+   "geometria": "None",
+   "linhas": 16,
+   "campos": 17
+  },
+  "CTAT": {
+   "geometria": "None",
+   "linhas": 78,
+   "campos": 5
+  },
+  "CTMT": {
+   "geometria": "None",
+   "linhas": 315,
+   "campos": 58
+  },
+  "EP": {
+   "geometria": "None",
+   "linhas": 7,
+   "campos": 17
+  },
+  "EQCR": {
+   "geometria": "None",
+   "linhas": 598,
+   "campos": 19
+  },
+  "EQME": {
+   "geometria": "None",
+   "linhas": 927643,
+   "campos": 19
+  },
+  "EQRE": {
+   "geometria": "None",
+   "linhas": 544,
+   "campos": 42
+  },
+  "EQSE": {
+   "geometria": "None",
+   "linhas": 300570,
+   "campos": 24
+  },
+  "EQSIAT": {
+   "geometria": "None",
+   "linhas": 20593,
+   "campos": 19
+  },
+  "EQTRD": {
+   "geometria": "None",
+   "linhas": 90371,
+   "campos": 34
+  },
+  "EQTRM": {
+   "geometria": "None",
+   "linhas": 32135,
+   "campos": 19
+  },
+  "EQTRS": {
+   "geometria": "None",
+   "linhas": 92,
+   "campos": 32
+  },
+  "EQTRSX": {
+   "geometria": "None",
+   "linhas": 92,
+   "campos": 18
+  },
+  "INDGER": {
+   "geometria": "None",
+   "linhas": 888,
+   "campos": 58
+  },
+  "PIP": {
+   "geometria": "None",
+   "linhas": 270170,
+   "campos": 37
+  },
+  "PNT": {
+   "geometria": "None",
+   "linhas": 2,
+   "campos": 16
+  },
+  "PT": {
+   "geometria": "None",
+   "linhas": 29,
+   "campos": 16
+  },
+  "RAMLIG": {
+   "geometria": "None",
+   "linhas": 1002273,
+   "campos": 23
+  },
+  "SEGCON": {
+   "geometria": "None",
+   "linhas": 197,
+   "campos": 39
+  },
+  "ARAT": {
+   "geometria": "MultiPolygon",
+   "linhas": 1,
+   "campos": 7
+  },
+  "CONJ": {
+   "geometria": "MultiPolygon",
+   "linhas": 59,
+   "campos": 8
+  },
+  "PONNOT": {
+   "geometria": "Point",
+   "linhas": 1215831,
+   "campos": 23
+  },
+  "SSDAT": {
+   "geometria": "MultiLineString",
+   "linhas": 13614,
+   "campos": 20
+  },
+  "SSDBT": {
+   "geometria": "MultiLineString",
+   "linhas": 476072,
+   "campos": 24
+  },
+  "SSDMT": {
+   "geometria": "MultiLineString",
+   "linhas": 921897,
+   "campos": 23
+  },
+  "SUB": {
+   "geometria": "MultiPolygon",
+   "linhas": 118,
+   "campos": 7
+  },
+  "UNCRAT": {
+   "geometria": "Point",
+   "linhas": 16,
+   "campos": 16
+  },
+  "UNCRBT": {
+   "geometria": "Point",
+   "linhas": 0,
+   "campos": 19
+  },
+  "UNCRMT": {
+   "geometria": "Point",
+   "linhas": 521,
+   "campos": 18
+  },
+  "UNREAT": {
+   "geometria": "Point",
+   "linhas": 0,
+   "campos": 14
+  },
+  "UNREMT": {
+   "geometria": "Point",
+   "linhas": 182,
+   "campos": 16
+  },
+  "UNSEAT": {
+   "geometria": "Point",
+   "linhas": 1111,
+   "campos": 17
+  },
+  "UNSEBT": {
+   "geometria": "Point",
+   "linhas": 0,
+   "campos": 21
+  },
+  "UNSEMT": {
+   "geometria": "Point",
+   "linhas": 137052,
+   "campos": 20
+  },
+  "UNTRD": {
+   "geometria": "Point",
+   "linhas": 90371,
+   "campos": 32
+  },
+  "UNTRS": {
+   "geometria": "Point",
+   "linhas": 92,
+   "campos": 52
+  },
+  "UCAT_tab": {
+   "geometria": "None",
+   "linhas": 28,
+   "campos": 74
+  },
+  "UCBT_tab": {
+   "geometria": "None",
+   "linhas": 1144422,
+   "campos": 41
+  },
+  "UCMT_tab": {
+   "geometria": "None",
+   "linhas": 3420,
+   "campos": 52
+  },
+  "UGAT_tab": {
+   "geometria": "None",
+   "linhas": 18,
+   "campos": 70
+  },
+  "UGBT_tab": {
+   "geometria": "None",
+   "linhas": 0,
+   "campos": 36
+  },
+  "UGMT_tab": {
+   "geometria": "None",
+   "linhas": 14,
+   "campos": 47
+  }
+ },
+ "camadas_chave_ausentes": [],
+ "ctmt": {
+  "linhas": 315,
+  "cod_id_distintos": 315,
+  "nome": {
+   "n": 315,
+   "pct_preenchido": 100.0,
+   "distintos": 315,
+   "pct_so_digitos": 0.0,
+   "comprimentos": {
+    "5": 315
+   },
+   "exemplos": [
+    "ACA51",
+    "ACA52",
+    "ACA53",
+    "ACL01",
+    "ACL02"
+   ]
+  },
+  "nome_com_zfill6": {
+   "n": 315,
+   "pct_preenchido": 100.0,
+   "distintos": 315,
+   "pct_so_digitos": 0.0,
+   "comprimentos": {
+    "6": 315
+   },
+   "exemplos": [
+    "0ACA51",
+    "0ACA52",
+    "0ACA53",
+    "0ACL01",
+    "0ACL02"
+   ]
+  },
+  "ten_nom_cod": {
+   "49": 224,
+   "72": 89,
+   "61": 2
+  },
+  "energia_total_mwh_ano": 5353351.4,
+  "pct_energia_zero": 6.349
+ },
+ "ssdmt": {
+  "linhas": 921897,
+  "km": 85174.0,
+  "segcon_linhas": 197,
+  "segcon_cod_id_duplicados": 0,
+  "tem_ct_cod_op": false,
+  "ct_cod_op": null,
+  "pct_ctmt_existe_em_ctmt": 100.0,
+  "pct_tip_cnd_existe_em_segcon": 100.0,
+  "are_loc": {
+   "NU": 749103,
+   "UB": 172794
+  },
+  "km_por_geom_cab": {
+   "1": 1222.6,
+   "3": 83923.6,
+   "5": 27.8
+  },
+  "km_por_iso_fas_1": {
+   "10": 25.4,
+   "12": 83923.6,
+   "2": 50.3,
+   "6": 1174.6
+  },
+  "pct_km_cabo_nu": 98.532,
+  "pct_km_compacta": 1.435,
+  "pct_km_subterranea": 0.033
+ },
+ "feeder_map": {
+  "codigos": 315,
+  "pct_codigo_igual_ao_nome_ctmt": 100.0,
+  "ctmt_distintos": 315
+ },
+ "unsemt": {
+  "linhas": 137052,
+  "tip_unid": {
+   "22": 112597,
+   "21": 8392,
+   "19": 7747,
+   "24": 4090,
+   "32": 1730,
+   "27": 1533,
+   "35": 302,
+   "26": 297,
+   "20": 180,
+   "29": 104,
+   "33": 43,
+   "18": 26,
+   "0": 9,
+   "28": 2
+  },
+  "n_religador_32": 1730,
+  "n_seccionalizador_35_36": 302,
+  "n_chave_fusivel_22_27": 118517,
+  "n_disjuntor_29_30_53": 104,
+  "pct_codigos_no_mapeamento": 88.034,
+  "tlcd": {
+   "0": 136250,
+   "1": 802
+  },
+  "pac_1_comprimentos": {
+   "19": 123130,
+   "20": 8560,
+   "10": 2738,
+   "9": 1782,
+   "8": 744,
+   "7": 74
+  },
+  "perfil_por_tip_unid": {
+   "22": {
+    "n": 112597,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 12.0,
+    "pct_telecomandado": 0.0
+   },
+   "21": {
+    "n": 8392,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 34.0,
+    "pct_telecomandado": 0.0
+   },
+   "19": {
+    "n": 7747,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 10.0,
+    "pct_telecomandado": 0.0
+   },
+   "24": {
+    "n": 4090,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 3.0,
+    "pct_telecomandado": 0.0
+   },
+   "32": {
+    "n": 1730,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 35.0,
+    "pct_telecomandado": 46.243
+   },
+   "27": {
+    "n": 1533,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 12.0,
+    "pct_telecomandado": 0.0
+   },
+   "35": {
+    "n": 302,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 18.0,
+    "pct_telecomandado": 0.0
+   },
+   "26": {
+    "n": 297,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 12.0,
+    "pct_telecomandado": 0.0
+   },
+   "20": {
+    "n": 180,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 18.0,
+    "pct_telecomandado": 0.0
+   },
+   "29": {
+    "n": 104,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 36.0,
+    "pct_telecomandado": 0.0
+   },
+   "33": {
+    "n": 43,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 35.0,
+    "pct_telecomandado": 0.0
+   },
+   "18": {
+    "n": 26,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 18.0,
+    "pct_telecomandado": 0.0
+   }
+  }
+ },
+ "untrmt": {
+  "linhas": 90371,
+  "pot_nom_kva_mediana": 15.0,
+  "dat_con": {
+   "n": 90371,
+   "pct_preenchido": 100.0,
+   "pct_data_valida": 100.0,
+   "valor_mais_frequente": "01/01/1920",
+   "pct_valor_mais_frequente": 100.0,
+   "pct_01_01_1980": 0.0,
+   "ano_min": 1920,
+   "ano_p05": 1920,
+   "ano_mediano": 1920,
+   "ano_p95": 1920,
+   "ano_max": 1920,
+   "pct_antes_de_1950": 100.0,
+   "pct_depois_do_snapshot": 0.0,
+   "pct_por_decada": {
+    "1920s": 100.0
+   }
+  }
+ },
+ "clientes": {
+  "ucbt": 1144422,
+  "ucmt": 3420,
+  "pct_ucbt_clas_sub_rural_RU": 8.386,
+  "clas_sub_top": {
+   "RE1": 933853,
+   "RU1": 93837,
+   "CO1": 43743,
+   "CO9": 34574,
+   "IN": 9578,
+   "PP3": 7251,
+   "CO5": 5573,
+   "CO3": 3359,
+   "CO6": 3140,
+   "CO2": 1942
+  },
+  "pct_ucbt_ctmt_existe_em_ctmt": 99.253,
+  "ugbt": 0,
+  "ugmt": 14
+ },
+ "datas": {
+  "EQCR": {
+   "DAT_IMO": {
+    "n": 598,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQME": {
+   "DAT_IMO": {
+    "n": 927643,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQRE": {
+   "DAT_IMO": {
+    "n": 544,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQSE": {
+   "DAT_IMO": {
+    "n": 300570,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQSIAT": {
+   "DAT_IMO": {
+    "n": 20593,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQTRD": {
+   "DAT_IMO": {
+    "n": 90371,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQTRM": {
+   "DAT_IMO": {
+    "n": 32135,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQTRS": {
+   "DAT_IMO": {
+    "n": 92,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "EQTRSX": {
+   "DAT_IMO": {
+    "n": 92,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "PIP": {
+   "DAT_CON": {
+    "n": 270170,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNCRAT": {
+   "DAT_CON": {
+    "n": 16,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNCRMT": {
+   "DAT_CON": {
+    "n": 521,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNREMT": {
+   "DAT_CON": {
+    "n": 182,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNSEAT": {
+   "DAT_CON": {
+    "n": 1111,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNSEMT": {
+   "DAT_CON": {
+    "n": 137052,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNTRD": {
+   "DAT_CON": {
+    "n": 90371,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNTRS": {
+   "DAT_CON": {
+    "n": 92,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UCAT_tab": {
+   "DAT_CON": {
+    "n": 28,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 60.714,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 2014,
+    "ano_max": 2018,
+    "pct_antes_de_1950": 60.714,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 60.714,
+     "1990s": 10.714,
+     "2000s": 10.714,
+     "2010s": 17.857
+    }
+   }
+  },
+  "UCBT_tab": {
+   "DAT_CON": {
+    "n": 1144422,
+    "pct_preenchido": 99.755,
+    "pct_data_valida": 99.755,
+    "valor_mais_frequente": "01/11/1984",
+    "pct_valor_mais_frequente": 1.115,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1900,
+    "ano_p05": 1983,
+    "ano_mediano": 2005,
+    "ano_p95": 2017,
+    "ano_max": 2019,
+    "pct_antes_de_1950": 0.001,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1900s": 0.001,
+     "1930s": 0.0,
+     "1940s": 0.0,
+     "1950s": 0.0,
+     "1960s": 0.001,
+     "1970s": 2.221,
+     "1980s": 12.667,
+     "1990s": 21.216,
+     "2000s": 34.282,
+     "2010s": 29.366
+    }
+   }
+  },
+  "UCMT_tab": {
+   "DAT_CON": {
+    "n": 3420,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "29/12/1993",
+    "pct_valor_mais_frequente": 1.316,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1976,
+    "ano_p05": 1983,
+    "ano_mediano": 2005,
+    "ano_p95": 2016,
+    "ano_max": 2018,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 2.924,
+     "1980s": 9.298,
+     "1990s": 16.608,
+     "2000s": 45.38,
+     "2010s": 25.789
+    }
+   }
+  },
+  "UGAT_tab": {
+   "DAT_CON": {
+    "n": 18,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UGMT_tab": {
+   "DAT_CON": {
+    "n": 14,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  }
+ },
+ "coordenadas": {
+  "crs": "EPSG:4674",
+  "lon_min": -58.0055,
+  "lon_max": -50.9526,
+  "lat_min": -24.0441,
+  "lat_max": -17.295,
+  "pct_sem_geometria": 0.0,
+  "pct_dentro_do_estado_bbox": 100.0
+ }
+}

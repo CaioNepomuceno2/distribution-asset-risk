@@ -1,0 +1,14 @@
+arquivo,escopo,linhas,distintas,repetidas,pct_repetidas,chi_repetido_pct,chaves_com_valores_diferentes
+interrupcoes-energia-eletrica-2018.parquet,EMS,137841,137460,381,0.2764054236402812,0.025658514473890306,
+interrupcoes-energia-eletrica-2019.parquet,EMS,146020,145668,352,0.24106286810026023,0.015270360492079154,
+interrupcoes-energia-eletrica-2020.parquet,EMS,140072,140006,66,0.047118624707293395,0.00501228398670119,
+interrupcoes-energia-eletrica-2021.parquet,EMS,132173,132173,0,0.0,0.0,
+interrupcoes-energia-eletrica-2022.parquet,EMS,159748,159748,0,0.0,0.0,
+interrupcoes-energia-eletrica-2023.parquet,EMS,194214,194214,0,0.0,0.0,
+interrupcoes-energia-eletrica-2024.parquet,EMS,190557,190557,0,0.0,0.0,
+interrupcoes-energia-eletrica-2025.parquet,EMS,248367,248367,0,0.0,0.0,
+interrupcoes-energia-eletrica-2026.parquet,EMS,117890,117890,0,0.0,0.0,
+indicadores-continuidade-coletivos-2020-2029.parquet,EMS,197212,98606,98606,50.0,,0.0
+indicadores-continuidade-coletivos-2020-2029.parquet,nacional,10456656,5228328,5228328,50.0,,0.0
+indicadores-continuidade-coletivos-compensacao-2020-2029.parquet,EMS,441408,220704,220704,50.0,,0.0
+indicadores-continuidade-coletivos-compensacao-2020-2029.parquet,nacional,20702542,10344506,10358036,50.03267714660354,,170.0
