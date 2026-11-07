@@ -6,7 +6,7 @@ import logging
 
 import requests
 
-from gridrisk.config import Config
+from gridrisk.config import carregar
 
 CKAN = "https://dadosabertos.aneel.gov.br/api/3/action/package_show"
 DATASET = "indicadores-coletivos-de-continuidade-dec-e-fec"
@@ -15,7 +15,7 @@ ARQUIVOS = ["indicadores-continuidade-coletivos-2020-2029.parquet",
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("continuidade")
-cfg = Config.load()
+cfg = carregar("Baixa os indicadores coletivos de continuidade (DEC/FEC) e as compensações da ANEEL.")
 dest = cfg.raw / "continuidade"
 dest.mkdir(parents=True, exist_ok=True)
 

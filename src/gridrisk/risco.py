@@ -43,14 +43,14 @@ def compensacao_por_chi(compensacao: Path, interrupcoes: Path, sigla: str, anos:
     """).df()
 
 
-def conjunto_do_alimentador(interrupcoes: Path, crosswalk: Path) -> pd.DataFrame:
-    """Participação de cada conjunto no CHI de cada alimentador (eventos MT)."""
+def conjunto_do_alimentador(interrupcoes: Path, crosswalk: Path, ano_min: int = 2022) -> pd.DataFrame:
+    """Participação de cada conjunto no CHI de cada alimentador (eventos MT, anos a partir de ``ano_min``)."""
     return duckdb.sql(f"""
         with a as (
             select c.alimentador, i.conjunto_id, sum(i.chi) as chi
             from read_parquet('{interrupcoes}') i
             join read_parquet('{crosswalk}') c on coalesce(i.alimentador_cod_id, i.alimentador_nome) = c.codigo
-            where i.origem_mt and i.ano >= 2022
+            where i.origem_mt and i.ano >= {int(ano_min)}
             group by all
         )
         select alimentador, conjunto_id, chi / sum(chi) over (partition by alimentador) as peso from a
