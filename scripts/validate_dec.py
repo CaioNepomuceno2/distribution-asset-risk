@@ -1,7 +1,9 @@
 """Reconstrói DEC/FEC a partir das interrupções individuais e compara com o oficial da ANEEL.
 
 Com ``--alinhar-meses``, cada ano só compara os meses que existem nas interrupções (o arquivo de indicadores da
-ANEEL pode ir mais longe que o de interrupções no ano corrente). Sem a opção, o comportamento é o publicado para MT.
+ANEEL pode ir mais longe que o de interrupções no ano corrente). Com ``--mensal``, grava também a razão entre o DEC
+calculado e o oficial em cada ano e mês (``validacao_dec_fec_mensal.csv``), que mostra buracos nos dados.
+Sem as opções, o comportamento é o publicado para MT.
 """
 import duckdb
 import pandas as pd
@@ -12,6 +14,7 @@ from gridrisk.ingest.continuidade import dec_fec_oficial
 ap = parser("Reconstrói DEC/FEC a partir das interrupções e compara com o oficial da ANEEL.")
 ap.add_argument("--alinhar-meses", action="store_true",
                 help="compara só os meses presentes nas interrupções de cada ano")
+ap.add_argument("--mensal", action="store_true", help="grava também o DEC oficial e o calculado de cada ano e mês")
 args = ap.parse_args()
 cfg = Config.load(args.config)
 ind = cfg.raw / "continuidade" / "indicadores-continuidade-coletivos-2020-2029.parquet"
@@ -35,4 +38,10 @@ out = pd.DataFrame(linhas).round(2)
 out["corr_mensal_conjunto_DEC"] = round(m[["DEC"]].assign(x=m.chi / m.NumCon).corr().iloc[0, 1], 4)
 cfg.reports.mkdir(parents=True, exist_ok=True)
 out.to_csv(cfg.reports / "validacao_dec_fec.csv", index=False)
+if args.mensal:
+    mensal = m.groupby(["ano", "mes"]).apply(lambda g: pd.Series({
+        "DEC_oficial": (g.DEC * g.NumCon).sum() / g.NumCon.sum(), "DEC_calculado": g.chi.sum() / g.NumCon.sum()}),
+        include_groups=False).reset_index()
+    mensal["razao_calculado_oficial"] = mensal.DEC_calculado / mensal.DEC_oficial.where(mensal.DEC_oficial > 0)
+    mensal.round(4).to_csv(cfg.reports / "validacao_dec_fec_mensal.csv", index=False)
 print(out.to_string(index=False))

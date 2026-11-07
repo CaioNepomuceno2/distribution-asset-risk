@@ -1,5 +1,7 @@
 # Decisões de dados
 
+> **Este documento descreve a Energisa MT.** A Energisa MS usa o mesmo método com a configuração [`configs/ems.yaml`](../configs/ems.yaml); as decisões e os resultados de MS estão em [`decisoes_ems.md`](decisoes_ems.md) e [`resultados_ems.md`](resultados_ems.md).
+
 Registro das escolhas de tratamento que afetam os resultados, com a evidência de cada uma.
 
 **Execução registrada (nov/2026):** os artefatos de `reports/` foram reproduzidos das fontes brutas com

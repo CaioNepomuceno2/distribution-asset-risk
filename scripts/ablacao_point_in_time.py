@@ -26,8 +26,8 @@ clima = F.carregar_clima(cfg.interim, cfg.usar_clima)
 inter = cfg.interrupcoes_parquet
 cortes = F.falhas_point_in_time(inter, cfg.interim)
 paineis = {
-    "sem_cortes": F.build_panel(cortes[max(cortes)], cfg.interim, clima, ANOS),
-    "point_in_time": F.build_panel(cortes, cfg.interim, clima, ANOS),
+    "sem_cortes": F.build_panel(cortes[max(cortes)], cfg.interim, clima, ANOS, cfg.excluir_circuitos_vazios),
+    "point_in_time": F.build_panel(cortes, cfg.interim, clima, ANOS, cfg.excluir_circuitos_vazios),
 }
 linhas = []
 for nome, panel in paineis.items():

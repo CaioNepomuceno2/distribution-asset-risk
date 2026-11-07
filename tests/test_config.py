@@ -48,6 +48,7 @@ def test_configuracao_padrao_resolve_para_os_caminhos_atuais_de_mt():
     assert cfg.bdgd_snapshots == SNAPSHOTS_EMT
     assert cfg.anos_interrupcoes == list(range(2018, 2027))
     assert cfg.usar_clima is False and cfg.clima_uf == "MT"
+    assert cfg.excluir_circuitos_vazios is False  # em MT o painel usa todos os circuitos
     assert (cfg.nome, cfg.nome_curto) == ("Energisa Mato Grosso", "Energisa MT")
 
 
@@ -86,6 +87,7 @@ def test_configuracao_de_ms_so_escreve_em_subpastas_ems():
     assert cfg.malha_ibge == ROOT / "data" / "ref" / "ms_ibge.geojson" and cfg.malha_ibge.is_file()
     assert cfg.usar_clima is False
     assert cfg.clima_uf is None  # o clima do INMET não roda em MS
+    assert cfg.excluir_circuitos_vazios is True  # 105 de 423 circuitos do snapshot de 2019 estão vazios
     assert cfg.eficacias_medidas is None  # as de MT não valem para MS
 
 
@@ -134,7 +136,7 @@ def _scripts_com_config():
 
 def test_todos_os_scripts_de_pipeline_aceitam_config():
     esperados = {"ablacao_point_in_time", "build_bdgd", "build_clima", "build_continuidade", "build_interrupcoes",
-                 "diagnostico_bdgd", "diagnostico_duplicatas", "experimento_clima", "make_figures", "resumo_decisao",
+                 "diagnostico_bdgd", "diagnostico_duplicatas", "diagnostico_vinculo", "experimento_clima", "make_figures", "resumo_decisao",
                  "run_pipeline", "sensibilidade_eficacias", "validate_dec", "variacao_sementes"}
     assert {p.stem for p in _scripts_com_config()} == esperados
     assert {p.stem for p in SCRIPTS.glob("*.py")} == esperados

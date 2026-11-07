@@ -183,12 +183,16 @@ def _climatologia(clima_feeder: pd.DataFrame, ano_alvo: int, anos: int = 5) -> p
 
 
 def build_panel(falhas: pd.DataFrame | Mapping[int, pd.DataFrame], interim: Path,
-                clima_feeder: pd.DataFrame | None, anos_alvo: list[int]) -> pd.DataFrame:
+                clima_feeder: pd.DataFrame | None, anos_alvo: list[int],
+                excluir_vazios: bool = False) -> pd.DataFrame:
     """Uma linha por alimentador x ano alvo x modo, com alvo e features (snapshot y-1).
 
     ``falhas`` pode ser um único DataFrame (sem cortes temporais no vínculo de
     circuitos) ou o dicionário de ``falhas_point_in_time``. No segundo caso, as
     features do ano ``y`` vêm do corte ``y-1`` e o alvo, do corte ``y``.
+
+    Com ``excluir_vazios``, circuitos sem rede MT e sem consumidor no cadastro (``rede_mt_km`` ausente e ``n_uc`` zero)
+    ficam fora do painel: não são alimentadores, não têm como ter falha e só diluem o treino. Desligado em MT.
     """
     snaps = {int(p.stem.split("_")[-1]): p for p in interim.glob("bdgd_feeders_*.parquet")}
     cortes = falhas if isinstance(falhas, Mapping) else None
@@ -211,6 +215,8 @@ def build_panel(falhas: pd.DataFrame | Mapping[int, pd.DataFrame], interim: Path
                 .drop(columns=["alimentador_cod_id"])
                 .rename(columns={"alimentador_nome": "alimentador"})
                 .drop_duplicates("alimentador"))
+        if excluir_vazios:
+            feat = feat[~(feat.rede_mt_km.isna() & (feat.n_uc == 0))]
         grid = feat[["alimentador"]].merge(pd.DataFrame({"modo": MODOS}), how="cross")
         grid["ano"] = ano
         df = grid.merge(feat.drop(columns=["ano_snapshot"]), on="alimentador", how="left")

@@ -51,6 +51,7 @@ class Config:
     ano_inicio_painel: int = 2019
     ano_inicio_pesos_conjunto: int = 2022
     ano_inicio_shap: int = 2023
+    excluir_circuitos_vazios: bool = False
     eficacias_medidas: dict | None = None
     origem: Path | None = None
 
@@ -103,6 +104,7 @@ class Config:
             ano_inicio_painel=int(janelas.get("ano_inicio_painel", 2019)),
             ano_inicio_pesos_conjunto=int(janelas.get("ano_inicio_pesos_conjunto", 2022)),
             ano_inicio_shap=int(janelas.get("ano_inicio_shap", 2023)),
+            excluir_circuitos_vazios=bool(cfg.get("qualidade", {}).get("excluir_circuitos_vazios", False)),
             eficacias_medidas=cfg.get("eficacias_medidas"),
             origem=arquivo,
         )

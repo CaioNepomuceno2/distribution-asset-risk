@@ -74,6 +74,19 @@ def test_validate_dec_alinhar_meses_compara_so_os_meses_com_interrupcoes(ambient
     assert out.FEC_oficial == pytest.approx(2.0)
 
 
+def test_validate_dec_mensal_mostra_o_mes_sem_interrupcoes(ambiente):
+    _rodar(ambiente, "--mensal")
+    m = pd.read_csv(ambiente / "reports" / "validacao_dec_fec_mensal.csv").set_index("mes")
+    # DEC mensal: oficial 2, 3 e 4; calculado 2000/1000 = 2, 3000/1000 = 3 e 0 (março sem interrupções)
+    assert m.DEC_oficial.tolist() == pytest.approx([2.0, 3.0, 4.0])
+    assert m.DEC_calculado.tolist() == pytest.approx([2.0, 3.0, 0.0])
+    assert m.razao_calculado_oficial.tolist() == pytest.approx([1.0, 1.0, 0.0])
+    # sem a opção, o arquivo mensal não é gravado
+    (ambiente / "reports" / "validacao_dec_fec_mensal.csv").unlink()
+    _rodar(ambiente)
+    assert not (ambiente / "reports" / "validacao_dec_fec_mensal.csv").exists()
+
+
 def test_validate_dec_com_config_nao_escreve_em_reports_da_raiz(ambiente):
     antes = {p.name: p.stat().st_mtime_ns for p in (ROOT / "reports").glob("*.csv")}
     _rodar(ambiente)

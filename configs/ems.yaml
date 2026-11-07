@@ -30,6 +30,10 @@ janelas:
 
 # Sem a chave "clima": o INMET só foi testado em MT e o clima não roda em MS (usar_clima: false).
 
+# Circuitos sem rede MT e sem consumidor (105 de 423 no snapshot de 2019) ficam fora do painel: docs/decisoes_ems.md
+qualidade:
+  excluir_circuitos_vazios: true
+
 bdgd:
   # snapshots de 31/12 de cada ano, versão mais recente de cada um (id do item no ArcGIS Hub da ANEEL).
   # Fora de propósito: o item avulso EMS_404_2022-10-31_V10 (c3585ae516f340b596617827d60da5ef) e a versão

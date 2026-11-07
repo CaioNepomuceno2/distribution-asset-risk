@@ -28,7 +28,8 @@ cfg.reports.mkdir(parents=True, exist_ok=True)
 
 clima = F.carregar_clima(cfg.interim, cfg.usar_clima)
 cortes = F.falhas_point_in_time(cfg.interrupcoes_parquet, cfg.interim)
-painel = F.build_panel(cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, max(cfg.anos_teste) + 1)))
+painel = F.build_panel(cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, max(cfg.anos_teste) + 1)),
+                       cfg.excluir_circuitos_vazios)
 
 fit_original = M.fit
 linhas = []

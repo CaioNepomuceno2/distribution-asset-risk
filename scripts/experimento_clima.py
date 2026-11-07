@@ -29,8 +29,10 @@ SEMENTES = range(10)
 
 clima = pd.read_parquet(cfg.interim / "clima_alimentador_mes.parquet")
 cortes = F.falhas_point_in_time(cfg.interrupcoes_parquet, cfg.interim)
-paineis = {"semclima": F.build_panel(cortes, cfg.interim, None, list(range(cfg.ano_inicio_painel, max(ANOS_TESTE) + 1))),
-           "clima": F.build_panel(cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, max(ANOS_TESTE) + 1)))}
+paineis = {"semclima": F.build_panel(cortes, cfg.interim, None, list(range(cfg.ano_inicio_painel, max(ANOS_TESTE) + 1)),
+                                 cfg.excluir_circuitos_vazios),
+           "clima": F.build_panel(cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, max(ANOS_TESTE) + 1)),
+                              cfg.excluir_circuitos_vazios)}
 for modo, painel in paineis.items():
     log.info("%s: %d linhas, %d colunas clim_*", modo, len(painel), sum(c.startswith("clim_") for c in painel.columns))
 

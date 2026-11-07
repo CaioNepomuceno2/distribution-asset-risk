@@ -38,6 +38,10 @@ eficacias_medidas:
     medido_ic_inferior: 0.075
     medido_ic_superior: 0.248
 
+# MT: o painel usa todos os circuitos do cadastro (docs/dados.md)
+qualidade:
+  excluir_circuitos_vazios: false
+
 bdgd:
   # snapshots de 31/12 de cada ano (id do item no ArcGIS Hub da ANEEL)
   snapshots:

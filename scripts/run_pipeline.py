@@ -39,7 +39,8 @@ falhas.to_parquet(cfg.interim / "falhas.parquet", index=False)
 clima = F.carregar_clima(cfg.interim, cfg.usar_clima)  # chave modelo.usar_clima da configuração
 if clima is None:
     log.info("modelo.usar_clima desligado: modelo treinado sem climatologia")
-panel = F.build_panel(falhas_cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, ANO_PREV + 1)))
+panel = F.build_panel(falhas_cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, ANO_PREV + 1)),
+                      cfg.excluir_circuitos_vazios)
 panel.to_parquet(cfg.processed / "panel.parquet", index=False)
 treino_total = panel[panel.ano < ANO_PREV]
 log.info("painel: %s linhas, %d alimentadores", len(panel), panel.alimentador.nunique())

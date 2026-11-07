@@ -85,3 +85,20 @@ def test_climatologia_usa_coordenadas_do_snapshot_anterior():
                            "dist_estacao_km": 5.0, "ano_snapshot": snap})
     clim = F._climatologia(pd.DataFrame(linhas), ano_alvo=2021)
     assert clim.clim_precip_anual_mm.iloc[0] == 100.0
+
+
+def test_painel_exclui_circuitos_sem_rede_e_sem_consumidor_so_quando_pedido(interim):
+    """No snapshot de 2019 de MS havia 105 circuitos de 423 sem rede MT e sem consumidor. Em MT o painel é inalterado."""
+    for ano in (2020, 2021):
+        f = _feeders(ano, ["A", "B", "V"]).assign(n_uc=[100, 50, 0])
+        f.loc[f.alimentador_nome == "V", "rede_mt_km"] = float("nan")   # V: sem rede e sem consumidor
+        f.loc[f.alimentador_nome == "B", "n_uc"] = 0                    # B: tem rede, sem consumidor: fica
+        f.to_parquet(interim / f"bdgd_feeders_{ano}.parquet", index=False)
+    cortes = F.falhas_point_in_time(interim / "interrupcoes.parquet", interim)
+    padrao = F.build_panel(cortes, interim, None, [2021, 2022])
+    filtrado = F.build_panel(cortes, interim, None, [2021, 2022], excluir_vazios=True)
+    assert set(padrao.alimentador) == {"A", "B", "V"} and len(padrao) == 3 * len(F.MODOS) * 2
+    assert set(filtrado.alimentador) == {"A", "B"} and len(filtrado) == 2 * len(F.MODOS) * 2
+    # o resto do painel não muda
+    comum = padrao[padrao.alimentador != "V"].reset_index(drop=True)
+    pd.testing.assert_frame_equal(comum, filtrado.reset_index(drop=True))

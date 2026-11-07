@@ -306,7 +306,10 @@ python scripts/make_figures.py
 pytest
 ```
 
-Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
+Para outra distribuidora, crie um YAML em `configs/` (sigla, código ANEEL, IDs dos snapshots da BDGD e pastas de
+saída) e passe `--config` a cada script, por exemplo `python scripts/run_pipeline.py --config configs/ems.yaml`. A
+variável de ambiente `GRIDRISK_CONFIG` faz o mesmo. Sem `--config`, vale `configs/emt.yaml`, com os caminhos de
+sempre. A Energisa MS está em [Energisa MS](#energisa-ms).
 
 ## Publicar o painel (Streamlit Community Cloud)
 O repositório já está pronto para publicar o painel. **Ainda não foi publicado:** falta só o login do dono.
