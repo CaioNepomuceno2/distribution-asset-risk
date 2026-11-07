@@ -424,11 +424,10 @@ def derivar_so_uma_distribuidora(P: dict, C: dict, S: dict, avisos: list[str]) -
     cm("recl_ganhos_brutos", lambda: float(tr["religadores_ganhos"].sum()))
     cm("recl_ganho_liquido", lambda: float(tr["ganho_liquido"].sum()))
     cm("recl_transicoes", lambda: float(tr.shape[0]))
-    sn = S["snapshot_ms"].set_index("ano_snapshot")
-    cm("telecom_2024", lambda: float(sn.loc[2024, "religadores_telecomandados"]))
-    cm("telecom_2025", lambda: float(sn.loc[2025, "religadores_telecomandados"]))
-    cm("recl_auto_2024", lambda: float(sn.loc[2024, "religadores"]))
-    cm("recl_auto_2025", lambda: float(sn.loc[2025, "religadores"]))
+    cm("telecom_2024", lambda: float(S["snapshot_ms"].set_index("ano_snapshot").loc[2024, "religadores_telecomandados"]))
+    cm("telecom_2025", lambda: float(S["snapshot_ms"].set_index("ano_snapshot").loc[2025, "religadores_telecomandados"]))
+    cm("recl_auto_2024", lambda: float(S["snapshot_ms"].set_index("ano_snapshot").loc[2024, "religadores"]))
+    cm("recl_auto_2025", lambda: float(S["snapshot_ms"].set_index("ano_snapshot").loc[2025, "religadores"]))
     ex = S["expurgo_codigos"]
     for d_, cc in (("mt", cs), ("ms", cm)):
         cc("expurgo_cod1_anos", lambda d_=d_: ", ".join(
