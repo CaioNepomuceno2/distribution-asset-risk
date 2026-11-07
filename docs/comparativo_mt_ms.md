@@ -16,14 +16,14 @@ Todo número daqui sai de [`scripts/comparativo_mt_ms.py`](../scripts/comparativ
 
 ## Resumo
 
-| Indicador (descritivo) | Energisa MT | Energisa MS |
-|---|---|---|
-| Falhas na média tensão por 100 km por ano | 32,7 | 118,8 |
-| CHI das falhas por consumidor por ano (h) | 12,8 | 13,9 |
-| Fração do CHI das falhas que é expurgada | 26,3% | 58,8% |
-| DEC oficial de 2025 (h) | 14,45 | 9,13 |
-| Parcela do risco social nos 10% de alimentadores de maior risco | 46,4% | 32,9% |
-| Carteira ótima ÷ regra tradicional (R$ 20 mi, visão social) | 2,33 | 1,31 |
+| Indicador (descritivo) | Energisa MT | Energisa MS | A diferença pode vir de definição? |
+|---|---|---|---|
+| Falhas na média tensão por 100 km por ano (média 2023-2025) | 32,7 | 118,8 | Possível: contagem de registros da ANEEL |
+| CHI das falhas por consumidor por ano, em horas | 12,8 | 13,9 | Não |
+| Fração do CHI das falhas que é expurgada | 26,3% | 58,8% | Sim: regra de expurgo |
+| DEC oficial de 2025, em horas | 14,45 | 9,13 | Não |
+| Parcela do risco social nos 10% de alimentadores de maior risco | 46,4% | 32,9% | Possível: nº de alimentadores |
+| Carteira ótima ÷ regra tradicional (R$ 20 mi, visão social, premissas ilustrativas) | 2,33 | 1,31 | Possível: premissas e cadastro |
 
 Diferenças de definição que mudam a leitura (seção 9): o expurgo pesa muito diferente nas duas empresas; a Energisa MT usa todos os circuitos do cadastro e a Energisa MS exclui os vazios; os meses sem registro de interrupção em 2026 são março na Energisa MS e nenhum na Energisa MT; e o efeito do religador na Energisa MS é o da Energisa MT, não medido (origem_efeito = transportado de MT).
 
