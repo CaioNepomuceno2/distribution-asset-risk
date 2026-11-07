@@ -68,6 +68,9 @@ def _datas(s: pd.Series, ano_snapshot: int) -> dict:
         "pct_01_01_1980": _pct((texto == bdgd.DATA_DESCONHECIDA).sum(), n),
     }
     if len(anos):
+        por_ano = anos.value_counts()  # lotes de recadastramento aparecem como um ano com fatia grande
+        out["ano_mais_frequente"] = int(por_ano.index[0])
+        out["pct_ano_mais_frequente"] = _pct(por_ano.iloc[0], n)
         q = np.percentile(anos, [5, 50, 95])
         out.update({
             "ano_min": int(anos.min()), "ano_p05": int(q[0]), "ano_mediano": int(q[1]), "ano_p95": int(q[2]),

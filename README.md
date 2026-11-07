@@ -322,7 +322,7 @@ MS grava só em `reports/ems/`, `app/data/ems/` e `data/ems/`; os resultados de 
 
 | Indicador (Energisa MS) | Valor | Arquivo |
 |---|---|---|
-| Alimentadores, consumidores e rede MT (BDGD de 31/12/2025) | 362, 1,40 milhão e 91,5 mil km | [`resumo_decisao.json`](reports/ems/resumo_decisao.json), [`resultados.json`](reports/ems/resultados.json) |
+| Alimentadores, consumidores e rede MT (BDGD de 31/12/2025) | 362, 1,40 milhão e 91,5 mil km | [`resumo_decisao.json`](reports/ems/resumo_decisao.json), [`resultados.json`](reports/ems/resultados.json), [`comparacao_descritiva.csv`](reports/ems/diagnostico/comparacao_descritiva.csv) |
 | DEC de 2025: oficial e recalculado das interrupções | 9,13 h e 9,12 h (2022 a 2025 e 2020 batem; **2021 e 2026 não**, por dois meses com problema nos dados) | [`validacao_dec_fec.csv`](reports/ems/validacao_dec_fec.csv) |
 | Erro absoluto do CHI por alimentador (backtest 2023-2025): modelo, média de 3 anos, ano anterior | 17,4 mil, 19,8 mil e 20,5 mil | [`backtest_media.csv`](reports/ems/backtest_media.csv) |
 | Deviance de Poisson das falhas por modo: modelo e média de 3 anos | 11,2 e 20,7 | [`backtest_media.csv`](reports/ems/backtest_media.csv) |

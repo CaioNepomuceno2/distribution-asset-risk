@@ -1,0 +1,3 @@
+distribuidora,alimentadores,consumidores,rede_mt_km,consumidores_por_km,chi_previsto_por_consumidor,chi_previsto_por_km,chi_regulatorio_previsto_por_consumidor,dec_previsto_falhas_mt_h,risco_social_rs_por_consumidor,risco_compensacao_rs_por_consumidor,top10pct_do_risco_social,top20pct_do_risco_social
+EMS,362,1404395,91452.97261,15.35647186,14.57705208,223.8520901,5.932993698,5.932993698,75.46861933,11.80949321,0.3289736696,0.5027297342
+EMT,697,2055284,208967.3659,9.835430481,11.52954316,113.3980202,8.484650225,8.484650225,74.21103657,17.24419716,0.463676848,0.6596208087

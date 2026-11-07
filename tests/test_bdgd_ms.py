@@ -64,6 +64,7 @@ def test_diagnostico_de_dat_imo_e_dat_con(gdb_ms):
     con = d["datas"]["UNTRMT"]["DAT_CON"]
     assert con["pct_01_01_1980"] == pytest.approx(33.333, abs=1e-3)
     assert con["pct_depois_do_snapshot"] == 0.0
+    assert con["pct_ano_mais_frequente"] == pytest.approx(33.333, abs=1e-3)  # cada ano aparece uma vez entre 3 trafos
     # EQSE x UNSEMT: S9 não existe em UNSEMT
     assert d["eqse"]["pct_un_se_existe_em_unsemt"] == 75.0
     assert d["eqse"]["por_tip_unid"] == {}  # só mostra TIP_UNID com 100 equipamentos ou mais

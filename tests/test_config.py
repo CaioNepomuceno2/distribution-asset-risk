@@ -52,6 +52,12 @@ def test_configuracao_padrao_resolve_para_os_caminhos_atuais_de_mt():
     assert (cfg.nome, cfg.nome_curto) == ("Energisa Mato Grosso", "Energisa MT")
 
 
+def test_eficacias_medidas_de_mt_sao_as_publicadas_e_na_ordem_dos_cenarios():
+    """A sensibilidade lê estes valores da configuração; a ordem das chaves é a ordem dos cenários no CSV."""
+    religador = Config.load().eficacias_medidas["religador"]
+    assert list(religador.items()) == [("medido", 0.166), ("medido_ic_inferior", 0.075), ("medido_ic_superior", 0.248)]
+
+
 def test_janelas_padrao_sao_as_publicadas_para_mt():
     cfg = Config.load()
     assert cfg.anos_teste == [2023, 2024, 2025]
@@ -136,7 +142,8 @@ def _scripts_com_config():
 
 def test_todos_os_scripts_de_pipeline_aceitam_config():
     esperados = {"ablacao_point_in_time", "build_bdgd", "build_clima", "build_continuidade", "build_interrupcoes",
-                 "diagnostico_bdgd", "diagnostico_duplicatas", "diagnostico_vinculo", "experimento_clima", "make_figures", "resumo_decisao",
+                 "diagnostico_aneel", "diagnostico_bdgd", "diagnostico_duplicatas", "diagnostico_vinculo", "experimento_clima",
+                 "make_figures", "resumo_decisao",
                  "run_pipeline", "sensibilidade_eficacias", "validate_dec", "variacao_sementes"}
     assert {p.stem for p in _scripts_com_config()} == esperados
     assert {p.stem for p in SCRIPTS.glob("*.py")} == esperados

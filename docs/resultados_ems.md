@@ -75,7 +75,8 @@ maiores que isso; as de captura dos 10% priorizados, não.
 
 ![chi por modo](../reports/ems/figures/03_chi_por_modo.png)
 
-Falhas de média tensão (internas e não programadas), média de 2023 a 2025:
+Falhas de média tensão (internas e não programadas), média de 2023 a 2025
+([`chi_por_modo.csv`](../reports/ems/diagnostico/chi_por_modo.csv)):
 
 | Modo de falha | CHI por ano | Parte do CHI | CHI expurgado |
 |---|---|---|---|
@@ -112,7 +113,8 @@ Falhas de média tensão (internas e não programadas), média de 2023 a 2025:
 | Risco em compensações (R$ por consumidor por ano) | 17,2 | 11,8 |
 
 Os valores de MT vêm de `app/data/risco_alimentador.parquet` (publicado) e os de MS, de
-`app/data/ems/risco_alimentador.parquet`. É uma tabela descritiva: não explica por que os valores diferem, e os dois
+`data/ems/processed/risco_alimentador.parquet` (o mesmo de `app/data/ems/`); a conta está em
+[`comparacao_descritiva.csv`](../reports/ems/diagnostico/comparacao_descritiva.csv). É uma tabela descritiva: não explica por que os valores diferem, e os dois
 conjuntos de dados têm particularidades diferentes (por exemplo, a fração de CHI expurgado).
 
 ## 4. Comparação de carteiras sob premissas ilustrativas
@@ -166,10 +168,10 @@ confiabilidade em MS (em MT, R$ 21 mi), mesmo quando a ótima deixa de gastar o 
 * **Clima do INMET:** não foi usado nem testado em MS (ver `decisoes_ems.md`).
 * **Checagem parcial de 2026.** A previsão de 2026 comparada com as falhas observadas de janeiro a julho tem Spearman de
   **0,66** no ranking de falhas e a captura dos 10% priorizados é de 20% ([`resultados.json`](../reports/ems/resultados.json));
-  em MT, o Spearman é de 0,83. Três coisas pioram essa checagem em MS: o arquivo de 2026 não tem **março**, a categoria
-  "falha nas instalações da UC" entra em peso em 2026 (8,8% das falhas, contra 3,5% em 2025 e zero antes) e 14% das
-  falhas de 2026 não casam com nenhum circuito da BDGD publicada. Não medi quanto cada uma pesa. Trate esse número como
-  um alerta, e não como medida de qualidade do modelo.
+  em MT, o Spearman é de 0,83. Há particularidades dos dados de 2026 de MS que podem pesar nessa checagem, **sem que eu
+  tenha medido quanto**: o arquivo não tem **março**, a categoria "falha nas instalações da UC" passa a 8,8% das falhas
+  (3,5% em 2025 e zero antes) e 14% das falhas de 2026 não casam com nenhum circuito da BDGD publicada. Não afirmo causa
+  para a diferença em relação a MT. Trate esse número como um alerta, e não como medida de qualidade do modelo.
 
 ## 6. Painel interativo
 

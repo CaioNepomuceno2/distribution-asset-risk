@@ -2,9 +2,10 @@
 
 Este documento foi escrito e commitado **antes** de qualquer resultado do modelo de MS (backtest, previsão, risco ou
 carteira). Cada decisão sai de um diagnóstico dos dados abertos de MS, e não de um resultado. Os diagnósticos são
-reproduzíveis com `scripts/diagnostico_bdgd.py`, `scripts/diagnostico_vinculo.py`, `scripts/diagnostico_duplicatas.py`
-e `scripts/validate_dec.py --alinhar-meses --mensal`, e as saídas ficam em
-[`reports/ems/diagnostico/`](../reports/ems/diagnostico/). Execução de 06/11/2026.
+reproduzíveis com `scripts/diagnostico_bdgd.py`, `scripts/diagnostico_vinculo.py`, `scripts/diagnostico_duplicatas.py`,
+`scripts/diagnostico_aneel.py` e `scripts/validate_dec.py --alinhar-meses --mensal`. As saídas ficam em
+[`reports/ems/diagnostico/`](../reports/ems/diagnostico/), e cada tabela abaixo cita o arquivo de onde sai. As contas de MT
+que aparecem como comparação leem, só para leitura, os intermediários de MT e os Parquet publicados. Execução de 06/11/2026.
 
 O pipeline foi escrito e validado com a Energisa MT (EMT). Aqui cada suposição herdada de MT foi medida em MS antes de
 ser mantida. As decisões de MT continuam em [`dados.md`](dados.md) e **não mudam**.
@@ -82,7 +83,7 @@ em MT (`UNTRD`, `NOM`) servem para MS. Nenhuma camada-chave falta.
   (segundo código operacional do mesmo circuito) e o `COD_ID` de 2026.
 * **O snapshot de 2019 tem 98 circuitos de 3 caracteres** (`ACA`, `AJO`...), que são o código da subestação, não do
   alimentador. Esses e mais alguns somam 105 circuitos **sem rede MT e sem consumidor** (de 423). Nos outros anos há de
-  0 a 10 (em MT, de 1 a 6 por snapshot). Decisão 10: o painel de MS tira esses circuitos vazios; eles só existiriam como
+  0 a 10 (em MT, de 1 a 6 por snapshot; [`circuitos_vazios.csv`](../reports/ems/diagnostico/circuitos_vazios.csv)). Decisão 10: o painel de MS tira esses circuitos vazios; eles só existiriam como
   linhas de zeros no treino de 2020. Os arquivos `bdgd_feeders_<ano>.parquet` guardam todos os circuitos, vazios
   incluídos.
 * **Redes quase todas nuas e rurais.** 97% do km é cabo nu (98% em MT) e só 2% é rede compacta.
@@ -96,7 +97,7 @@ em MS é indireta, mas consistente:
   anos anteriores), contra 0% a 0,1% das chaves fusíveis (22 a 27) e dos demais;
 * o código de unidade construtiva `TUC` 345 aparece em 2.654 equipamentos de `EQSE`, **todos** de `TIP_UNID` 32 (98% dos
   equipamentos de religador), e o `TUC` 210 está em todos os 139 disjuntores (29);
-* a densidade de religadores é de 2,9 por 100 km em 2025, contra 1,9 em MT, plausível para a rede.
+* a densidade é de 2,9 religadores por 100 km de rede em 2025 (2.646 religadores em 91.453 km).
 
 | | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
 |---|---|---|---|---|---|---|---|---|
@@ -107,7 +108,7 @@ em MS é indireta, mas consistente:
 | Fora do mapeamento | 12,0% | 10,0% | 15,1% | 13,9% | 13,7% | 14,2% | 13,4% | 11,4% |
 
 O que fica fora do mapeamento são os códigos 19 (17 mil chaves em 2025, 11% do total), 33, 47, 49 e outros pequenos.
-Não achei rótulo para eles nos dados, e o extrator os ignora, como faz em MT com o 34 (28 mil chaves em 2025). O salto de
+Não achei rótulo para eles nos dados, e o extrator os ignora. O salto de
 religadores telecomandados em 2025 (de 36% para 68%) está no cadastro e entra como mudança de feature, não como erro de
 mapeamento.
 
@@ -129,13 +130,14 @@ mapeamento.
   `DAT_IMO` dos trafos a partir de 2020; `DAT_IMO` das chaves a partir de 2020, mas só com 28% a 33% de datas reais
   em todos os anos. No snapshot de 2025, a data das chaves está preenchida em cerca de 15% das fusíveis (`TIP_UNID` 22)
   e em 79% a 100% das demais. Quem usar a idade de chaves (`switchgear-survival`) precisa tratar isso.
-* Mesmo com `DAT_CON` limpa, 9,1% dos trafos de 2025 têm ano de conexão 2017 (lote de recadastramento, como em MT).
+* Mesmo com `DAT_CON` limpa, 9,1% dos trafos de 2025 têm ano de conexão 2017, um lote de recadastramento como em MT
+  (`bdgd_2025.json`, campo `pct_ano_mais_frequente`; calculado só para 2025).
   **Decisão:** a idade segue fora do modelo de MS, como em MT. Três dos 8 snapshots (M10) não têm data utilizável, e
   provar que a idade ajuda em MS exigiria olhar o resultado do modelo.
 
 ### 2.4 Coordenadas e consumidores
 
-* **CRS:** `EPSG:4674` (SIRGAS 2000, graus) em todas as camadas dos 8 snapshots, o mesmo de MT.
+* **CRS:** `EPSG:4674` (SIRGAS 2000, graus) em todas as camadas dos 8 snapshots.
 * **100%** dos trafos de cada snapshot caem dentro da caixa do estado (longitude de -58,17 a -50,92 e latitude de -24,07
   a -17,17, da malha do IBGE) e nenhum fica sem geometria.
 * `UCBT.CTMT` existe em `CTMT` para 99,2% a 100% dos consumidores de BT; 6% a 8% são rurais (`CLAS_SUB` `RU*`).
@@ -148,8 +150,8 @@ mapeamento.
 
 ### 3.1 Linhas repetidas
 
-`count(*)` contra `count(distinct *)` em **todos** os arquivos lidos (tabela completa em
-[`reports/ems/diagnostico/duplicatas_aneel.csv`](../reports/ems/diagnostico/duplicatas_aneel.csv)):
+`count(*)` contra `count(distinct *)` em **todos** os arquivos lidos (tabelas completas em [`duplicatas_aneel.csv`](../reports/ems/diagnostico/duplicatas_aneel.csv)
+e [`duplicatas_interrupcoes.csv`](../reports/ems/diagnostico/duplicatas_interrupcoes.csv), esta com MT ao lado):
 
 | Arquivo | Escopo | Linhas | Distintas | Repetidas | % | CHI repetido | Chaves com 2 valores |
 |---|---|---|---|---|---|---|---|
@@ -169,12 +171,12 @@ mapeamento.
 * **Interrupções:** as linhas idênticas de 2018 a 2020 afetam 1 a 2 UC cada, o que é compatível com consumidores
   diferentes de uma mesma ordem; não dá para distinguir isso de erro. Elas pesam menos de 0,03% do CHI de cada ano, e
   o DEC reconstruído de 2020 bate com o oficial sem remover nada. **Decisão:** ler as interrupções como
-  publicadas, o mesmo tratamento de MT (que tem 1 linha repetida em 2.413.120, em 2022).
+  publicadas, o mesmo tratamento de MT (que tem 1 linha repetida em 2.413.120, em 2022; [`duplicatas_interrupcoes.csv`](../reports/ems/diagnostico/duplicatas_interrupcoes.csv)).
 
 ### 3.2 Domínio do expurgo (`IdeMotivoInterrupcao`)
 
 O mapeamento de MT foi inferido comparando o perfil de cada código legado (2025) com o texto do layout novo (2026).
-Refiz a comparação com os dados de MS:
+Refiz a comparação com os dados de MS ([`expurgo_perfil.csv`](../reports/ems/diagnostico/expurgo_perfil.csv); os códigos de cada ano, em [`expurgo_codigos_por_ano.csv`](../reports/ems/diagnostico/expurgo_codigos_por_ano.csv)):
 
 | Código | Linhas 2025 | UC por linha | % BT | Causa modal | Categoria do layout novo com o mesmo perfil (2026) |
 |---|---|---|---|---|---|
@@ -211,25 +213,25 @@ Em 2020 e de 2022 a 2025 a diferença é de no máximo 0,01 h no DEC. A razão m
 todos os meses de 2020, 2022, 2023, 2024 e 2025 e de janeiro a julho de 2021. As exceções são agosto a dezembro de 2021
 (a pior é outubro, 0,03; as outras ficam entre 0,96 e 0,99), janeiro de 2026 (1,04) e março de 2026 (0). Os dois piores
 meses, outubro de 2021 e março de 2026, estão na seção 3.4; sem eles, a correlação mensal por conjunto sobe de 0,9596
-para 0,9994.
+para 0,9994 ([`dec_correlacao.csv`](../reports/ems/diagnostico/dec_correlacao.csv)).
 
 ### 3.4 Dois buracos nos dados de interrupções
 
 * **Março de 2026: nenhum registro.** O arquivo de 2026 tem janeiro, fevereiro e abril a julho; março não tem uma única
-  linha (em MT, março de 2026 existe). O DEC oficial de março de 2026 é 0,83 h. Consequência: os números observados de
+  linha (em MT, março de 2026 tem 27.328 registros; [`interrupcoes_por_mes.csv`](../reports/ems/diagnostico/interrupcoes_por_mes.csv)). O DEC oficial de março de 2026 é 0,83 h. Consequência: os números observados de
   2026 de MS (a checagem parcial) não incluem março. **Nada foi inventado**; a checagem de 2026 de MS fica registrada
   como parcial e com esse buraco.
 * **Outubro de 2021: o regulador conta CHI que o arquivo marca como expurgado.** O arquivo tem 12.288 registros em
   outubro de 2021, 12.096 deles com o código 3 (ISE por meio de CHI, 4,3 milhões de CHI, 7,6 h de duração mediana).
   Meu cálculo, que exclui todo CHI de ISE, dá DEC de 0,03 h; o oficial é 1,23 h. A diferença (1,19 milhão de CHI) é
   compatível com o regulador contar só a parcela de ISE acima de um limite de tempo de restabelecimento (a parcela
-  acima de 12 h vale 1,57 milhão e a acima de 24 h, 0,87 milhão), mas essa leitura é uma **hipótese não verificada**.
+  acima de 12 h vale 1,57 milhão e a acima de 24 h, 0,87 milhão; [`ise_mes_menor_razao.csv`](../reports/ems/diagnostico/ise_mes_menor_razao.csv)), mas essa leitura é uma **hipótese não verificada**.
   Fica registrado que o `chi_regulatorio` de MS em outubro de 2021 está subestimado. Isso só afeta o ano de 2021, que
   não entra nas janelas de compensação (2022 a 2025) nem na fração regulatória (2023 a 2025).
 
 ### 3.5 Composição das falhas e quebra de 2025
 
-Falhas de MT, internas e não programadas (a definição do painel, igual à de MT), por categoria:
+Falhas de MT, internas e não programadas (a definição do painel, igual à de MT), por categoria ([`falhas_por_grupo_causa.csv`](../reports/ems/diagnostico/falhas_por_grupo_causa.csv)):
 
 | Grupo de causa (% das falhas) | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
 |---|---|---|---|---|---|---|---|---|---|
@@ -247,18 +249,18 @@ Falhas de MT, internas e não programadas (a definição do painel, igual à de 
   modo, então herda essas mudanças; isso é uma limitação, e não algo que eu tenha ajustado.
 * **Quebra de série em 2025.** A categoria de expurgo "Falha nas instalações da unidade consumidora sem afetar
   terceiros" só existe no arquivo a partir de 2025: 4.095 das 118.385 falhas de MT (3,5%) e 0,4% do CHI em 2025, e 9.089
-  das 103.373 (8,8%) em 2026. Nos anos anteriores, zero. Em MT o código existe em todos os anos (de 34 mil a 110 mil linhas por ano). **Decisão:** manter, como em MT
+  das 103.373 (8,8%) em 2026. Nos anos anteriores, zero. Em MT o código existe em todos os anos (de 31 mil a 110 mil linhas por ano; [`expurgo_codigos_por_ano.csv`](../reports/ems/diagnostico/expurgo_codigos_por_ano.csv)). Números por expurgo, em [`falhas_por_expurgo.csv`](../reports/ems/diagnostico/falhas_por_expurgo.csv). **Decisão:** manter, como em MT
   (não filtrar por expurgo); o efeito sobre o último ano de treino é pequeno, e a checagem parcial de 2026 fica
   registrada com esse viés.
 * **O CHI expurgado pesa mais em MS.** O CHI de ISE por meio de CHI é 50% a 58% do CHI das falhas de MS em 2023 a 2025,
-  e o regulatório (sem nenhum expurgo) é 38% a 46%. Em MT, 74% do CHI é regulatório. A visão de caixa (compensações)
+  e o regulatório (sem nenhum expurgo) é 38% a 46%. Em MT, 26% do CHI é expurgado (README). A visão de caixa (compensações)
   usa só a parte regulatória, então fica proporcionalmente menor em MS.
 
 ## 4. Vínculo interrupção -> circuito da BDGD
 
 % das **falhas** (MT, internas, não programadas) que casam com um circuito, por ano do evento e por corte temporal
 (`scripts/diagnostico_vinculo.py`; tabela completa, com CHI e com todos os eventos de MT, em
-[`vinculo_circuitos.csv`](../reports/ems/diagnostico/vinculo_circuitos.csv)):
+[`vinculo_circuitos.csv`](../reports/ems/diagnostico/vinculo_circuitos.csv); a mesma conta para MT, em [`vinculo_circuitos_comparacao.csv`](../reports/ems/diagnostico/vinculo_circuitos_comparacao.csv)):
 
 | Ano | Todos os snapshots | Corte `y-1` (features) | Corte `y` (alvo) |
 |---|---|---|---|
@@ -272,7 +274,7 @@ Falhas de MT, internas e não programadas (a definição do painel, igual à de 
 | 2025 | 100,0 | 99,9 | 100,0 |
 | 2026 | 85,8 | 85,8 | 85,8 |
 
-* O padrão é o mesmo de MT (79% a 80% de 2018 a 2020 por corte; 99,5% a partir de 2021): os snapshots M10 não têm
+* O padrão é o mesmo de MT (no corte `y`, 79% a 80% de 2018 a 2020 e 99,5% ou mais a partir de 2021): os snapshots M10 não têm
   `CT_COD_OP` e só casam pelo nome do circuito. Nos anos de teste (2023 a 2025) a cobertura é de 99,7% a 100%.
   **Decisão:** manter as janelas de MT; os alvos de 2019 e 2020 (anos só de treino) ficam subestimados em ~21%, como em
   MT.
@@ -282,9 +284,9 @@ Falhas de MT, internas e não programadas (a definição do painel, igual à de 
 
 ## 5. Compensações, janelas e catálogo
 
-* **Compensações pagas (R$, indicadores `PG*`, sem repetidas):** 2020: 11,1 mi; 2021: 13,4 mi; 2022: 19,1 mi; 2023:
+* **Compensações pagas (R$, indicadores `PG*`, sem repetidas; [`compensacoes_por_ano.csv`](../reports/ems/diagnostico/compensacoes_por_ano.csv)):** 2020: 11,1 mi; 2021: 13,4 mi; 2022: 19,1 mi; 2023:
   22,2 mi; 2024: 18,6 mi; 2025: 23,0 mi, para 60 conjuntos (61 em 2024 em diante). Todos os 67 conjuntos que recebem
-  compensação aparecem nas interrupções. A janela de MT (2022 a 2025) tem os 4 anos completos em MS.
+  compensação aparecem nas interrupções (que têm 70; [`conjuntos_compensacao.csv`](../reports/ems/diagnostico/conjuntos_compensacao.csv)). A janela de MT (2022 a 2025) tem os 4 anos completos em MS.
 * **Janelas mantidas:** backtest em 2023, 2024 e 2025; previsão para 2026; compensação média de 2022 a 2025; início do
   painel em 2019; peso dos conjuntos por alimentador com eventos a partir de 2022; SHAP com dados a partir de 2023.
   Motivo: todos os snapshots (2018 a 2025) existem; o DEC reconstruído bate com o oficial nos anos de teste; a cobertura
@@ -292,7 +294,7 @@ Falhas de MT, internas e não programadas (a definição do painel, igual à de 
   mesmos de MT.
 * **Catálogo de intervenções e orçamento:** iguais aos de MT (`configs/intervencoes.yaml`, orçamentos de R$ 5 a 80 mi, com
   R$ 20 mi como referência). São premissas ilustrativas, não de MS. O que muda com o cadastro de MS é a elegibilidade
-  (snapshot de 2025):
+  (snapshot de 2025; [`elegibilidade_catalogo.csv`](../reports/ems/diagnostico/elegibilidade_catalogo.csv)):
 
 | Intervenção | Alimentadores elegíveis em MS (de 362) | em MT (de 697) |
 |---|---|---|
@@ -304,7 +306,7 @@ Falhas de MT, internas e não programadas (a definição do painel, igual à de 
 | Manutenção preditiva | 341 (94%) | 631 (91%) |
 
   A automação fica menos elegível (22% contra 47%): a regra exige menos de 3 chaves telecomandadas e pelo menos 500
-  consumidores, e o cadastro de 2025 de MS tem 1.814 chaves telecomandadas em 362 circuitos, contra 1.649 em 697 de MT.
+  consumidores, e o cadastro de 2025 de MS tem 1.814 chaves telecomandadas em 362 circuitos (`bdgd_2025.json`).
   Não recalibrei a regra, para não ajustar premissa olhando o resultado.
 
 ## 6. O que fica igual a MT, e por quê
@@ -312,7 +314,8 @@ Falhas de MT, internas e não programadas (a definição do painel, igual à de 
 Definição de falha (MT, interna, não programada), os 7 modos de falha, a janela de 3 anos do histórico, o LightGBM
 (Poisson e Tweedie, mesmos hiperparâmetros), as 5 sementes na previsão final, o R$/CHI a partir das compensações e do
 custo social (R$ 7.000/MWh, premissa), o catálogo e o otimizador. Nada disso depende de um parâmetro que os dados de MS
-contradigam. **Nenhum parâmetro foi calibrado em MS olhando métrica de modelo.**
+contradigam. O R$/CHI de cada alimentador usa o teto de 5 kW por consumidor e o corte nos percentis 5 e 95 do R$/CHI dos conjuntos,
+**definidos em MT e mantidos sem alteração**. **Nenhum parâmetro foi calibrado em MS olhando métrica de modelo.**
 
 ## 7. O que não foi feito
 

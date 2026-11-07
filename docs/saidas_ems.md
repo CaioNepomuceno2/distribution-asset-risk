@@ -91,8 +91,10 @@ falhas só com anos anteriores (`n_falhas_media_1a`, `chi_media_1a`, `n_falhas_m
 
 * `data/ems/raw/bdgd/2025/Energisa_MS_404_2025-12-31_V11_20260830-0339.gdb` (2,1 GB): o File Geodatabase de 2025,
   mantido depois do processamento. **Os dos outros anos são apagados** por `build_bdgd.py`: extraia o zip do cache
-  compartilhado (`bdgd-cache/ems/bdgd_<ano>_<item>.gdb.zip`) para uma pasta do **seu** clone, e nunca aponte
+  compartilhado (subpasta `ems`, arquivos `bdgd_<ano>_<item>.gdb.zip`) para uma pasta do **seu** clone, e nunca aponte
   `data/raw/bdgd/<ano>` para o cache (os `build_snapshot` apagam esse caminho).
+* **Em MT, `data/processed/` está vazio neste clone:** a execução de conferência de MT foi redirecionada para fora
+  do repositório (ver [`guarda_mt.md`](guarda_mt.md)), então só `data/ems/processed/` tem a saída do modelo.
 * `data/ems/raw/continuidade/`: os dois Parquet nacionais da ANEEL, **com cada linha repetida duas vezes**. Leia sempre
   com `gridrisk.ingest.continuidade` (`select distinct *`).
 
