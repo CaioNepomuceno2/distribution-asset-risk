@@ -718,15 +718,6 @@ def montar_metricas(P: dict) -> pd.DataFrame:
 
 
 # --------------------------------------------------------------------------------------------- tabelas
-def por_ano(df: pd.DataFrame | None, d: str, **filtros) -> pd.DataFrame | None:
-    if df is None:
-        return None
-    x = df[df["distribuidora"] == SIGLA[d]]
-    for k, v in filtros.items():
-        x = x[x[k] == v]
-    return x
-
-
 def tabelas(C: dict, S: dict, P: dict, avisos: list[str]) -> dict[str, pd.DataFrame]:
     T: dict[str, pd.DataFrame] = {}
     # (b) por modo e por ano
