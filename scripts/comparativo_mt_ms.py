@@ -578,11 +578,11 @@ ESPECS: list[Espec] = [
     _e("d", "anos_nao_batem", f"Anos em que o DEC ou o FEC recalculado difere do oficial em mais de "
        f"{fmt(100 * TOLERANCIA_DEC, 0)}%", "anos", 0, "Diferença relativa |calculado − oficial| ÷ oficial acima da tolerância.",
        "|calculado − oficial|", "oficial", ("validacao",), "Sim",
-       "Em 2026 os dois lados cobrem meses diferentes; a Energisa MS tem dois meses com problema nos dados.",
+       f"Em {ANO_PARCIAL} os dois lados cobrem meses diferentes; a Energisa MS tem meses com problema nos dados (seção 4).",
        com_razao=False),
     _e("d", "corr_mensal", "Correlação mensal por conjunto entre DEC calculado e oficial (todos os meses)", "correlação", 4,
        "Valor único do arquivo, repetido em todas as linhas.", "—", "—", ("validacao",), "Sim",
-       "Na Energisa MS cai por causa de dois meses (ver a seção 4).", com_razao=False),
+       "A correlação da Energisa MS é menor; há meses com problema nos dados (seção 4).", com_razao=False),
     # (e) compensações
     _e("e", "comp_paga_uc", f"Compensações pagas por consumidor por ano (média {JANELA_COMP[0]}-{JANELA_COMP[1]})", "R$/consumidor/ano", 2,
        "Σ dos indicadores PG* da ANEEL por conjunto, lidos sem as linhas repetidas do arquivo.", "R$ pagos por ano",
@@ -615,26 +615,26 @@ ESPECS: list[Espec] = [
     _e("g", "razao_carteira", f"Carteira ótima ÷ regra tradicional, VPL em 10 anos, orçamento de {ORC} (visão social)",
        "razão", 2, "VPL da carteira escolhida por programação inteira dividido pelo da regra tradicional "
        "(piores alimentadores primeiro, pacote padrão).", "VPL da carteira ótima", "VPL da regra tradicional",
-       ("fronteira_social",), "Sim", "Premissas ilustrativas iguais, sem calibrar; a elegibilidade das intervenções "
+       ("fronteira_social",), "Possível", "Premissas ilustrativas iguais, sem calibrar; a elegibilidade das intervenções "
        "depende do cadastro de cada empresa.", com_razao=False),
     _e("g", "investido_otimo", f"Investido pela carteira ótima com orçamento de {ORC} (visão social)", "R$", 0,
-       "Custo da carteira ótima.", "Σ custo das intervenções escolhidas", "—", ("fronteira_social",), "Sim",
+       "Custo da carteira ótima.", "Σ custo das intervenções escolhidas", "—", ("fronteira_social",), "Possível",
        com_razao=False),
     _e("g", "investido_max_otimo", "Maior investimento da carteira ótima entre os orçamentos testados (visão social)", "R$", 0, "A ótima só escolhe pacotes de VPL positivo e pode parar de investir.",
-       "máx. do investido da carteira ótima", "—", ("fronteira_social",), "Sim", com_razao=False),
+       "máx. do investido da carteira ótima", "—", ("fronteira_social",), "Possível", com_razao=False),
     _e("g", "n_otimo", f"Alimentadores tratados pela carteira ótima ({ORC}, social)", "alimentadores", 0,
-       "Alimentadores com pacote na carteira ótima.", "Contagem", "—", ("fronteira_social",), "Sim", com_razao=False),
+       "Alimentadores com pacote na carteira ótima.", "Contagem", "—", ("fronteira_social",), "Possível", com_razao=False),
     _e("g", "n_tradicional", f"Alimentadores tratados pela regra tradicional ({ORC}, social)", "alimentadores", 0,
-       "Alimentadores com pacote na regra tradicional.", "Contagem", "—", ("fronteira_social",), "Sim", com_razao=False),
+       "Alimentadores com pacote na regra tradicional.", "Contagem", "—", ("fronteira_social",), "Possível", com_razao=False),
     _e("g", "vpl_otimo_caixa", f"VPL da carteira ótima na visão de caixa (só compensações), orçamento de {ORC}", "R$", 0,
-       "VPL em 10 anos contando só a compensação evitada.", "VPL da carteira ótima", "—", ("fronteira_caixa",), "Sim",
+       "VPL em 10 anos contando só a compensação evitada.", "VPL da carteira ótima", "—", ("fronteira_caixa",), "Possível",
        com_razao=False),
     _e("g", "vpl_tradicional_caixa", f"VPL da regra tradicional na visão de caixa, orçamento de {ORC}", "R$", 0,
-       "VPL em 10 anos contando só a compensação evitada.", "VPL da regra tradicional", "—", ("fronteira_caixa",), "Sim",
+       "VPL em 10 anos contando só a compensação evitada.", "VPL da regra tradicional", "—", ("fronteira_caixa",), "Possível",
        com_razao=False),
     _e("g", "investido_max_otimo_caixa", "Maior investimento da carteira ótima na visão de caixa entre os orçamentos testados", "R$", 0,
        "Obras com VPL positivo contando só a compensação.", "máx. do investido da carteira ótima", "—",
-       ("fronteira_caixa",), "Sim", com_razao=False),
+       ("fronteira_caixa",), "Possível", com_razao=False),
     # (h) subestações
     _e("h", "ses", "Subestações com transformador de alta para média tensão e carga cadastrada (2025)", "subestações", 0,
        "SEs do índice de saúde e criticidade.", "Contagem de SEs", "—", ("se_resumo",), "Possível",
@@ -663,7 +663,7 @@ ESPECS: list[Espec] = [
        com_razao=False),
     _e("h", "ses_util80", "SEs com pico estimado acima de 80% da potência instalada", "subestações", 0,
        "Utilização estimada no pico.", "Contagem de SEs", "—", ("se_resumo",), "Possível",
-       "O pico vem da energia dos circuitos e de um fator de carga de MT.", com_razao=False),
+       "O pico vem da energia dos circuitos e de um fator de carga da Energisa MT.", com_razao=False),
     _e("h", "eventos_se", "Eventos de SE por ano (interrupção simultânea em 3 ou mais alimentadores)", "eventos/ano", 0,
        "Média anual de eventos de SE no período do índice.", "Contagem de eventos", "—", ("se_resumo",), "Possível",
        com_razao=False),
@@ -948,7 +948,7 @@ def nao_comparavel(C: dict, S: dict, P: dict) -> pd.DataFrame:
           f"eventos (mínimo {f0('ms', 'regra_min_eventos')}) e {f0('ms', 'regra_controles')} controles (mínimo "
           f"{f0('ms', 'regra_min_controles')}). O cadastro mistura instalação e remanejamento: {f0('ms', 'recl_ganhos_brutos')} "
           f"religadores ganhos contra saldo de {f0('ms', 'recl_ganho_liquido')} em {f0('ms', 'recl_transicoes')} transições."),
-         "Qualquer R$ ou DEC evitado por religador na Energisa MS é a exposição de MS vezes o efeito da Energisa MT.",
+         "Qualquer R$ ou DEC evitado por religador na Energisa MS é a exposição da Energisa MS vezes o efeito da Energisa MT.",
          "valor.json; regra_decisao.json; transicoes_religadores.csv; mt_contagens_referencia.json"),
         ("Disjuntores (TUC 210)",
          "Não disponível: nenhum arquivo publicado separa o TUC 210 da Energisa MT por tensão.",
@@ -961,7 +961,7 @@ def nao_comparavel(C: dict, S: dict, P: dict) -> pd.DataFrame:
           f"{f0('mt', 'classes_aprovadas')} de {f0('mt', 'classes_total')} classes passam no teste de consistência do cadastro."),
          (f"Não estimada: {f0('ms', 'classes_aprovadas')} de {f0('ms', 'classes_total')} classes passam no teste de consistência "
           "do cadastro."),
-         "Não há vida útil de MS para comparar: a contagem de equipamentos por safra sobe e desce de um cadastro para o outro.",
+         "Não há vida útil da Energisa MS para comparar: a contagem de equipamentos por safra sobe e desce de um cadastro para o outro.",
          "qualidade_classes.csv; vida_weibull.csv"),
         ("Contagem de religadores",
          (f"{f0('mt', 'recl_cadastro')} (recloser-performance), {f0('mt', 'recl_valor_json')} (automation-impact) e "
@@ -993,9 +993,9 @@ def nao_comparavel(C: dict, S: dict, P: dict) -> pd.DataFrame:
           "média. Não medi como cada distribuidora abre e divide os registros no arquivo da ANEEL."),
          "falhas_por_modo.csv; vinculo_circuitos_comparacao.csv"),
         ("Premissas e elegibilidade da carteira",
-         "Custos, eficácias e energia não suprida são ilustrativos (catálogo de MT).",
-         ("As mesmas premissas, sem calibrar para MS; a elegibilidade das intervenções vem do cadastro de MS, e a sensibilidade "
-          "com eficácias medidas não foi feita."),
+         "Custos, eficácias e energia não suprida são ilustrativos (catálogo da Energisa MT).",
+         ("As mesmas premissas, sem calibrar para a Energisa MS; a elegibilidade das intervenções vem do cadastro dela, e a "
+          "sensibilidade com eficácias medidas não foi feita."),
          ("A razão ótima ÷ tradicional depende dessas premissas; o valor absoluto do VPL serve para comparar estratégias, não "
           "para aprovar verba."),
          "fronteira_social.csv; elegibilidade_catalogo.csv"),
@@ -1092,7 +1092,6 @@ def figuras(P: dict, T: dict, pasta: Path) -> list[str]:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     import numpy as np
-    from matplotlib.ticker import FuncFormatter
 
     surface, ink, ink2, muted, grid, axis = "#fcfcfb", "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
     cor = {"mt": "#2a78d6", "ms": "#eb6834"}
@@ -1159,24 +1158,23 @@ def figuras(P: dict, T: dict, pasta: Path) -> list[str]:
         fig.suptitle(f"CHI das falhas por consumidor (média {JANELA}): a regra de expurgo pesa diferente", x=0.01, ha="left",
                      color=ink, fontweight="bold", y=1.03)
         salvar(fig, "02_chi_por_consumidor.png")
-    # 3) DEC oficial e recalculado
+    # 3) DEC oficial e recalculado (sem o ano parcial)
     t = T["dec_fec_oficial"]
     if "DEC_oficial_mt" in t.columns and "DEC_oficial_ms" in t.columns and len(t):
+        t = t[t["ano"].astype(int) < ANO_PARCIAL]
         fig, ax = plt.subplots(figsize=(8.6, 4.2))
         for d in DIST:
             anos = t["ano"].astype(int).to_numpy()
             of = pd.to_numeric(t[f"DEC_oficial_{d}"], errors="coerce").to_numpy()
             ca = pd.to_numeric(t[f"DEC_calculado_{d}"], errors="coerce").to_numpy()
-            parcial = anos >= ANO_PARCIAL
-            ax.plot(anos[~parcial], of[~parcial], color=cor[d], lw=2, marker="o", ms=6, mec=surface, mew=2,
-                    label=f"{NOME[d]}: oficial")
-            ax.plot(anos, ca, color=cor[d], lw=0, marker="o", ms=7, mfc="none", mew=1.5, label=f"{NOME[d]}: recalculado")
-            ax.plot(anos[parcial], of[parcial], color=cor[d], lw=0, marker="o", ms=6, mec=cor[d], mfc=surface, mew=1.5)
+            ax.plot(anos, of, color=cor[d], lw=2, marker="o", ms=6, mec=surface, mew=2, label=f"{NOME[d]}: oficial")
+            ax.plot(anos, ca, color=cor[d], lw=0, marker="o", ms=8, mfc="none", mew=1.5, label=f"{NOME[d]}: recalculado")
             for a, o, c in zip(anos, of, ca, strict=True):
                 if np.isfinite(o) and np.isfinite(c) and abs(c - o) / o > TOLERANCIA_DEC:
-                    ax.annotate(f"recalculado {pt(c)}", (a, c), textcoords="offset points", xytext=(0, -14), ha="center",
+                    ax.annotate(f"recalculado {pt(c)}", (a, c), textcoords="offset points", xytext=(0, -16), ha="center",
                                 fontsize=8, color=ink2)
-        ax.set_xlabel(f"Ano ({ANO_PARCIAL} é parcial; os meses cobertos não são os mesmos nas duas empresas)")
+        ax.set_xticks(sorted(set(t["ano"].astype(int))))
+        ax.set_xlabel(f"Ano (o ano parcial, {ANO_PARCIAL}, fica fora da figura; ver a tabela)")
         ax.set_ylabel("DEC (horas por consumidor)")
         ax.set_ylim(bottom=0)
         ax.set_title("DEC oficial da ANEEL e DEC recalculado das interrupções")
@@ -1188,26 +1186,26 @@ def figuras(P: dict, T: dict, pasta: Path) -> list[str]:
         s = t[t["visao"] == "social"].sort_values("orcamento")
         if len(s):
             fig, axes = plt.subplots(1, 2, figsize=(11, 4.0))
-            orc = s["orcamento"].astype(float).to_numpy()
+            orc = s["orcamento"].astype(float).to_numpy() / 1e6
             for d in DIST:
                 r = pd.to_numeric(s[f"razao_otimo_tradicional_{d}"], errors="coerce").to_numpy()
                 axes[0].plot(orc, r, color=cor[d], lw=2, marker="o", ms=6, mec=surface, mew=2, label=NOME[d])
-                inv = pd.to_numeric(s[f"investido_otimo_{d}"], errors="coerce").to_numpy()
+                inv = pd.to_numeric(s[f"investido_otimo_{d}"], errors="coerce").to_numpy() / 1e6
                 axes[1].plot(orc, inv, color=cor[d], lw=2, marker="o", ms=6, mec=surface, mew=2, label=NOME[d])
             axes[0].axhline(1, color=axis, lw=1)
             axes[0].set_ylim(bottom=0)
+            axes[0].set_ylabel("razão")
             axes[0].set_title("VPL da carteira ótima ÷ VPL da regra tradicional\nvisão social, premissas ilustrativas",
                               fontsize=10.5)
-            axes[0].set_ylabel("razão")
+            axes[0].legend(loc="upper right")
             axes[1].plot(orc, orc, color=axis, lw=1, ls="--", label="orçamento")
-            axes[1].set_title("Quanto a carteira ótima investe\n(para de investir quando não há pacote de VPL positivo)",
-                              fontsize=10.5)
-            mi = FuncFormatter(lambda v_, _: f"R$ {v_ / 1e6:,.0f} mi".replace(",", "."))
+            axes[1].set_ylabel("R$ mi investidos")
+            axes[1].set_title("Quanto a carteira ótima investe\n(para quando não há pacote de VPL positivo)", fontsize=10.5)
+            axes[1].legend(loc="upper left")
             for ax in axes:
-                ax.xaxis.set_major_formatter(mi)
-                ax.set_xlabel("Orçamento de investimento")
-                ax.legend(loc="upper left")
-            axes[1].yaxis.set_major_formatter(mi)
+                ax.set_xticks(orc, [fmt(o, 0) for o in orc])
+                ax.set_xlabel("Orçamento de investimento (R$ mi)")
+            fig.subplots_adjust(wspace=0.25)
             salvar(fig, "04_carteira_otima_contra_tradicional.png")
     return geradas
 
@@ -1238,8 +1236,9 @@ def tabela_bloco(P: dict, bloco: str, so: tuple[str, ...] | None = None) -> str:
         dif = e.diferenca + (f": {e.nota}" if e.nota and e.diferenca != "Não" else "")
         if e.diferenca == "Não" and e.nota:
             dif = f"Não. {e.nota}"
-        linhas.append([f"{e.nome} ({e.unidade})", valor_fmt(e, mt), valor_fmt(e, ms), "" if r is None else fmt(r, 2), dif])
-    return md_tabela(["Métrica", NOME["mt"], NOME["ms"], "Razão MS ÷ MT", "A diferença pode vir de definição?"], linhas)
+        linhas.append([e.nome, e.unidade, valor_fmt(e, mt), valor_fmt(e, ms), "" if r is None else fmt(r, 2), dif])
+    return md_tabela(["Métrica", "Unidade", NOME["mt"], NOME["ms"], "Razão MS ÷ MT", "A diferença pode vir de definição?"],
+                     linhas)
 
 
 def detalhes_bloco(bloco: str) -> str:
