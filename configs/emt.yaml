@@ -3,14 +3,44 @@ distribuidora:
   sigla: EMT
   cod_aneel: 405
   nome: Energisa Mato Grosso
+  nome_curto: Energisa MT
 
 paths:
   raw: data/raw
   interim: data/interim
   processed: data/processed
+  reports: reports
+  app_data: app/data
+  malha_ibge: data/ref/mt_ibge.geojson   # malha do IBGE, UF 51
+  catalogo: configs/intervencoes.yaml
 
 interrupcoes:
   anos: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+
+# Anos do backtest, da previsão e das contas de compensação (os valores publicados para MT).
+janelas:
+  anos_teste: [2023, 2024, 2025]
+  ano_previsao: 2026
+  anos_compensacao: [2022, 2023, 2024, 2025]
+  ano_inicio_painel: 2019
+  ano_inicio_pesos_conjunto: 2022
+  ano_inicio_shap: 2023
+
+# INMET: UF das estações. Só MT foi testado; sem esta chave, build_clima.py e experimento_clima.py recusam rodar.
+clima:
+  uf: MT
+
+# Efeito medido pelo automation-impact (fração do CHI do alimentador evitada ao ganhar religador, com IC 95%),
+# usado por scripts/sensibilidade_eficacias.py.
+eficacias_medidas:
+  religador:
+    medido: 0.166
+    medido_ic_inferior: 0.075
+    medido_ic_superior: 0.248
+
+# MT: o painel usa todos os circuitos do cadastro (docs/dados.md)
+qualidade:
+  excluir_circuitos_vazios: false
 
 bdgd:
   # snapshots de 31/12 de cada ano (id do item no ArcGIS Hub da ANEEL)

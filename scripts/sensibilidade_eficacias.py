@@ -20,20 +20,24 @@ import pandas as pd
 
 from gridrisk import features as F
 from gridrisk import otimizacao as O
-from gridrisk.config import ROOT, Config
+from gridrisk.config import carregar
 
-cfg = Config.load()
-OUT = ROOT / "reports"
+cfg = carregar("Quanto a carteira muda se as eficácias de catálogo forem trocadas pelas medidas nos dados?")
+if not cfg.eficacias_medidas:
+    raise SystemExit(f"{cfg.sigla}: sem a chave eficacias_medidas na configuração. As eficácias medidas vêm do "
+                     "automation-impact, rodado para a própria distribuidora; use-as só depois dessa medição.")
+OUT = cfg.reports
 ORCAMENTO = 20e6
-# efeito no CHI do alimentador (fração evitada), do automation-impact (reports/efeitos_principais.csv lá)
-RELIGADOR = {"medido": 0.166, "medido_ic_inferior": 0.075, "medido_ic_superior": 0.248}
+# efeito no CHI do alimentador (fração evitada), do automation-impact (reports/efeitos_principais.csv lá),
+# lido da configuração da distribuidora (chave eficacias_medidas.religador)
+RELIGADOR = cfg.eficacias_medidas["religador"]
 
-fin, catalogo = O.carregar_catalogo(ROOT / "configs" / "intervencoes.yaml")
+fin, catalogo = O.carregar_catalogo(cfg.catalogo)
 ult = max(int(p.stem.split("_")[-1]) for p in cfg.interim.glob("bdgd_feeders_*.parquet"))
 feeders = (pd.read_parquet(cfg.interim / f"bdgd_feeders_{ult}.parquet")
            .rename(columns={"alimentador_nome": "alimentador"}).drop_duplicates("alimentador")
            .set_index("alimentador"))
-prev = pd.read_parquet(cfg.processed / "previsao_2026.parquet")
+prev = pd.read_parquet(cfg.processed / f"previsao_{cfg.ano_previsao}.parquet")
 chi_modo = prev.pivot_table(index="alimentador", columns="modo", values="pred_chi", observed=False)[F.MODOS]
 frac_reg = pd.read_csv(OUT / "frac_chi_regulatorio_modo.csv", index_col=0).iloc[:, 0].reindex(F.MODOS)
 chi_modo_reg = chi_modo * frac_reg

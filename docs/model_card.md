@@ -1,5 +1,7 @@
 # Model card: frequência de falhas e CHI por alimentador
 
+> **Este documento descreve a Energisa MT.** A Energisa MS usa o mesmo método com a configuração [`configs/ems.yaml`](../configs/ems.yaml); as decisões e os resultados de MS estão em [`decisoes_ems.md`](decisoes_ems.md) e [`resultados_ems.md`](resultados_ems.md).
+
 ## Uso pretendido
 Priorizar alimentadores e modos de falha para o **planejamento anual** de investimento e manutenção em
 redes de média tensão. O modelo **não** foi feito para prever o DEC do ano, que depende do clima realizado,

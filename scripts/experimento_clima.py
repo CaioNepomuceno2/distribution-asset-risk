@@ -15,20 +15,24 @@ import pandas as pd
 from gridrisk import features as F
 from gridrisk import model as M
 from gridrisk import regra_clima
-from gridrisk.config import ROOT, Config
+from gridrisk.config import carregar
 from gridrisk.reporting import normalizar_nan
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("experimento_clima")
-cfg = Config.load()
-OUT = ROOT / "reports"
-ANOS_TESTE = [2023, 2024, 2025]
+cfg = carregar("Experimento pré-registrado: o clima do INMET melhora o backtest?")
+cfg.exigir_clima()
+OUT = cfg.reports
+OUT.mkdir(parents=True, exist_ok=True)
+ANOS_TESTE = cfg.anos_teste
 SEMENTES = range(10)
 
 clima = pd.read_parquet(cfg.interim / "clima_alimentador_mes.parquet")
-cortes = F.falhas_point_in_time(cfg.interim / "interrupcoes_emt.parquet", cfg.interim)
-paineis = {"semclima": F.build_panel(cortes, cfg.interim, None, list(range(2019, max(ANOS_TESTE) + 1))),
-           "clima": F.build_panel(cortes, cfg.interim, clima, list(range(2019, max(ANOS_TESTE) + 1)))}
+cortes = F.falhas_point_in_time(cfg.interrupcoes_parquet, cfg.interim)
+paineis = {"semclima": F.build_panel(cortes, cfg.interim, None, list(range(cfg.ano_inicio_painel, max(ANOS_TESTE) + 1)),
+                                 cfg.excluir_circuitos_vazios),
+           "clima": F.build_panel(cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, max(ANOS_TESTE) + 1)),
+                              cfg.excluir_circuitos_vazios)}
 for modo, painel in paineis.items():
     log.info("%s: %d linhas, %d colunas clim_*", modo, len(painel), sum(c.startswith("clim_") for c in painel.columns))
 

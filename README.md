@@ -271,6 +271,7 @@ Os detalhes estão em [`docs/dados.md`](docs/dados.md). Os principais:
 
 ```
 src/gridrisk/
+  config.py               configuração por distribuidora (--config ou GRIDRISK_CONFIG; padrão configs/emt.yaml)
   ingest/interrupcoes.py  download + harmonização dos dois layouts ANEEL, taxonomia de modos de falha
   ingest/bdgd.py          atributos de ativos por alimentador (M10 e V10/V11), mapa de códigos
   ingest/inmet.py         clima horário -> mensal -> IDW no centróide do alimentador
@@ -280,12 +281,13 @@ src/gridrisk/
   model.py                LightGBM Poisson/Tweedie, backtest, baselines, calibração
   risco.py                R$/CHI (compensações + custo social)
   otimizacao.py           pacotes de intervenção, MILP, baselines guloso e tradicional
-scripts/                  build_interrupcoes, build_bdgd, build_clima, run_pipeline, make_figures, validate_dec, experimento_clima
-app/app.py                painel Streamlit (lê só os Parquet de app/data/)
+scripts/                  build_interrupcoes, build_bdgd, build_clima, run_pipeline, make_figures, validate_dec, experimento_clima,
+                          diagnostico_bdgd, diagnostico_vinculo, diagnostico_duplicatas, variacao_sementes (todos com --config)
+app/app.py                painel Streamlit (lê só os Parquet de app/data/ e, para MS, de app/data/ems/)
 requirements.txt          dependências mínimas do painel publicado (Python 3.12)
 .streamlit/config.toml    tema neutro e telemetria desligada
-configs/                  recorte (distribuidora, anos) e catálogo de intervenções
-docs/                     metodologia, decisões de dados e model card
+configs/                  recorte por distribuidora (emt.yaml, ems.yaml) e catálogo de intervenções
+docs/                     metodologia, decisões de dados e model card; MS: decisoes_ems, resultados_ems, saidas_ems; guarda_mt
 ```
 
 ## Reproduzir
@@ -306,7 +308,38 @@ python scripts/make_figures.py
 pytest
 ```
 
-Para outra distribuidora, basta trocar a sigla e os IDs dos snapshots da BDGD em `configs/`.
+Para outra distribuidora, crie um YAML em `configs/` (sigla, código ANEEL, IDs dos snapshots da BDGD e pastas de
+saída) e passe `--config` a cada script, por exemplo `python scripts/run_pipeline.py --config configs/ems.yaml`. A
+variável de ambiente `GRIDRISK_CONFIG` faz o mesmo. Sem `--config`, vale `configs/emt.yaml`, com os caminhos de
+sempre. A Energisa MS está em [Energisa MS](#energisa-ms).
+
+## Energisa MS
+
+O mesmo método, aplicado à **Energisa Mato Grosso do Sul** (código ANEEL 404) com `--config configs/ems.yaml`. Tudo de
+MS grava só em `reports/ems/`, `app/data/ems/` e `data/ems/`; os resultados de MT acima não mudaram
+([como isso foi conferido](docs/guarda_mt.md)). As decisões de dados foram registradas **antes** dos resultados em
+[`docs/decisoes_ems.md`](docs/decisoes_ems.md); a análise completa está em [`docs/resultados_ems.md`](docs/resultados_ems.md).
+
+| Indicador (Energisa MS) | Valor | Arquivo |
+|---|---|---|
+| Alimentadores, consumidores e rede MT (BDGD de 31/12/2025) | 362, 1,40 milhão e 91,5 mil km | [`resumo_decisao.json`](reports/ems/resumo_decisao.json), [`resultados.json`](reports/ems/resultados.json), [`comparacao_descritiva.csv`](reports/ems/diagnostico/comparacao_descritiva.csv) |
+| DEC de 2025: oficial e recalculado das interrupções | 9,13 h e 9,12 h (2022 a 2025 e 2020 batem; **2021 e 2026 não**, por dois meses com problema nos dados) | [`validacao_dec_fec.csv`](reports/ems/validacao_dec_fec.csv) |
+| Erro absoluto do CHI por alimentador (backtest 2023-2025): modelo, média de 3 anos, ano anterior | 17,4 mil, 19,8 mil e 20,5 mil | [`backtest_media.csv`](reports/ems/backtest_media.csv) |
+| Deviance de Poisson das falhas por modo: modelo e média de 3 anos | 11,2 e 20,7 | [`backtest_media.csv`](reports/ems/backtest_media.csv) |
+| Variação entre 10 sementes do LightGBM (erro do CHI) | média 17,5 mil, desvio-padrão 0,1 mil (0,6%) | [`variacao_sementes.json`](reports/ems/variacao_sementes.json) |
+| Concentração do risco: 10% e 20% dos alimentadores | 33% e 50% do risco social | [`resumo_decisao.json`](reports/ems/resumo_decisao.json) |
+| Risco previsto para 2026: compensações, visão social e DEC | R$ 16,6 mi/ano, R$ 106,0 mi/ano e 5,9 h | [`resumo_decisao.json`](reports/ems/resumo_decisao.json) |
+| Carteira de R$ 20 mi, visão social (VPL em 10 anos): ótima, gulosa e tradicional | R$ 58,2 mi (87 alimentadores), R$ 56,9 mi e R$ 44,6 mi (66): ótima 1,3 vez a tradicional | [`fronteira_social.csv`](reports/ems/fronteira_social.csv) |
+| Visão de caixa (só compensações): obras com VPL positivo | R$ 3,8 mi (24 alimentadores), VPL de R$ 1,4 mi; a regra tradicional dá VPL negativo | [`fronteira_compensacao.csv`](reports/ems/fronteira_compensacao.csv) |
+
+Duas diferenças em relação a MT que mudam a leitura: **59% do CHI das falhas de MS é expurgado** (26% em MT), e a
+vantagem da carteira ótima sobre a regra tradicional é de 1,3 vez (2,3 vezes em MT) e cai para 1,03 vez com R$ 40 mi de
+orçamento (a ótima para de investir em R$ 31,8 mi). A checagem parcial de 2026 também é mais fraca (Spearman 0,66 contra 0,83), com um mês faltando nos dados
+(março). Custos e eficácias são as mesmas premissas ilustrativas de MT, **sem calibração para MS**, e a sensibilidade
+com eficácias medidas não foi feita (depende do `automation-impact` em MS). O painel (`streamlit run app/app.py`) tem
+um seletor MT/MS. O clima do INMET não roda em MS.
+
+> Projeto independente, sem vínculo com a Energisa ou com a ANEEL. Só dados abertos (ANEEL e IBGE).
 
 ## Publicar o painel (Streamlit Community Cloud)
 O repositório já está pronto para publicar o painel. **Ainda não foi publicado:** falta só o login do dono.

@@ -6,10 +6,10 @@ import json
 
 import pandas as pd
 
-from gridrisk.config import ROOT, Config
+from gridrisk.config import carregar
 
-cfg = Config.load()
-OUT = ROOT / "reports"
+cfg = carregar("Números de apoio à decisão citados na seção \"Na prática\" do README.")
+OUT = cfg.reports
 risco = pd.read_parquet(cfg.processed / "risco_alimentador.parquet")
 front = pd.read_csv(OUT / "fronteira_social.csv")
 

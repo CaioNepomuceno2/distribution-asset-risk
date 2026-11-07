@@ -1,5 +1,7 @@
 # Metodologia
 
+> **Este documento descreve a Energisa MT.** A Energisa MS usa o mesmo método com a configuração [`configs/ems.yaml`](../configs/ems.yaml); as decisões e os resultados de MS estão em [`decisoes_ems.md`](decisoes_ems.md) e [`resultados_ems.md`](resultados_ems.md).
+
 Este documento explica, passo a passo, como o projeto vai do dado bruto à carteira de investimento, quais
 fórmulas e premissas entram em cada etapa e como ler cada resultado. As decisões de tratamento de dados estão
 em [`dados.md`](dados.md), e as características do modelo de previsão, em [`model_card.md`](model_card.md).

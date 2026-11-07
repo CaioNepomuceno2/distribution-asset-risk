@@ -4,7 +4,8 @@ Pré-requisitos (dados brutos processados):
     python scripts/build_interrupcoes.py
     python scripts/build_bdgd.py
     python scripts/build_continuidade.py
-O clima do INMET (scripts/build_clima.py) só entra com `modelo.usar_clima: true` em configs/emt.yaml.
+O clima do INMET (scripts/build_clima.py) só entra com `modelo.usar_clima: true` na configuração da distribuidora.
+Todos os scripts aceitam `--config configs/<distribuidora>.yaml` (padrão: configs/emt.yaml).
 """
 import json
 import logging
@@ -18,25 +19,28 @@ from gridrisk import model as M
 from gridrisk import otimizacao as O
 from gridrisk import reporting
 from gridrisk import risco as R
-from gridrisk.config import ROOT, Config
+from gridrisk.config import carregar
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("pipeline")
-cfg = Config.load()
-OUT = ROOT / "reports"
-OUT.mkdir(exist_ok=True)
-ANOS_TESTE = [2023, 2024, 2025]
-ANO_PREV = 2026
+cfg = carregar("Pipeline completo: painel, backtest, previsão, SHAP, risco e carteira ótima.")
+OUT = cfg.reports
+for pasta in (OUT, cfg.processed, cfg.app_data):
+    pasta.mkdir(parents=True, exist_ok=True)
+ANOS_TESTE = cfg.anos_teste
+ANO_PREV = cfg.ano_previsao
+MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
 
 # ---------------------------------------------------------------- painel
 # vínculo de circuitos com cortes temporais: features do ano y só usam snapshots até y-1
-falhas_cortes = F.falhas_point_in_time(cfg.interim / "interrupcoes_emt.parquet", cfg.interim)
+falhas_cortes = F.falhas_point_in_time(cfg.interrupcoes_parquet, cfg.interim)
 falhas = falhas_cortes[max(falhas_cortes)]  # vínculo mais completo, para as estatísticas descritivas
 falhas.to_parquet(cfg.interim / "falhas.parquet", index=False)
-clima = F.carregar_clima(cfg.interim, cfg.usar_clima)  # chave modelo.usar_clima em configs/emt.yaml
+clima = F.carregar_clima(cfg.interim, cfg.usar_clima)  # chave modelo.usar_clima da configuração
 if clima is None:
     log.info("modelo.usar_clima desligado: modelo treinado sem climatologia")
-panel = F.build_panel(falhas_cortes, cfg.interim, clima, list(range(2019, ANO_PREV + 1)))
+panel = F.build_panel(falhas_cortes, cfg.interim, clima, list(range(cfg.ano_inicio_painel, ANO_PREV + 1)),
+                      cfg.excluir_circuitos_vazios)
 panel.to_parquet(cfg.processed / "panel.parquet", index=False)
 treino_total = panel[panel.ano < ANO_PREV]
 log.info("painel: %s linhas, %d alimentadores", len(panel), panel.alimentador.nunique())
@@ -73,7 +77,7 @@ prev = prev.rename(columns={"n_falhas": "n_falhas_obs_parcial", "chi": "chi_obs_
 prev.to_parquet(cfg.processed / f"previsao_{ANO_PREV}.parquet", index=False)
 
 # ---------------------------------------------------------------- SHAP
-X = M.design(treino_total[treino_total.ano >= 2023])
+X = M.design(treino_total[treino_total.ano >= cfg.ano_inicio_shap])
 amostra = X.sample(min(len(X), 6000), random_state=0)
 sv = shap.TreeExplainer(modelos["chi"]).shap_values(amostra)
 imp = pd.Series(np.abs(sv).mean(0), index=amostra.columns).sort_values(ascending=False)
@@ -82,13 +86,14 @@ pd.DataFrame(sv, columns=amostra.columns, index=amostra.index).to_parquet(cfg.pr
 amostra.to_parquet(cfg.processed / "shap_amostra_X.parquet")
 
 # ---------------------------------------------------------------- consequência (R$/CHI)
-fin, catalogo = O.carregar_catalogo(ROOT / "configs" / "intervencoes.yaml")
+fin, catalogo = O.carregar_catalogo(cfg.catalogo)
 ult_snap = max(int(p.stem.split("_")[-1]) for p in cfg.interim.glob("bdgd_feeders_*.parquet"))
 feeders = (pd.read_parquet(cfg.interim / f"bdgd_feeders_{ult_snap}.parquet")
            .rename(columns={"alimentador_nome": "alimentador"}).drop_duplicates("alimentador"))
 comp = R.compensacao_por_chi(cfg.raw / "continuidade" / "indicadores-continuidade-coletivos-compensacao-2020-2029.parquet",
-                             cfg.interim / "interrupcoes_emt.parquet", cfg.sigla, [2022, 2023, 2024, 2025])
-pesos = R.conjunto_do_alimentador(cfg.interim / "interrupcoes_emt.parquet", cfg.interim / f"crosswalk_{ult_snap}.parquet")
+                             cfg.interrupcoes_parquet, cfg.sigla, cfg.anos_compensacao)
+pesos = R.conjunto_do_alimentador(cfg.interrupcoes_parquet, cfg.interim / f"crosswalk_{ult_snap}.parquet",
+                                  cfg.ano_inicio_pesos_conjunto)
 cenarios = {
     "compensacao": R.valor_chi_alimentador(comp, pesos, feeders, 0.0),
     "social": R.valor_chi_alimentador(comp, pesos, feeders, fin["custo_ens_rs_mwh"]),
@@ -136,7 +141,8 @@ for nome, v in cenarios.items():
 obs = prev.groupby("alimentador")[["n_falhas_obs_parcial", "pred_n_falhas"]].sum()
 from scipy.stats import spearmanr
 
-check = {"spearman_parcial_jan_jul": float(spearmanr(obs.n_falhas_obs_parcial, obs.pred_n_falhas).statistic),
+ate_mes = MESES[int(falhas[falhas.ano == ANO_PREV].mes.max()) - 1]  # último mês com interrupções no ano da previsão
+check = {f"spearman_parcial_jan_{ate_mes}": float(spearmanr(obs.n_falhas_obs_parcial, obs.pred_n_falhas).statistic),
          "captura_top10_parcial": M.captura_top(obs.n_falhas_obs_parcial, obs.pred_n_falhas, 0.10)}
 relatorio = {"backtest_media": media.round(4).reset_index().to_dict("records"),
              "otimizacao": resultados, "check_2026": check, "n_uc_total": int(n_uc_total),
@@ -145,10 +151,8 @@ relatorio = {"backtest_media": media.round(4).reset_index().to_dict("records"),
     json.dumps(reporting.normalizar_nan(relatorio), indent=2, ensure_ascii=False, allow_nan=False),
     encoding="utf-8",
 )
-log.info("checagem 2026 (jan-jul, parcial): %s", check)
+log.info("checagem %d (jan-%s, parcial): %s", ANO_PREV, ate_mes, check)
 
 # ---------------------------------------------------------------- artefatos leves para o painel
-APP = ROOT / "app" / "data"
-APP.mkdir(parents=True, exist_ok=True)
-for nome in ["risco_alimentador", "previsao_2026", "candidatos_social", "candidatos_compensacao"]:
-    pd.read_parquet(cfg.processed / f"{nome}.parquet").to_parquet(APP / f"{nome}.parquet", index=False)
+for nome in ["risco_alimentador", f"previsao_{ANO_PREV}", "candidatos_social", "candidatos_compensacao"]:
+    pd.read_parquet(cfg.processed / f"{nome}.parquet").to_parquet(cfg.app_data / f"{nome}.parquet", index=False)

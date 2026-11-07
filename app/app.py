@@ -1,4 +1,4 @@
-"""Painel de gestão de ativos baseada em risco: Energisa MT.
+"""Painel de gestão de ativos baseada em risco: Energisa MT e, quando houver dados em app/data/ems, Energisa MS.
 
     streamlit run app/app.py
 """
@@ -10,12 +10,16 @@ import plotly.express as px
 import streamlit as st
 
 try:
+    from gridrisk.config import Config
     from gridrisk.otimizacao import guloso, otimizar, priorizacao_tradicional
 except ModuleNotFoundError:  # painel publicado sem instalar o pacote (Streamlit Community Cloud)
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+    from gridrisk.config import Config
     from gridrisk.otimizacao import guloso, otimizar, priorizacao_tradicional
 
-DATA = Path(__file__).parent / "data"
+CONFIGS = Path(__file__).resolve().parents[1] / "configs"
+DISTRIBUIDORAS = {"EMT": CONFIGS / "emt.yaml", "EMS": CONFIGS / "ems.yaml"}
+ARQUIVOS = ["risco_alimentador", "candidatos_social", "candidatos_compensacao"]
 MODOS = {"EQUIPAMENTO": "Equipamento", "DESCARGA_ATMOSFERICA": "Descarga atmosférica", "VEGETACAO": "Vegetação",
          "VENTO": "Vento", "ANIMAIS": "Animais", "TERCEIROS": "Terceiros", "OUTRAS": "Outras"}
 CENARIOS = {"social": "Social (compensação + energia não suprida)", "compensacao": "Caixa (só compensações)"}
@@ -31,14 +35,26 @@ FMT = {
     "risco_rs_ano": st.column_config.NumberColumn("risco (R$/ano)", format="%.0f"),
 }
 
-st.set_page_config(page_title="Risco de ativos | Energisa MT", page_icon="⚡", layout="wide")
+st.set_page_config(page_title="Risco de ativos | Energisa", page_icon="⚡", layout="wide")
+
+
+def disponiveis() -> dict[str, Config]:
+    """Distribuidoras com os Parquet do painel no repositório (MT sempre; MS quando app/data/ems existir)."""
+    out = {}
+    for sigla, arquivo in DISTRIBUIDORAS.items():
+        cfg = Config.load(arquivo)
+        nomes = [*ARQUIVOS, f"previsao_{cfg.ano_previsao}"]
+        if all((cfg.app_data / f"{n}.parquet").is_file() for n in nomes):
+            out[sigla] = cfg
+    return out
 
 
 @st.cache_data
-def carregar():
-    risco = pd.read_parquet(DATA / "risco_alimentador.parquet")
-    prev = pd.read_parquet(DATA / "previsao_2026.parquet")
-    cands = {c: pd.read_parquet(DATA / f"candidatos_{c}.parquet") for c in CENARIOS}
+def carregar(sigla: str):
+    cfg = Config.load(DISTRIBUIDORAS[sigla])
+    risco = pd.read_parquet(cfg.app_data / "risco_alimentador.parquet")
+    prev = pd.read_parquet(cfg.app_data / f"previsao_{cfg.ano_previsao}.parquet")
+    cands = {c: pd.read_parquet(cfg.app_data / f"candidatos_{c}.parquet") for c in CENARIOS}
     return risco, prev, cands
 
 
@@ -48,12 +64,21 @@ def brl(v: float) -> str:
     return f"R$ {v / 1e3:,.0f} mil".replace(",", ".")
 
 
-risco, prev, cands = carregar()
+opcoes = disponiveis()
+sigla = next(iter(opcoes))
+if len(opcoes) > 1:
+    sigla = st.sidebar.radio("Distribuidora", list(opcoes), format_func=lambda s: opcoes[s].nome)
+cfg = opcoes[sigla]
+risco, prev, cands = carregar(sigla)
 n_uc = int(risco.n_uc.sum())
+ANO = cfg.ano_previsao
+PERIODO = f"{min(cfg.anos_teste)}-{max(cfg.anos_teste)}"
 
-st.title("Gestão de ativos baseada em risco — Energisa Mato Grosso")
-st.caption("Dados abertos ANEEL (interrupções, BDGD, compensações) e INMET. Previsão para 2026 com modelos "
-           "treinados até 2025. Custos e eficácias das intervenções são premissas ilustrativas (configs/).")
+st.title(f"Gestão de ativos baseada em risco — {cfg.nome}")
+fontes = "ANEEL (interrupções, BDGD, compensações)" + (" e INMET" if cfg.clima_uf else "")
+st.caption(f"Dados abertos {fontes}. Previsão para {ANO} com modelos treinados até {ANO - 1}. Custos e eficácias das "
+           "intervenções são premissas ilustrativas (configs/). Projeto independente, sem vínculo com a Energisa ou "
+           "com a ANEEL.")
 
 c1, c2, c3 = st.columns([1, 1, 2])
 cenario = c1.radio("Visão de valor", list(CENARIOS), format_func=CENARIOS.get)
@@ -62,7 +87,7 @@ col_risco = f"risco_rs_{cenario}"
 
 k1, k2, k3, k4 = st.columns(4)
 k1.metric("Alimentadores", f"{len(risco):,}".replace(",", "."))
-k2.metric("CHI previsto 2026", f"{risco.chi_previsto.sum() / 1e6:,.1f} mi".replace(".", ","))
+k2.metric(f"CHI previsto {ANO}", f"{risco.chi_previsto.sum() / 1e6:,.1f} mi".replace(".", ","))
 k3.metric("DEC por falhas MT (previsto)", f"{risco.dec_contribuicao_h.sum():.1f} h".replace(".", ","))
 k4.metric("Risco anual", brl(risco[col_risco].sum()))
 
@@ -108,12 +133,12 @@ with tab_alim:
     alim = st.selectbox("Alimentador", risco.sort_values(col_risco, ascending=False).alimentador)
     r = risco.set_index("alimentador").loc[alim]
     a, b, cc = st.columns(3)
-    a.metric("CHI previsto 2026", f"{r.chi_previsto:,.0f}".replace(",", "."))
-    b.metric("CHI médio 2023-2025", f"{r.chi_historico_3a:,.0f}".replace(",", "."))
+    a.metric(f"CHI previsto {ANO}", f"{r.chi_previsto:,.0f}".replace(",", "."))
+    b.metric(f"CHI médio {PERIODO}", f"{r.chi_historico_3a:,.0f}".replace(",", "."))
     cc.metric("Risco anual", brl(r[col_risco]))
     p = prev[prev.alimentador == alim].assign(modo=lambda x: x.modo.astype(str).map(MODOS))
     fig = px.bar(p.sort_values("pred_chi"), x="pred_chi", y="modo", orientation="h",
-                 labels={"pred_chi": "CHI previsto 2026", "modo": ""}, color_discrete_sequence=["#2a78d6"])
+                 labels={"pred_chi": f"CHI previsto {ANO}", "modo": ""}, color_discrete_sequence=["#2a78d6"])
     fig.update_traces(marker_cornerradius=4)
     fig.update_layout(bargap=0.45)
     st.plotly_chart(fig, use_container_width=True)

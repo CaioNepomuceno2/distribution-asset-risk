@@ -3,14 +3,15 @@ import logging
 
 import pandas as pd
 
-from gridrisk.config import Config
+from gridrisk.config import carregar
 from gridrisk.ingest import inmet
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
-cfg = Config.load()
+cfg = carregar("Clima mensal do INMET interpolado para cada alimentador.")
+cfg.exigir_clima()
 anos = [a for a in cfg.anos_interrupcoes if a < max(cfg.anos_interrupcoes)]
 zips = inmet.download(anos, cfg.raw / "inmet")
-clima, estacoes = inmet.monthly_by_station(zips, "MT")
+clima, estacoes = inmet.monthly_by_station(zips, cfg.clima_uf)
 clima.to_parquet(cfg.interim / "inmet_estacao_mes.parquet", index=False)
 estacoes.to_parquet(cfg.interim / "inmet_estacoes.parquet", index=False)
 

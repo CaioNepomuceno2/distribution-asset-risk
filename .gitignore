@@ -13,3 +13,4 @@ docs/ref/*.txt
 *.egg-info/
 linkedin_posts.md
 logs/
+data/ems/

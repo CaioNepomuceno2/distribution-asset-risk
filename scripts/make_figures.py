@@ -1,4 +1,4 @@
-"""Figuras estáticas para o README e para divulgação (reports/figures/*.png)."""
+"""Figuras estáticas para o README e para divulgação (<reports>/figures/*.png)."""
 import json
 
 import matplotlib.pyplot as plt
@@ -6,12 +6,15 @@ import numpy as np
 import pandas as pd
 from matplotlib.ticker import FuncFormatter
 
-from gridrisk.config import ROOT, Config
+from gridrisk.config import carregar
 
-cfg = Config.load()
-REP = ROOT / "reports"
-FIG = REP / "figures"
+cfg = carregar("Figuras estáticas para o README (<reports>/figures/*.png).")
+REP = cfg.reports
+FIG = cfg.figuras
 FIG.mkdir(parents=True, exist_ok=True)
+T0, T1 = min(cfg.anos_teste), max(cfg.anos_teste)
+PERIODO = f"{T0}-{T1}"
+PREV = cfg.ano_previsao
 
 # paleta de referência (validada: 3 primeiros slots passam CVD em todos os pares)
 SURFACE, INK, INK2, MUTED, GRID, AXIS = "#fcfcfb", "#0b0b0b", "#52514e", "#898781", "#e1e0d9", "#c3c2b7"
@@ -60,7 +63,7 @@ for ax, (alvo, metrica, titulo, fmt) in zip(axes, [
     if alvo == "chi":
         ax.xaxis.set_major_formatter(mil)
         ax.xaxis.set_major_locator(plt.MaxNLocator(4))
-fig.suptitle("Backtest temporal 2023-2025 (treino só com anos anteriores)", x=0.01, ha="left",
+fig.suptitle(f"Backtest temporal {PERIODO} (treino só com anos anteriores)", x=0.01, ha="left",
              color=INK, fontweight="bold", y=1.04)
 salvar(fig, "01_backtest.png")
 
@@ -85,7 +88,7 @@ for cen, rotulo in [("social", "visão social (compensação + energia não supr
 
 # 3) CHI por modo de falha -----------------------------------------------------
 fal = pd.read_parquet(cfg.interim / "falhas.parquet")
-m = fal[fal.ano.between(2023, 2025)].groupby("modo")[["chi", "chi_regulatorio"]].sum() / 3
+m = fal[fal.ano.between(T0, T1)].groupby("modo")[["chi", "chi_regulatorio"]].sum() / (T1 - T0 + 1)
 m = m.sort_values("chi")
 fig, ax = plt.subplots(figsize=(8, 3.8))
 y = np.arange(len(m))
@@ -99,8 +102,8 @@ ax.xaxis.set_major_formatter(mil)
 for yi, c in enumerate(m.chi):
     ax.text(c, yi, f"  {c / 1e6:.1f} mi".replace(".", ","), va="center", color=INK, fontsize=9)
 ax.set_xlim(0, m.chi.max() * 1.18)
-ax.set_xlabel("Consumidor-hora interrompido por ano (média 2023-2025)")
-ax.set_title("Falhas na média tensão da Energisa MT por modo de falha")
+ax.set_xlabel(f"Consumidor-hora interrompido por ano (média {PERIODO})")
+ax.set_title(f"Falhas na média tensão da {cfg.nome_curto} por modo de falha")
 ax.legend(loc="lower right")
 salvar(fig, "03_chi_por_modo.png")
 
@@ -135,7 +138,7 @@ salvar(fig, "04_shap.png")
 rk = pd.read_parquet(cfg.processed / "risco_alimentador.parquet").dropna(subset=["lat"])
 rk = rk.sort_values("risco_rs_social")
 fig, ax = plt.subplots(figsize=(7, 7.5))
-uf = json.loads((ROOT / "data" / "ref" / "mt_ibge.geojson").read_text())  # malha IBGE de MT
+uf = json.loads(cfg.malha_ibge.read_text())  # malha do IBGE da UF da distribuidora
 for feat in uf["features"]:
     geom = feat["geometry"]
     polys = geom["coordinates"] if geom["type"] == "MultiPolygon" else [geom["coordinates"]]
@@ -153,7 +156,7 @@ for k in range(5):
 ax.set_aspect(1 / np.cos(np.radians(rk.lat.mean())))
 ax.set_xlabel("Longitude")
 ax.set_ylabel("Latitude")
-ax.set_title("Risco previsto para 2026 por alimentador (R$/ano)\ntamanho = nº de consumidores")
+ax.set_title(f"Risco previsto para {PREV} por alimentador (R$/ano)\ntamanho = nº de consumidores")
 ax.legend(loc="center left", bbox_to_anchor=(1.0, 0.5), markerscale=1.2)
 for _, r in rk.tail(3).iterrows():
     ax.annotate(f"alimentador {r.alimentador}", (r.lon, r.lat), xytext=(10, 10), textcoords="offset points",
@@ -172,7 +175,7 @@ ax.yaxis.set_major_formatter(mil)
 ax.xaxis.set_major_locator(plt.MaxNLocator(5))
 ax.set_xlabel("CHI previsto (média do decil)")
 ax.set_ylabel("CHI observado (média do decil)")
-ax.set_title("Calibração por decil de risco\n(backtest 2023-2025)")
+ax.set_title(f"Calibração por decil de risco\n(backtest {PERIODO})")
 salvar(fig, "06_calibracao.png")
 
 print(json.dumps(sorted(p.name for p in FIG.glob("*.png"))))

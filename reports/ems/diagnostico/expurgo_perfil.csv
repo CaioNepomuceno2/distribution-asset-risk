@@ -1,0 +1,15 @@
+layout,codigo,registros,uc_medio,pct_bt,pct_at,causa_modal,origem_modal,duracao_media_h
+legado 2025,0,142870,47.32,48.2,7.5,PROPRIAS DO SISTEMA,INTERNA,6.03
+legado 2025,3,65071,86.64,12.4,8.2,MEIO AMBIENTE,INTERNA,8.92
+legado 2025,1,34366,2.44,72.5,15.5,NAO CLASSIFICADA,INTERNA,6.08
+legado 2025,6,5846,87.82,39.5,4.2,PROPRIAS DO SISTEMA,INTERNA,9.39
+legado 2025,2,136,3.55,0,0,NAO CLASSIFICADA,INTERNA,5.48
+legado 2025,7,43,2153.77,0,27.9,PROPRIAS DO SISTEMA,EXTERNA,0.47
+legado 2025,8,35,1447.77,0,85.7,NAO CLASSIFICADA,EXTERNA,0.28
+novo 2026,Não houve Expurgo,69428,58.53,10.6,0.4,PROPRIAS DO SISTEMA,INTERNA,5.72
+novo 2026,Interrupção em Situação de Emergência (ISE) por meio de CHI,32073,67.87,8.3,0.3,MEIO AMBIENTE,INTERNA,9.47
+novo 2026,Falha nas instalações da unidade consumidora sem afetar terceiros,10320,2.76,11.9,0,TERCEIROS,INTERNA,6.35
+novo 2026,Interrupção ocorrida em Dia Crítico,5282,66.21,15.8,0,MEIO AMBIENTE,INTERNA,10.08
+novo 2026,Interrupção em Situação de Emergência (ISE) por meio de decreto,766,51.41,10.8,0,MEIO AMBIENTE,INTERNA,11.4
+novo 2026,Obras de interesse exclusivo do usuário,15,1.13,0,0,MANUTENCAO,INTERNA,3.64
+novo 2026,Interrupção de origem externa ao sistema de distribuição,6,949.67,0,0,NAO CLASSIFICADA,EXTERNA,0.37

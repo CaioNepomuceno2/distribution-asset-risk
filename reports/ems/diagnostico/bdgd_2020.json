@@ -1,0 +1,1005 @@
+{
+ "ano": 2020,
+ "gdb": "Energisa_MS_404_2020-12-31_M10_20210628-1527.gdb",
+ "camadas": {
+  "BAR": {
+   "geometria": "None",
+   "linhas": 455,
+   "campos": 19
+  },
+  "BASE": {
+   "geometria": "None",
+   "linhas": 1,
+   "campos": 5
+  },
+  "BAY": {
+   "geometria": "None",
+   "linhas": 4019,
+   "campos": 6
+  },
+  "BE": {
+   "geometria": "None",
+   "linhas": 19,
+   "campos": 17
+  },
+  "CTAT": {
+   "geometria": "None",
+   "linhas": 90,
+   "campos": 5
+  },
+  "CTMT": {
+   "geometria": "None",
+   "linhas": 318,
+   "campos": 58
+  },
+  "EP": {
+   "geometria": "None",
+   "linhas": 8,
+   "campos": 17
+  },
+  "EQCR": {
+   "geometria": "None",
+   "linhas": 1438,
+   "campos": 19
+  },
+  "EQME": {
+   "geometria": "None",
+   "linhas": 1165400,
+   "campos": 19
+  },
+  "EQRE": {
+   "geometria": "None",
+   "linhas": 602,
+   "campos": 42
+  },
+  "EQSE": {
+   "geometria": "None",
+   "linhas": 235440,
+   "campos": 24
+  },
+  "EQSIAT": {
+   "geometria": "None",
+   "linhas": 20515,
+   "campos": 19
+  },
+  "EQTRD": {
+   "geometria": "None",
+   "linhas": 94017,
+   "campos": 34
+  },
+  "EQTRM": {
+   "geometria": "None",
+   "linhas": 7601,
+   "campos": 19
+  },
+  "EQTRS": {
+   "geometria": "None",
+   "linhas": 95,
+   "campos": 32
+  },
+  "EQTRSX": {
+   "geometria": "None",
+   "linhas": 96,
+   "campos": 18
+  },
+  "INDGER": {
+   "geometria": "None",
+   "linhas": 888,
+   "campos": 58
+  },
+  "PIP": {
+   "geometria": "None",
+   "linhas": 283190,
+   "campos": 37
+  },
+  "PNT": {
+   "geometria": "None",
+   "linhas": 2,
+   "campos": 16
+  },
+  "PT": {
+   "geometria": "None",
+   "linhas": 29,
+   "campos": 16
+  },
+  "RAMLIG": {
+   "geometria": "None",
+   "linhas": 1045210,
+   "campos": 23
+  },
+  "SEGCON": {
+   "geometria": "None",
+   "linhas": 90,
+   "campos": 39
+  },
+  "ARAT": {
+   "geometria": "MultiPolygon",
+   "linhas": 1,
+   "campos": 7
+  },
+  "CONJ": {
+   "geometria": "MultiPolygon",
+   "linhas": 60,
+   "campos": 8
+  },
+  "PONNOT": {
+   "geometria": "Point",
+   "linhas": 1206951,
+   "campos": 23
+  },
+  "SSDAT": {
+   "geometria": "MultiLineString",
+   "linhas": 13785,
+   "campos": 20
+  },
+  "SSDBT": {
+   "geometria": "MultiLineString",
+   "linhas": 494046,
+   "campos": 24
+  },
+  "SSDMT": {
+   "geometria": "MultiLineString",
+   "linhas": 945647,
+   "campos": 23
+  },
+  "SUB": {
+   "geometria": "MultiPolygon",
+   "linhas": 126,
+   "campos": 7
+  },
+  "UNCRAT": {
+   "geometria": "Point",
+   "linhas": 21,
+   "campos": 16
+  },
+  "UNCRBT": {
+   "geometria": "Point",
+   "linhas": 120,
+   "campos": 19
+  },
+  "UNCRMT": {
+   "geometria": "Point",
+   "linhas": 561,
+   "campos": 18
+  },
+  "UNREAT": {
+   "geometria": "Point",
+   "linhas": 1,
+   "campos": 14
+  },
+  "UNREMT": {
+   "geometria": "Point",
+   "linhas": 200,
+   "campos": 16
+  },
+  "UNSEAT": {
+   "geometria": "Point",
+   "linhas": 1191,
+   "campos": 17
+  },
+  "UNSEBT": {
+   "geometria": "Point",
+   "linhas": 0,
+   "campos": 21
+  },
+  "UNSEMT": {
+   "geometria": "Point",
+   "linhas": 113217,
+   "campos": 20
+  },
+  "UNTRD": {
+   "geometria": "Point",
+   "linhas": 93282,
+   "campos": 32
+  },
+  "UNTRS": {
+   "geometria": "Point",
+   "linhas": 95,
+   "campos": 52
+  },
+  "UCAT_tab": {
+   "geometria": "None",
+   "linhas": 23,
+   "campos": 74
+  },
+  "UCBT_tab": {
+   "geometria": "None",
+   "linhas": 1189041,
+   "campos": 41
+  },
+  "UCMT_tab": {
+   "geometria": "None",
+   "linhas": 3321,
+   "campos": 52
+  },
+  "UGAT_tab": {
+   "geometria": "None",
+   "linhas": 18,
+   "campos": 70
+  },
+  "UGBT_tab": {
+   "geometria": "None",
+   "linhas": 0,
+   "campos": 36
+  },
+  "UGMT_tab": {
+   "geometria": "None",
+   "linhas": 7,
+   "campos": 47
+  }
+ },
+ "camadas_chave_ausentes": [],
+ "ctmt": {
+  "linhas": 318,
+  "cod_id_distintos": 318,
+  "nome": {
+   "n": 318,
+   "pct_preenchido": 100.0,
+   "distintos": 318,
+   "pct_so_digitos": 0.0,
+   "comprimentos": {
+    "5": 318
+   },
+   "exemplos": [
+    "ACA51",
+    "ACA52",
+    "ACA53",
+    "ACL01",
+    "ACL02"
+   ]
+  },
+  "nome_com_zfill6": {
+   "n": 318,
+   "pct_preenchido": 100.0,
+   "distintos": 318,
+   "pct_so_digitos": 0.0,
+   "comprimentos": {
+    "6": 318
+   },
+   "exemplos": [
+    "0ACA51",
+    "0ACA52",
+    "0ACA53",
+    "0ACL01",
+    "0ACL02"
+   ]
+  },
+  "ten_nom_cod": {
+   "49": 216,
+   "72": 100,
+   "61": 2
+  },
+  "energia_total_mwh_ano": 5667582.5,
+  "pct_energia_zero": 3.459
+ },
+ "ssdmt": {
+  "linhas": 945647,
+  "km": 86427.7,
+  "segcon_linhas": 90,
+  "segcon_cod_id_duplicados": 0,
+  "tem_ct_cod_op": false,
+  "ct_cod_op": null,
+  "pct_ctmt_existe_em_ctmt": 99.999,
+  "pct_tip_cnd_existe_em_segcon": 100.0,
+  "are_loc": {
+   "NU": 767103,
+   "UB": 178544
+  },
+  "km_por_geom_cab": {
+   "1": 780.2,
+   "3": 84973.1,
+   "4": 26.6,
+   "5": 647.8
+  },
+  "km_por_iso_fas_1": {
+   "10": 674.6,
+   "12": 84972.9,
+   "2": 780.2
+  },
+  "pct_km_cabo_nu": 98.317,
+  "pct_km_compacta": 0.903,
+  "pct_km_subterranea": 0.749
+ },
+ "feeder_map": {
+  "codigos": 318,
+  "pct_codigo_igual_ao_nome_ctmt": 100.0,
+  "ctmt_distintos": 318
+ },
+ "unsemt": {
+  "linhas": 113217,
+  "tip_unid": {
+   "22": 92717,
+   "19": 14999,
+   "32": 1936,
+   "0": 1685,
+   "26": 932,
+   "35": 433,
+   "33": 245,
+   "18": 158,
+   "29": 112
+  },
+  "n_religador_32": 1936,
+  "n_seccionalizador_35_36": 433,
+  "n_chave_fusivel_22_27": 93649,
+  "n_disjuntor_29_30_53": 112,
+  "pct_codigos_no_mapeamento": 84.908,
+  "tlcd": {
+   "0": 112380,
+   "1": 837
+  },
+  "pac_1_comprimentos": {
+   "19": 102868,
+   "20": 7804,
+   "9": 2131,
+   "8": 287,
+   "10": 57,
+   "11": 50
+  },
+  "perfil_por_tip_unid": {
+   "22": {
+    "n": 92717,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 12.0,
+    "pct_telecomandado": 0.0
+   },
+   "19": {
+    "n": 14999,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 35.0,
+    "pct_telecomandado": 0.0
+   },
+   "32": {
+    "n": 1936,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 35.0,
+    "pct_telecomandado": 43.182
+   },
+   "0": {
+    "n": 1685,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 12.0,
+    "pct_telecomandado": 0.0
+   },
+   "26": {
+    "n": 932,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 12.0,
+    "pct_telecomandado": 0.0
+   },
+   "35": {
+    "n": 433,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 12.0,
+    "pct_telecomandado": 0.0
+   },
+   "33": {
+    "n": 245,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 18.0,
+    "pct_telecomandado": 0.408
+   },
+   "18": {
+    "n": 158,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 18.0,
+    "pct_telecomandado": 0.0
+   },
+   "29": {
+    "n": 112,
+    "pct_com_cap_elo": 100.0,
+    "cor_nom_mediana": 33.5,
+    "pct_telecomandado": 0.0
+   }
+  }
+ },
+ "untrmt": {
+  "linhas": 93282,
+  "pot_nom_kva_mediana": 15.0,
+  "dat_con": {
+   "n": 93282,
+   "pct_preenchido": 100.0,
+   "pct_data_valida": 100.0,
+   "valor_mais_frequente": "01/01/1920",
+   "pct_valor_mais_frequente": 67.83,
+   "pct_01_01_1980": 0.0,
+   "ano_min": 1920,
+   "ano_p05": 1920,
+   "ano_mediano": 1920,
+   "ano_p95": 2016,
+   "ano_max": 2021,
+   "pct_antes_de_1950": 67.83,
+   "pct_depois_do_snapshot": 0.012,
+   "pct_por_decada": {
+    "1920s": 67.83,
+    "1970s": 0.003,
+    "1980s": 0.584,
+    "1990s": 0.651,
+    "2000s": 17.008,
+    "2010s": 13.041,
+    "2020s": 0.883
+   }
+  }
+ },
+ "clientes": {
+  "ucbt": 1189041,
+  "ucmt": 3321,
+  "pct_ucbt_clas_sub_rural_RU": 7.823,
+  "clas_sub_top": {
+   "RE1": 822406,
+   "RE2": 133938,
+   "RU1": 53142,
+   "CO1": 43824,
+   "RU1B": 35266,
+   "CO9": 30576,
+   "REBP": 26313,
+   "IN": 7562,
+   "PP3": 6306,
+   "CO5": 5466
+  },
+  "pct_ucbt_ctmt_existe_em_ctmt": 99.508,
+  "ugbt": 0,
+  "ugmt": 7
+ },
+ "datas": {
+  "EQCR": {
+   "DAT_IMO": {
+    "n": 1438,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 96.245,
+    "valor_mais_frequente": "25/11/2019",
+    "pct_valor_mais_frequente": 7.65,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1975,
+    "ano_p05": 1994,
+    "ano_mediano": 2016,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 0.487,
+     "1980s": 3.616,
+     "1990s": 19.193,
+     "2000s": 9.458,
+     "2010s": 54.59,
+     "2020s": 8.901
+    }
+   }
+  },
+  "EQME": {
+   "DAT_IMO": {
+    "n": 1165400,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 96.382,
+    "valor_mais_frequente": "31/05/2009",
+    "pct_valor_mais_frequente": 5.765,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 2007,
+    "ano_p05": 2007,
+    "ano_mediano": 2016,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "2000s": 18.321,
+     "2010s": 69.372,
+     "2020s": 8.689
+    }
+   }
+  },
+  "EQRE": {
+   "DAT_IMO": {
+    "n": 602,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 99.003,
+    "valor_mais_frequente": "31/12/2015",
+    "pct_valor_mais_frequente": 14.784,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1994,
+    "ano_p05": 2008,
+    "ano_mediano": 2016,
+    "ano_p95": 2019,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1990s": 2.99,
+     "2000s": 8.97,
+     "2010s": 86.877,
+     "2020s": 0.166
+    }
+   }
+  },
+  "EQSE": {
+   "DAT_IMO": {
+    "n": 235440,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 28.32,
+    "valor_mais_frequente": "0",
+    "pct_valor_mais_frequente": 71.68,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1975,
+    "ano_p05": 2005,
+    "ano_mediano": 2015,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 0.02,
+     "1980s": 0.202,
+     "1990s": 0.271,
+     "2000s": 6.908,
+     "2010s": 18.992,
+     "2020s": 1.928
+    }
+   }
+  },
+  "EQSIAT": {
+   "DAT_IMO": {
+    "n": 20515,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "31/12/1983",
+    "pct_valor_mais_frequente": 27.248,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1976,
+    "ano_p05": 1978,
+    "ano_mediano": 1987,
+    "ano_p95": 2015,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 9.227,
+     "1980s": 57.509,
+     "1990s": 5.425,
+     "2000s": 20.692,
+     "2010s": 6.849,
+     "2020s": 0.297
+    }
+   }
+  },
+  "EQTRD": {
+   "DAT_IMO": {
+    "n": 94017,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 85.217,
+    "valor_mais_frequente": "0",
+    "pct_valor_mais_frequente": 14.783,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1976,
+    "ano_p05": 2002,
+    "ano_mediano": 2014,
+    "ano_p95": 2019,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 0.003,
+     "1980s": 0.019,
+     "1990s": 1.315,
+     "2000s": 22.45,
+     "2010s": 57.246,
+     "2020s": 4.183
+    }
+   }
+  },
+  "EQTRM": {
+   "DAT_IMO": {
+    "n": 7601,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 94.185,
+    "valor_mais_frequente": "0",
+    "pct_valor_mais_frequente": 5.815,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1976,
+    "ano_p05": 1995,
+    "ano_mediano": 2011,
+    "ano_p95": 2019,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 0.21,
+     "1980s": 2.723,
+     "1990s": 5.315,
+     "2000s": 34.851,
+     "2010s": 48.875,
+     "2020s": 2.21
+    }
+   }
+  },
+  "EQTRS": {
+   "DAT_IMO": {
+    "n": 95,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 93.684,
+    "valor_mais_frequente": "31/12/1996",
+    "pct_valor_mais_frequente": 7.368,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1975,
+    "ano_p05": 1976,
+    "ano_mediano": 2001,
+    "ano_p95": 2019,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 9.474,
+     "1980s": 8.421,
+     "1990s": 25.263,
+     "2000s": 17.895,
+     "2010s": 29.474,
+     "2020s": 3.158
+    }
+   }
+  },
+  "EQTRSX": {
+   "DAT_IMO": {
+    "n": 96,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "31/08/2017",
+    "pct_valor_mais_frequente": 6.25,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1987,
+    "ano_p05": 1989,
+    "ano_mediano": 2007,
+    "ano_p95": 2017,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1980s": 5.208,
+     "1990s": 16.667,
+     "2000s": 46.875,
+     "2010s": 30.208,
+     "2020s": 1.042
+    }
+   }
+  },
+  "PIP": {
+   "DAT_CON": {
+    "n": 283190,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNCRAT": {
+   "DAT_CON": {
+    "n": 21,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "16/12/2020",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 2020,
+    "ano_p05": 2020,
+    "ano_mediano": 2020,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "2020s": 100.0
+    }
+   }
+  },
+  "UNCRBT": {
+   "DAT_CON": {
+    "n": 120,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "16/12/2020",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 2020,
+    "ano_p05": 2020,
+    "ano_mediano": 2020,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "2020s": 100.0
+    }
+   }
+  },
+  "UNCRMT": {
+   "DAT_CON": {
+    "n": 561,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "16/12/2020",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 2020,
+    "ano_p05": 2020,
+    "ano_mediano": 2020,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "2020s": 100.0
+    }
+   }
+  },
+  "UNREAT": {
+   "DAT_CON": {
+    "n": 1,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UNREMT": {
+   "DAT_CON": {
+    "n": 200,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "15/12/2020",
+    "pct_valor_mais_frequente": 99.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 2020,
+    "ano_p05": 2020,
+    "ano_mediano": 2020,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "2020s": 100.0
+    }
+   }
+  },
+  "UNSEAT": {
+   "DAT_CON": {
+    "n": 1191,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "16/12/2020",
+    "pct_valor_mais_frequente": 99.916,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 2020,
+    "ano_mediano": 2020,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.084,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 0.084,
+     "2020s": 99.916
+    }
+   }
+  },
+  "UNSEMT": {
+   "DAT_CON": {
+    "n": 113217,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 85.05,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 2018,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 85.05,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 85.05,
+     "1970s": 0.004,
+     "1980s": 0.038,
+     "1990s": 0.149,
+     "2000s": 2.894,
+     "2010s": 8.977,
+     "2020s": 2.886
+    }
+   }
+  },
+  "UNTRD": {
+   "DAT_CON": {
+    "n": 93282,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 67.83,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 2016,
+    "ano_max": 2021,
+    "pct_antes_de_1950": 67.83,
+    "pct_depois_do_snapshot": 0.012,
+    "pct_por_decada": {
+     "1920s": 67.83,
+     "1970s": 0.003,
+     "1980s": 0.584,
+     "1990s": 0.651,
+     "2000s": 17.008,
+     "2010s": 13.041,
+     "2020s": 0.883
+    }
+   }
+  },
+  "UNTRS": {
+   "DAT_CON": {
+    "n": 95,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "15/12/2020",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 2020,
+    "ano_p05": 2020,
+    "ano_mediano": 2020,
+    "ano_p95": 2020,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "2020s": 100.0
+    }
+   }
+  },
+  "UCAT_tab": {
+   "DAT_CON": {
+    "n": 23,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "29/12/1993",
+    "pct_valor_mais_frequente": 26.087,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1990,
+    "ano_p05": 1993,
+    "ano_mediano": 2007,
+    "ano_p95": 2016,
+    "ano_max": 2019,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1990s": 43.478,
+     "2000s": 30.435,
+     "2010s": 26.087
+    }
+   }
+  },
+  "UCBT_tab": {
+   "DAT_CON": {
+    "n": 1189041,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/11/1984",
+    "pct_valor_mais_frequente": 0.904,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1900,
+    "ano_p05": 1984,
+    "ano_mediano": 2008,
+    "ano_p95": 2020,
+    "ano_max": 2021,
+    "pct_antes_de_1950": 0.01,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1900s": 0.0,
+     "1920s": 0.01,
+     "1930s": 0.0,
+     "1940s": 0.0,
+     "1950s": 0.0,
+     "1960s": 0.001,
+     "1970s": 1.814,
+     "1980s": 10.525,
+     "1990s": 17.339,
+     "2000s": 26.316,
+     "2010s": 31.965,
+     "2020s": 12.03
+    }
+   }
+  },
+  "UCMT_tab": {
+   "DAT_CON": {
+    "n": 3321,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "29/12/1993",
+    "pct_valor_mais_frequente": 1.325,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1976,
+    "ano_p05": 1984,
+    "ano_mediano": 2006,
+    "ano_p95": 2018,
+    "ano_max": 2020,
+    "pct_antes_de_1950": 0.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1970s": 1.777,
+     "1980s": 8.522,
+     "1990s": 16.049,
+     "2000s": 43.601,
+     "2010s": 27.522,
+     "2020s": 2.529
+    }
+   }
+  },
+  "UGAT_tab": {
+   "DAT_CON": {
+    "n": 18,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 100.0,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 1920,
+    "ano_p95": 1920,
+    "ano_max": 1920,
+    "pct_antes_de_1950": 100.0,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 100.0
+    }
+   }
+  },
+  "UGMT_tab": {
+   "DAT_CON": {
+    "n": 7,
+    "pct_preenchido": 100.0,
+    "pct_data_valida": 100.0,
+    "valor_mais_frequente": "01/01/1920",
+    "pct_valor_mais_frequente": 42.857,
+    "pct_01_01_1980": 0.0,
+    "ano_min": 1920,
+    "ano_p05": 1920,
+    "ano_mediano": 2012,
+    "ano_p95": 2018,
+    "ano_max": 2019,
+    "pct_antes_de_1950": 42.857,
+    "pct_depois_do_snapshot": 0.0,
+    "pct_por_decada": {
+     "1920s": 42.857,
+     "2010s": 57.143
+    }
+   }
+  }
+ },
+ "coordenadas": {
+  "crs": "EPSG:4674",
+  "lon_min": -57.9991,
+  "lon_max": -50.9531,
+  "lat_min": -24.0444,
+  "lat_max": -17.2954,
+  "pct_sem_geometria": 0.0,
+  "pct_dentro_do_estado_bbox": 100.0
+ }
+}

@@ -1,0 +1,52 @@
+# Recorte: Energisa Mato Grosso do Sul (EMS)
+# Uso: python scripts/<script>.py --config configs/ems.yaml   (ou GRIDRISK_CONFIG=configs/ems.yaml)
+# Tudo o que é de MS fica em subpastas ems; nada aqui escreve em reports/ nem em app/data/ na raiz.
+distribuidora:
+  sigla: EMS
+  cod_aneel: 404
+  nome: Energisa Mato Grosso do Sul
+  nome_curto: Energisa MS
+
+paths:
+  raw: data/ems/raw
+  interim: data/ems/interim
+  processed: data/ems/processed
+  reports: reports/ems
+  app_data: app/data/ems
+  malha_ibge: data/ref/ms_ibge.geojson   # malha do IBGE, UF 50
+  catalogo: configs/intervencoes.yaml
+
+interrupcoes:
+  anos: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+
+# Janelas do pipeline para MS; a justificativa de cada uma está em docs/decisoes_ems.md.
+janelas:
+  anos_teste: [2023, 2024, 2025]
+  ano_previsao: 2026
+  anos_compensacao: [2022, 2023, 2024, 2025]
+  ano_inicio_painel: 2019
+  ano_inicio_pesos_conjunto: 2022
+  ano_inicio_shap: 2023
+
+# Sem a chave "clima": o INMET só foi testado em MT e o clima não roda em MS (usar_clima: false).
+
+# Circuitos sem rede MT e sem consumidor (105 de 423 no snapshot de 2019) ficam fora do painel: docs/decisoes_ems.md
+qualidade:
+  excluir_circuitos_vazios: true
+
+bdgd:
+  # snapshots de 31/12 de cada ano, versão mais recente de cada um (id do item no ArcGIS Hub da ANEEL).
+  # Fora de propósito: o item avulso EMS_404_2022-10-31_V10 (c3585ae516f340b596617827d60da5ef) e a versão
+  # de 17/12/2024 do snapshot de 2023 (b8c585ae35224ac8aa0648587ec61bcb), que não é a mais recente.
+  snapshots:
+    2018: 5382c59d7cc7494a9a1f8cd865187457   # Energisa_MS_404_2018-12-31_M10_20191023-2327
+    2019: b83ad867a35b43189f41b68988f7f0b6   # Energisa_MS_404_2019-12-31_M10_20200323-1921
+    2020: fe56dce0714f4b6795d3b23130f5898a   # Energisa_MS_404_2020-12-31_M10_20210628-1527
+    2021: 933af69c57dd41ea8f6048118b8d07e7   # Energisa_MS_404_2021-12-31_V10_20230315-1800
+    2022: ff5242147c86428e88971941a35c7cd1   # Energisa_MS_404_2022-12-31_V11_20240422-2036
+    2023: 975f18dfdb0c479cb237893c5b296ca9   # Energisa_MS_404_2023-12-31_V11_20250923-1616
+    2024: b7fad4cd388845a08a01643599ec747b   # Energisa_MS_404_2024-12-31_V11_20250730-1637
+    2025: 9a1ce360865f4358b31e9fb2d016aac9   # Energisa_MS_404_2025-12-31_V11_20260830-0339
+
+modelo:
+  usar_clima: false
