@@ -341,6 +341,23 @@ um seletor MT/MS. O clima do INMET não roda em MS.
 
 > Projeto independente, sem vínculo com a Energisa ou com a ANEEL. Só dados abertos (ANEEL e IBGE).
 
+<!-- comparativo-mt-ms:inicio -->
+## Comparativo MT × MS
+
+Comparação **só descritiva** entre a Energisa MT e a Energisa MS, por consumidor e por km de rede de média tensão. Ela não afirma causas, e várias diferenças podem vir de definições diferentes dos dados (expurgo, circuitos do cadastro, anos de cadastro, meses faltando em MS). O efeito do religador em MS é o de MT, não medido. Documento completo: [`docs/comparativo_mt_ms.md`](docs/comparativo_mt_ms.md); CSVs e figuras: [`reports/comparativo_mt_ms/`](reports/comparativo_mt_ms/); tudo sai de [`scripts/comparativo_mt_ms.py`](scripts/comparativo_mt_ms.py), que lê só arquivos já publicados.
+
+| Indicador (descritivo) | Energisa MT | Energisa MS |
+|---|---|---|
+| Falhas na média tensão por 100 km por ano (média 2023-2025) | 32,7 | 118,8 |
+| CHI das falhas por consumidor por ano, em horas | 12,8 | 13,9 |
+| Fração do CHI das falhas que é expurgada | 26,3% | 58,8% |
+| DEC oficial de 2025, em horas | 14,45 | 9,13 |
+| Parcela do risco social nos 10% de alimentadores de maior risco | 46,4% | 32,9% |
+| Carteira ótima ÷ regra tradicional (R$ 20 mi, visão social, premissas ilustrativas) | 2,33 | 1,31 |
+
+> Projeto independente, sem vínculo com a Energisa ou com a ANEEL. Só dados abertos (ANEEL e IBGE).
+<!-- comparativo-mt-ms:fim -->
+
 ## Publicar o painel (Streamlit Community Cloud)
 O repositório já está pronto para publicar o painel. **Ainda não foi publicado:** falta só o login do dono.
 
