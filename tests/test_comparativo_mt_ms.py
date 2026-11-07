@@ -484,3 +484,28 @@ def test_script_roda_como_comando(tmp_path):
                        capture_output=True, text=True, encoding="utf-8", check=False)
     assert r.returncode == 0, r.stderr
     assert "métricas" in r.stdout and (raiz / "reports" / "comparativo_mt_ms" / "metricas.csv").is_file()
+
+
+def test_tabelas_do_resumo_e_do_readme_trazem_a_coluna_de_definicao(mod, tmp_path):
+    raiz, irmaos = _ambiente(tmp_path)
+    res = mod.gerar(raiz, irmaos, raiz / "reports" / "comparativo_mt_ms", com_figuras=False)
+    for texto in (mod.renderizar_doc(res), mod.renderizar_readme(res)):
+        assert "| Indicador (descritivo) | Energisa MT | Energisa MS | A diferença pode vir de definição? |" in texto
+        linhas = {ln.split(" | ")[0].strip("| "): ln for ln in texto.splitlines() if ln.startswith("| ")}
+        assert linhas["Fração do CHI das falhas que é expurgada"].rstrip().endswith("| Sim: regra de expurgo |")
+        assert linhas["CHI das falhas por consumidor por ano, em horas"].rstrip().endswith("| Não |")
+        assert linhas["DEC oficial de 2025, em horas"].rstrip().endswith("| Não |")
+        assert "| Possível: contagem de registros da ANEEL |" in texto and "| Possível: nº de alimentadores |" in texto
+
+
+def test_fontes_tem_o_mesmo_hash_com_fim_de_linha_lf_ou_crlf(mod, tmp_path):
+    raiz, irmaos = _ambiente(tmp_path)
+    saida = raiz / "reports" / "comparativo_mt_ms"
+    lf = mod.gerar(raiz, irmaos, saida, com_figuras=False).fontes
+    for p in list(raiz.rglob("*.csv")) + list(irmaos.rglob("*.json")):
+        if saida in p.parents:
+            continue
+        p.write_bytes(p.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))   # cópia de trabalho do Windows
+    crlf = mod.gerar(raiz, irmaos, saida, com_figuras=False).fontes
+    pd.testing.assert_frame_equal(lf, crlf)
+    assert (saida / "fontes.csv").read_bytes().count(b"\r") == 0                    # as saídas sempre saem com LF

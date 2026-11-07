@@ -703,6 +703,26 @@ ESPECS: list[Espec] = [
 ESPEC_POR_CHAVE = {e.chave: e for e in ESPECS}
 
 
+RESUMO = [
+    # (rótulo, chave da métrica, casas, é %, motivo curto da coluna "pode vir de definição?")
+    (f"Falhas na média tensão por 100 km por ano (média {JANELA})", "falhas_100km", 1, False, "contagem de registros da ANEEL"),
+    ("CHI das falhas por consumidor por ano, em horas", "chi_uc", 1, False, ""),
+    ("Fração do CHI das falhas que é expurgada", "frac_exp", 1, True, "regra de expurgo"),
+    (f"DEC oficial de {ANO_REF}, em horas", "dec_of", 2, False, ""),
+    ("Parcela do risco social nos 10% de alimentadores de maior risco", "top10_social", 1, True, "nº de alimentadores"),
+    (f"Carteira ótima ÷ regra tradicional ({ORC}, visão social, premissas ilustrativas)", "razao_carteira", 2, False,
+     "premissas e cadastro"),
+]
+
+
+def tabela_resumo(P: dict) -> str:
+    linhas = []
+    for nome, chave, casas, pct, motivo in RESUMO:
+        dif = ESPEC_POR_CHAVE[chave].diferenca + (f": {motivo}" if motivo else "")
+        linhas.append([nome, *par_txt(P, chave, casas, pct), dif])
+    return md_tabela(["Indicador (descritivo)", NOME["mt"], NOME["ms"], "A diferença pode vir de definição?"], linhas)
+
+
 def montar_metricas(P: dict) -> pd.DataFrame:
     linhas = []
     for e in ESPECS:
@@ -1069,6 +1089,8 @@ def tabela_fontes(F: Fontes) -> pd.DataFrame:
         t = {"repositorio": repo, "arquivo": rel, "existe": p is not None, "bytes": None, "sha256": None}
         if p is not None:
             b = p.read_bytes()
+            if p.suffix in (".csv", ".json"):      # texto: o mesmo hash com fim de linha LF ou CRLF
+                b = b.replace(b"\r\n", b"\n")
             t["bytes"], t["sha256"] = len(b), hashlib.sha256(b).hexdigest()
         linhas.append(t)
     return pd.DataFrame(linhas, columns=["repositorio", "arquivo", "existe", "bytes", "sha256"])
@@ -1288,16 +1310,7 @@ def renderizar_doc(res: Resultado) -> str:
       "com SHA-256.\n")
     # resumo
     w("## Resumo\n")
-    linhas_resumo = [
-        ("Falhas na média tensão por 100 km por ano", "falhas_100km", 1, False),
-        ("CHI das falhas por consumidor por ano (h)", "chi_uc", 1, False),
-        ("Fração do CHI das falhas que é expurgada", "frac_exp", 1, True),
-        (f"DEC oficial de {ANO_REF} (h)", "dec_of", 2, False),
-        ("Parcela do risco social nos 10% de alimentadores de maior risco", "top10_social", 1, True),
-        (f"Carteira ótima ÷ regra tradicional ({ORC}, visão social)", "razao_carteira", 2, False),
-    ]
-    w(md_tabela(["Indicador (descritivo)", NOME["mt"], NOME["ms"]],
-                [[nome, *par_txt(P, k, c, p)] for nome, k, c, p in linhas_resumo]) + "\n")
+    w(tabela_resumo(P) + "\n")
     w("Diferenças de definição que mudam a leitura (seção 9): o expurgo pesa muito diferente nas duas empresas; a Energisa MT "
       "usa todos os circuitos do cadastro e a Energisa MS exclui os vazios; os meses sem registro de interrupção em "
       f"{ANO_PARCIAL} são {P['ms'].get('meses_faltando', ND)} na Energisa MS e {P['mt'].get('meses_faltando', ND)} na Energisa MT; "
@@ -1508,15 +1521,7 @@ def serie_expurgo_ms(T: dict) -> str:
 
 def renderizar_readme(res: Resultado) -> str:
     P = res.P
-    linhas = [
-        (f"Falhas na média tensão por 100 km por ano (média {JANELA})", "falhas_100km", 1, False),
-        ("CHI das falhas por consumidor por ano, em horas", "chi_uc", 1, False),
-        ("Fração do CHI das falhas que é expurgada", "frac_exp", 1, True),
-        (f"DEC oficial de {ANO_REF}, em horas", "dec_of", 2, False),
-        ("Parcela do risco social nos 10% de alimentadores de maior risco", "top10_social", 1, True),
-        (f"Carteira ótima ÷ regra tradicional ({ORC}, visão social, premissas ilustrativas)", "razao_carteira", 2, False),
-    ]
-    tabela = md_tabela(["Indicador (descritivo)", NOME["mt"], NOME["ms"]], [[n, *par_txt(P, k, c, p)] for n, k, c, p in linhas])
+    tabela = tabela_resumo(P)
     return (f"{MARCA_INI}\n"
             "## Comparativo MT × MS\n\n"
             "Comparação **só descritiva** entre a Energisa MT e a Energisa MS, por consumidor e por km de rede de média tensão. Ela "
@@ -1562,7 +1567,7 @@ def gerar(raiz: Path, irmaos: Path, saida: Path, com_figuras: bool = True) -> Re
     T = tabelas(C, S, P, avisos)
     metricas, verif = montar_metricas(P), verificar(C, S, P)
     saida.mkdir(parents=True, exist_ok=True)
-    fmt_csv = {"index": False, "float_format": "%.10g"}
+    fmt_csv = {"index": False, "float_format": "%.10g", "lineterminator": "\n"}
     metricas.to_csv(saida / "metricas.csv", **fmt_csv)
     for nome, df in T.items():
         df.to_csv(saida / f"{nome}.csv", **fmt_csv)
