@@ -94,3 +94,24 @@ def test_painel_executa_sem_excecao():
     at = AppTest.from_file(str(APP), default_timeout=180).run()
     assert not at.exception, [e.value for e in at.exception]
     assert len(at.tabs) == 3
+
+
+def test_painel_tem_seletor_de_distribuidora_e_alterna_para_ms_sem_excecao():
+    """O seletor MT/MS só aparece quando app/data/ems tem os Parquet; aí a troca recarrega título e números."""
+    pytest.importorskip("streamlit")
+    pytest.importorskip("plotly")
+    from streamlit.testing.v1 import AppTest
+
+    assert (ROOT / "app" / "data" / "ems" / "risco_alimentador.parquet").is_file()
+    at = AppTest.from_file(str(APP), default_timeout=180).run()
+    assert not at.exception, [e.value for e in at.exception]
+    assert "Mato Grosso" in at.title[0].value and "Sul" not in at.title[0].value
+    seletor = at.sidebar.radio[0]
+    assert seletor.options == ["Energisa Mato Grosso", "Energisa Mato Grosso do Sul"]
+    n_mt = at.metric[0].value
+    seletor.set_value("EMS").run()
+    assert not at.exception, [e.value for e in at.exception]
+    assert "Mato Grosso do Sul" in at.title[0].value
+    assert at.metric[0].value != n_mt  # outro número de alimentadores
+    assert len(at.tabs) == 3
+    assert "sem vínculo com a Energisa" in at.caption[0].value

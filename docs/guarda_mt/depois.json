@@ -1,0 +1,279 @@
+{
+ "bdgd_feeders_2018.parquet": {
+  "bytes": "0c89fbbf8f5b34d1b641a4deb70f053a1fae38417b7b53e8fcbdcc1bbba808ac",
+  "tamanho": 125984,
+  "linhas": 588,
+  "xor": "7078217955459636322",
+  "soma": "5542632578039977249344"
+ },
+ "bdgd_feeders_2019.parquet": {
+  "bytes": "9aae8146ec7cd7fb0e5226a780c67ef2d41bdc322edde26305dd067cd3c1d925",
+  "tamanho": 130632,
+  "linhas": 588,
+  "xor": "9888207541767759316",
+  "soma": "5552882503864132940718"
+ },
+ "bdgd_feeders_2020.parquet": {
+  "bytes": "bb2289aca4120ec1850c2d8212dc8374c5b3a7016c7d6b4e4b9d4bee5f140100",
+  "tamanho": 146075,
+  "linhas": 591,
+  "xor": "11094830233097148635",
+  "soma": "5240231140420332495179"
+ },
+ "bdgd_feeders_2021.parquet": {
+  "bytes": "483f03a5be7e9d5da85e8410fc415d814bb217313279ad43dfb59385628a36bf",
+  "tamanho": 149948,
+  "linhas": 587,
+  "xor": "6034820076014647034",
+  "soma": "5507352731228047210740"
+ },
+ "bdgd_feeders_2022.parquet": {
+  "bytes": "8600d68de96bb60c40a64ba3240914f88646237613edc0449a5c9fb89b2e3d29",
+  "tamanho": 157352,
+  "linhas": 637,
+  "xor": "10878692577001375458",
+  "soma": "5931573840129366157308"
+ },
+ "bdgd_feeders_2023.parquet": {
+  "bytes": "bc035eb8b7fdd47adc22d454c03340732b27d9264a8e60cb59df8ce9a458c128",
+  "tamanho": 167572,
+  "linhas": 647,
+  "xor": "17945174256893182064",
+  "soma": "6102679355816424356848"
+ },
+ "bdgd_feeders_2024.parquet": {
+  "bytes": "3ff4ab2f3bf170ec21a28931b85767dd383a51152fa7062cdea9eedbd40ff9ef",
+  "tamanho": 174626,
+  "linhas": 673,
+  "xor": "14612991934070347757",
+  "soma": "6349523857544992022637"
+ },
+ "bdgd_feeders_2025.parquet": {
+  "bytes": "3a35d6ee4b4f30b591a53a14bf7e8f95d31e8b2b29d686404e59a172c0a6aaed",
+  "tamanho": 181123,
+  "linhas": 697,
+  "xor": "9742754674835937143",
+  "soma": "6538128016799721468069"
+ },
+ "bdgd_map_2018.parquet": {
+  "bytes": "63efc57c4d92e665313e3b3bc4900f4691652581825ee388a767d2eefda09118",
+  "tamanho": 10203,
+  "linhas": 588,
+  "xor": "5919873607193011373",
+  "soma": "5721763750183645889875"
+ },
+ "bdgd_map_2019.parquet": {
+  "bytes": "a7cf5e9b521d2ece25b1000cead233473e3b79bd43eb48aadd14c2c5ec92fb16",
+  "tamanho": 10258,
+  "linhas": 588,
+  "xor": "10773569355783047688",
+  "soma": "5650984887852944473308"
+ },
+ "bdgd_map_2020.parquet": {
+  "bytes": "c32c162d483ee3755161f56533fc4c012a42e167f7cd42697025c7e07425aba0",
+  "tamanho": 10343,
+  "linhas": 591,
+  "xor": "16895968322441393210",
+  "soma": "5488421702555143368166"
+ },
+ "bdgd_map_2021.parquet": {
+  "bytes": "84d6c17b57f118f21c15036a292ce09a81e902b64e54b92882b7273bc09755e0",
+  "tamanho": 11354,
+  "linhas": 743,
+  "xor": "2500139100526392957",
+  "soma": "6861451741012225101647"
+ },
+ "bdgd_map_2022.parquet": {
+  "bytes": "5f5f8e57082eb6736a0ceeaee573e591a4fb3c460cc72b9d80b8ef3e684107c0",
+  "tamanho": 11899,
+  "linhas": 770,
+  "xor": "3229477859452319725",
+  "soma": "7160338213217547980225"
+ },
+ "bdgd_map_2023.parquet": {
+  "bytes": "0d71380c204aced747383a581de00607f27998fc7e7333a55d5c432f5f5526e4",
+  "tamanho": 11215,
+  "linhas": 782,
+  "xor": "13258784156633674987",
+  "soma": "7159384509727477020809"
+ },
+ "bdgd_map_2024.parquet": {
+  "bytes": "89eb0f786e2098d1b305162f3cb2bd8413a489d1a5631a56746f1ecf1d2590b2",
+  "tamanho": 11484,
+  "linhas": 810,
+  "xor": "883463286344783081",
+  "soma": "7295769833401448260511"
+ },
+ "bdgd_map_2025.parquet": {
+  "bytes": "be3e6d8725334b345358efd538036b781dcd88063c04d8d9178d22641f3d324a",
+  "tamanho": 11741,
+  "linhas": 839,
+  "xor": "11121931786161517399",
+  "soma": "8085559962440582208907"
+ },
+ "crosswalk_2018.parquet": {
+  "bytes": "112d52b93fd63e1913824719f8d7dd2d19904809fba690821c843ff4f56ab857",
+  "tamanho": 12220,
+  "linhas": 1176,
+  "xor": "10150488332984353592",
+  "soma": "10488953049069869595132"
+ },
+ "crosswalk_2019.parquet": {
+  "bytes": "8e617c66d9f95cfb9c2fb6d7f573fa06a683cbaa8edc80d3543f1902eff1c906",
+  "tamanho": 12246,
+  "linhas": 1176,
+  "xor": "4476386010160197572",
+  "soma": "10511756484177015329010"
+ },
+ "crosswalk_2020.parquet": {
+  "bytes": "7ee5af286a4e8f67505ab109a5e37c553519d9e68a3b90dc25298d200587a997",
+  "tamanho": 12364,
+  "linhas": 1182,
+  "xor": "5688487915123567159",
+  "soma": "10553601160759460999671"
+ },
+ "crosswalk_2021.parquet": {
+  "bytes": "b66dc1ac5c428afbaca5b2eb9f1ee9c9b9fbd9d29b32c06c4bc99ca58f2d7b2b",
+  "tamanho": 13587,
+  "linhas": 1330,
+  "xor": "2850193316989431831",
+  "soma": "12061252381762828620277"
+ },
+ "crosswalk_2022.parquet": {
+  "bytes": "ba7905b89d44b463594aa9115bf119989b5fbe3e83e959ddcaefa7d6c3d3396f",
+  "tamanho": 14511,
+  "linhas": 1406,
+  "xor": "2814384130945588110",
+  "soma": "12730162938434346249556"
+ },
+ "crosswalk_2023.parquet": {
+  "bytes": "2339ad2b07d476db73198a5bb1ed7d76d65465b1ba198031b8f91feaf4bd3b17",
+  "tamanho": 13639,
+  "linhas": 1426,
+  "xor": "14760522482033533608",
+  "soma": "13008685783698416990878"
+ },
+ "crosswalk_2024.parquet": {
+  "bytes": "61afe343867681178f6c5a19159f007893302a4004a18a44f903b485d64cd870",
+  "tamanho": 14201,
+  "linhas": 1476,
+  "xor": "16758382587877924156",
+  "soma": "13527975726916681209194"
+ },
+ "crosswalk_2025.parquet": {
+  "bytes": "e8a3e338b790ab010d08d23fdf25c4e072276976a6d5ad071c0f4c07e0582045",
+  "tamanho": 14860,
+  "linhas": 1536,
+  "xor": "16989058084210338762",
+  "soma": "14144526790921239474586"
+ },
+ "interrupcoes_emt.parquet": {
+  "bytes": "a8e8245e32b0e42abe920cfdad2c4938b7fc6c8667dc508aa8eec04077ad4f70",
+  "tamanho": 60626642,
+  "linhas": 2413120,
+  "xor": "18117784864342924577",
+  "soma": "22248326176284304843492247"
+ },
+ "comp.parquet": {
+  "bytes": "d07918800e0f5d2937d2d533c0a5bbcd0ccaa5c9b7803c840190d8a11234ed43",
+  "tamanho": 6406,
+  "linhas": 108,
+  "xor": "16304388553843154180",
+  "soma": "992362147080144490500"
+ },
+ "falhas.parquet": {
+  "bytes": "935fcb9f3539ceda2c7e1c67fb46e6d01e1215763034fdee60df9385ebc74458",
+  "tamanho": 2330973,
+  "linhas": 143138,
+  "xor": "10965062645473360099",
+  "soma": "1321776820095811106652819"
+ },
+ "falhas_corte_2018.parquet": {
+  "bytes": "497c3d5f94d1867b38b2d03e7fc8b5529beb895acf9b5d2ae67448002d9c3237",
+  "tamanho": 1923193,
+  "linhas": 119616,
+  "xor": "16143287519456596075",
+  "soma": "1104344657735359784328469"
+ },
+ "falhas_corte_2019.parquet": {
+  "bytes": "415f7472cc1002434955f6c3d883ea6534545d520027967bbba25c8a7c3793d0",
+  "tamanho": 1955086,
+  "linhas": 121859,
+  "xor": "9338922313205955180",
+  "soma": "1124922333288931702588512"
+ },
+ "falhas_corte_2020.parquet": {
+  "bytes": "264ea866dba7c3474dff9b644565a189bb506b5bd81dfc585e53f6bdce94ff1e",
+  "tamanho": 1968264,
+  "linhas": 122601,
+  "xor": "15291135146222730922",
+  "soma": "1131922964999913969715376"
+ },
+ "falhas_corte_2021.parquet": {
+  "bytes": "e9ebe06b9a0918f602f8adb90268f5a84137c0c47c97be70fde2af99890aab6b",
+  "tamanho": 2161820,
+  "linhas": 130741,
+  "xor": "7513878842727837214",
+  "soma": "1206757395092825862907204"
+ },
+ "falhas_corte_2022.parquet": {
+  "bytes": "7e75f921ef8c69cd368bcbf694a3125243009cc3835fea5cdfffe5ba598ba363",
+  "tamanho": 2194712,
+  "linhas": 133409,
+  "xor": "12328549448484296043",
+  "soma": "1231732830946573354098703"
+ },
+ "falhas_corte_2023.parquet": {
+  "bytes": "488eb42d1207f2033aecb3657139e6079af845dd11898997d55b7d707b2872c4",
+  "tamanho": 2319081,
+  "linhas": 142092,
+  "xor": "16854985138259885527",
+  "soma": "1312257336838347444597653"
+ },
+ "falhas_corte_2024.parquet": {
+  "bytes": "694ebfbf9bf28614335ad365432807950b999c92b22ea1fc1650da857d59b81a",
+  "tamanho": 2331144,
+  "linhas": 142923,
+  "xor": "15636337644876749638",
+  "soma": "1319609264351491170100684"
+ },
+ "falhas_corte_2025.parquet": {
+  "bytes": "935fcb9f3539ceda2c7e1c67fb46e6d01e1215763034fdee60df9385ebc74458",
+  "tamanho": 2330973,
+  "linhas": 143138,
+  "xor": "10965062645473360099",
+  "soma": "1321776820095811106652819"
+ },
+ "panel.parquet": {
+  "bytes": "2c9ebef2113132a14fb813a58c6dd444ab1e2764c72906dc1fb47c14fb82cef4",
+  "tamanho": 2682377,
+  "linhas": 35056,
+  "xor": "16781918720257016525",
+  "soma": "323872402860875050977581"
+ },
+ "pesos.parquet": {
+  "bytes": "e32d9eaf58753fc18bc92a5487ea24331fbe7f892e0e2810d605857f0900dd8e",
+  "tamanho": 12408,
+  "linhas": 929,
+  "xor": "11904878742958802153",
+  "soma": "8711222775412541509435"
+ },
+ "valor_compensacao.parquet": {
+  "bytes": "7dca0367a922179834919acc336bf329600d95bd77b40a4b94ea91f1fef59795",
+  "tamanho": 18476,
+  "linhas": 697,
+  "xor": "8703976338171682101",
+  "soma": "6586507007570779350899"
+ },
+ "valor_social.parquet": {
+  "bytes": "cf09e751c5d75dbe0f1493447c0edd9d523d2646cc1514b59014050fed19b1a6",
+  "tamanho": 26253,
+  "linhas": 697,
+  "xor": "16044237186275825756",
+  "soma": "6437255934283478032612"
+ },
+ "validacao_dec_fec.csv": {
+  "bytes": "aa1109bb3f74d28cdb08734b5e4f641ec5ecf3a82d17c50e21589e022db7ed90",
+  "tamanho": 324
+ }
+}

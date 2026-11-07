@@ -1,0 +1,18 @@
+{
+  "n_alimentadores": 362,
+  "risco_2026_rs_ano_compensacao": 16585193.220078709,
+  "risco_2026_rs_ano_social": 105987751.64640126,
+  "dec_previsto_falhas_mt_h": 5.932993697999752,
+  "frac_risco_social_top10pct_alimentadores": 0.32897366963794816,
+  "frac_risco_social_top20pct_alimentadores": 0.5027297342444508,
+  "carteira_20M_vpl_por_real_investido": {
+    "otimo": 2.911759931495244,
+    "guloso": 2.8443522264540806,
+    "tradicional": 2.2398323939586287
+  },
+  "carteira_20M_chi_evitado_por_mil_reais": {
+    "otimo": 96.67629274060205,
+    "guloso": 96.493789905132,
+    "tradicional": 91.01294254521513
+  }
+}
